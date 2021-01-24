@@ -1,21 +1,25 @@
 "use strict";
 
 /**************************************************
-Template p5 project
-Pippin Barr
+Where's Sausage Dog Activity?
+Paola Petitti
 
-Here is a description of this template p5 project.
+Following along Pippin's video for the first activity.
 **************************************************/
 
+// preload()
+// Description of preload
+functino preload(){
+
+}
+
 // setup()
-//
 // Description of setup() goes here.
 function setup() {
 
 }
 
 // draw()
-//
 // Description of draw() goes here.
 function draw() {
 
