@@ -24,11 +24,24 @@ function preload(){
 // setup()
 // Description of setup() goes here.
 function setup() {
+  createCanvas(windowWidth,windowHeight);
 
+  // Creating the animals
+  for(let i = 0; i < NUM_ANIMALS; i++){
+    let x = random(0,width);
+    let y = random(0, height);
+    let animalImg = random(animalImages);
+    let animal = new Animal(x, y, animalImg);
+    animals.push(animal);
+  }
 }
 
 // draw()
 // Description of draw() goes here.
 function draw() {
+  background(255,255,0);
 
+  for(let i = 0; i < animals.length; i++){
+    animals[i].update();
+  }
 }
