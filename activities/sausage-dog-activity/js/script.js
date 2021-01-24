@@ -16,7 +16,7 @@ let animals = [];
 // Description of preload
 function preload(){
   for (let i = 0; i < NUM_ANIMAL_IMG; i++){
-    let animalImage = loadImage(`assets/images/animal${i}`);
+    let animalImage = loadImage(`assets/images/animal${i}.png`);
     animalImages.push(animalImage);
   }
 }
@@ -39,7 +39,7 @@ function setup() {
 // draw()
 // Description of draw() goes here.
 function draw() {
-  background(255,255,0);
+  background(255,50,150);
 
   for(let i = 0; i < animals.length; i++){
     animals[i].update();
