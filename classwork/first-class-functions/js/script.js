@@ -6,9 +6,7 @@ Paola Petitti
 
 Following along the first class functions video.
 **************************************************/
-let hello = function () {
-  alert(`Hello!`);
-};
+
 // setup()
 //
 // Description of setup() goes here.
@@ -23,4 +21,6 @@ function draw() {
 
 }
 
-setTimeout(hello,5000);
+setTimeout(function(){
+  alert(`Hello!`);
+},5000);
