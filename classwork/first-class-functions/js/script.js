@@ -1,12 +1,14 @@
 "use strict";
 
 /**************************************************
-Template p5 project
-Pippin Barr
+First Class Functions
+Paola Petitti
 
-Here is a description of this template p5 project.
+Following along the first class functions video.
 **************************************************/
-
+let hello = function () {
+  alert(`Hello!`);
+};
 // setup()
 //
 // Description of setup() goes here.
@@ -20,3 +22,5 @@ function setup() {
 function draw() {
 
 }
+
+setTimeout(hello,5000);
