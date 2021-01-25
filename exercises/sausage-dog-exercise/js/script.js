@@ -15,6 +15,10 @@ let animals = [];
 
 let sausageDogImg = undefined;
 let sausageDog = undefined;
+let sausageDogBark = undefined;
+
+let state = `start`;
+
 // preload()
 // Description of preload
 function preload(){
@@ -24,25 +28,15 @@ function preload(){
   }
 
   sausageDogImg = loadImage(`assets/images/sausage-dog.png`);
+  sausageDogBark = loadSound(`assets/sounds/bark.wav`);
 }
 
 // setup()
 // Description of setup() goes here.
 function setup() {
   createCanvas(windowWidth,windowHeight);
-
-  // Creating the animals
-  for(let i = 0; i < NUM_ANIMALS; i++){
-    let x = random(0,width);
-    let y = random(0, height);
-    let animalImg = random(animalImages);
-    let animal = new Animal(x, y, animalImg);
-    animals.push(animal);
-  }
-
-  let x = random(0, width);
-  let y = random(0, height);
-  sausageDog = new SausageDog(x, y, sausageDogImg);
+  createDog();
+  createAnimals();
 }
 
 // draw()
@@ -50,6 +44,21 @@ function setup() {
 function draw() {
   background(255,50,150);
 
+  if(state === `start`){
+    intro();
+  }
+  else if(state === `game`){
+    game();
+  }
+  else if(state === `win`){
+    winEnding();
+  }
+  else if(state === `lose`){
+    loseEnding();
+  }
+}
+
+function game(){
   for(let i = 0; i < animals.length; i++){
     animals[i].update();
   }
@@ -57,6 +66,54 @@ function draw() {
   sausageDog.update();
 }
 
+
 function mousePressed(){
   sausageDog.mousePressed();
+
+
+  if(sausageDog.found && state === `game`){
+    sausageDogBark.play();
+    setTimeout(function(){
+      state = `win`;
+    }, 5000);
+  }
+}
+
+// Creating the animals
+function createAnimals(){
+  for(let i = 0; i < NUM_ANIMALS; i++){
+    let x = random(0,width);
+    let y = random(0, height);
+    let animalImg = random(animalImages);
+    let animal = new Animal(x, y, animalImg);
+    animals.push(animal);
+  }
+}
+
+function createDog(){
+  let x = random(0, width);
+  let y = random(0, height);
+  sausageDog = new SausageDog(x, y, sausageDogImg);
+}
+
+function keyPressed(){
+  if (state === `start` && keyCode === ENTER){
+    state = `game`;
+  }
+}
+
+function intro(){
+  textSize(50);
+  textAlign(CENTER);
+  textFont(`monospace`);
+  fill(0);
+  text(`Press Enter to Play`,width / 2, height / 2);
+}
+
+function winEnding(){
+  textSize(50);
+  textAlign(CENTER);
+  textFont(`monospace`);
+  fill(0);
+  text(`You Win!`,width / 2, height / 2);
 }
