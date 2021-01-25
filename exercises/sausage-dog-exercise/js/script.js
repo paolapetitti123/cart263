@@ -18,6 +18,7 @@ let sausageDog = undefined;
 let sausageDogBark = undefined;
 
 let state = `start`;
+let timer = 30;
 
 // preload()
 // Description of preload
@@ -62,8 +63,17 @@ function game(){
   for(let i = 0; i < animals.length; i++){
     animals[i].update();
   }
-
   sausageDog.update();
+  textAlign(CENTER);
+  textSize(25);
+  text(timer, 50,50);
+
+  if(frameCount % 60 == 0 && timer > 0 && sausageDog.found == false){
+    timer--;
+  }
+  setTimeout(function(){
+    state = `lose`;
+  }, 30000);
 }
 
 
@@ -116,4 +126,12 @@ function winEnding(){
   textFont(`monospace`);
   fill(0);
   text(`You Win!`,width / 2, height / 2);
+}
+
+function loseEnding(){
+  textSize(50);
+  textAlign(CENTER);
+  textFont(`monospace`);
+  fill(0);
+  text(`You Lose!`,width / 2, height / 2);
 }
