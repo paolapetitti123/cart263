@@ -87,6 +87,9 @@ function mousePressed(){
       state = `win`;
     }, 5000);
   }
+  else if(sausageDog.found == false){
+    alert(`Oops that's not sausage dog!`);
+  }
 }
 
 // Creating the animals
