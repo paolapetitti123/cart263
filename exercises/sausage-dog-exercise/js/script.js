@@ -87,7 +87,7 @@ function mousePressed(){
       state = `win`;
     }, 5000);
   }
-  else if(sausageDog.found == false){
+  else if(sausageDog.found == false && state === `game`){
     alert(`Oops that's not sausage dog!`);
   }
 }
