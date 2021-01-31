@@ -144,17 +144,23 @@ const animals = [
       "zebra"
     ];
 let currentAnimal = ``;
+let currentAnswer = ``;
 
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
+  createCanvas(windowWidth,windowHeight);
   if (annyang){
     let commands = {
-      'I think it is *animal': guessAnimal
+      '*animal': guessAnimal
     };
     annyang.addCommands(commands);
     annyang.start();
+
+    textSize(32);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
   }
 }
 
@@ -162,7 +168,15 @@ function setup() {
 //
 // Description of draw() goes here.
 function draw() {
+  background(0);
 
+  if(currentAnswer === currentAnimal){
+    fill(0,255,0);
+  }
+  else {
+    fill(255,0,0);
+  }
+  text(currentAnswer, width/2,height/2);
 }
 
 function mousePressed(){
@@ -172,6 +186,11 @@ function mousePressed(){
 
   responsiveVoice.speak(reverseAnimal);
 }
+
+function guessAnimal(animal){
+  currentAnswer = animal.toLowerCase();
+}
+
 
 function reverseString(string) {
   // Split the string into an array of characters
