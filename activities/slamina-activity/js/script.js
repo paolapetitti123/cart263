@@ -149,7 +149,13 @@ let currentAnimal = ``;
 //
 // Description of setup() goes here.
 function setup() {
-
+  if (annyang){
+    let commands = {
+      'I think it is *animal': guessAnimal
+    };
+    annyang.addCommands(commands);
+    annyang.start();
+  }
 }
 
 // draw()
@@ -157,6 +163,14 @@ function setup() {
 // Description of draw() goes here.
 function draw() {
 
+}
+
+function mousePressed(){
+  currentAnimal = random(animals);
+
+  let reverseAnimal = reverseString(currentAnimal);
+
+  responsiveVoice.speak(reverseAnimal);
 }
 
 function reverseString(string) {
