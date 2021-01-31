@@ -1,10 +1,10 @@
 "use strict";
 
 /**************************************************
-Slamina Activity
+Slamina Exercise
 Paola Petitti
 
-Following along the Slamina Activity video
+Adding onto the Slamina activity.
 **************************************************/
 // Animal Names List/Array
 const animals = [
