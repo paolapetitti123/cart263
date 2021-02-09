@@ -6,16 +6,18 @@ Paola Petitti
 **************************************************/
 
 let spyProfile = {
-  name: `REDACTED`,
-  alias: `REDACTED`,
-  secretWeapon: `REDACTED`,
-  password: `REDACTED`
+  name: undefined,
+  alias: undefined,
+  secretWeapon: undefined,
+  password: undefined
 };
 
 let instrumentData = undefined;
 let objectData = undefined;
 let tarotData = undefined;
 
+
+let state = `profileActive`;
 /**
 Description of preload()
 */
@@ -75,6 +77,15 @@ Description of draw()
 function draw() {
   background(0);
 
+  if(state === `profileActive`){
+    activeProfile();
+  }
+  else if(state === `profileDeactivated`){
+    deactivatedProfile();
+  }
+}
+
+function activeProfile(){
   let profile = `** SPY PROFILE! TOP SECRET **
 
   NAME: ${spyProfile.name}
@@ -94,8 +105,29 @@ function draw() {
   pop();
 }
 
+function deactivatedProfile(){
+  let profileDeleted = `** SPY PROFILE! TOP SECRET **
+
+  NAME: ${spyProfile.name}
+  ALIAS: ${spyProfile.alias}
+  SECRET WEAPON: ${spyProfile.secretWeapon}
+  PASSWORD: ${spyProfile.password}
+
+  PROFILE DELETED PLEASE REFRESH PAGE
+  `;
+
+  push();
+  textFont(`Courier, monospace`);
+  textSize(32);
+  textAlign(LEFT,TOP);
+  fill(0, 255, 0);
+  text(profileDeleted, 100,100);
+  pop();
+}
+
 function keyPressed(){
   if(key === 'c'){
     localStorage.removeItem(`spy-profile-data`);
+    state = `profileDeactivated`;
   }
 }
