@@ -1,10 +1,10 @@
 "use strict";
 
 /**************************************************
-Template p5 project
-Pippin Barr
+4.3. Activity: Spy Profile Generator
+Paola Petitti
 
-Here is a description of this template p5 project.
+Following along Pippin's video for this activity.
 **************************************************/
 
 // setup()
