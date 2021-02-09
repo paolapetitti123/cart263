@@ -33,7 +33,22 @@ Description of setup()
 */
 function setup() {
   createCanvas(windowWidth,windowHeight);
-  generateSpyProfile();
+
+  let data = JSON.parse(localStorage.getItem(`spy-profile-data`));
+  if(data !== null){
+    let password = prompt(`ENTER PASSWORD`);
+
+    if(password === data.password){
+      spyProfile.name = data.name;
+      spyProfile.alias = data.alias;
+      spyProfile.secretWeapon = data.secretWeapon;
+      spyProfile.password = data.password;
+    }
+  }
+  else{
+    generateSpyProfile();
+  }
+
 }
 
 function generateSpyProfile(){
@@ -51,6 +66,9 @@ function generateSpyProfile(){
   // random password generator
   let card = random(tarotData.tarot_interpretations);
   spyProfile.password = random(card.keywords);
+
+  // Saving profile to local storage
+  localStorage.setItem(`spy-profile-data`,JSON.stringify(spyProfile));
 }
 
 /**
