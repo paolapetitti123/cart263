@@ -1,10 +1,8 @@
 "use strict";
 
 /**************************************************
-4.3. Activity: Spy Profile Generator
+4.3. Exercise: Spy Profile Generator
 Paola Petitti
-
-Following along Pippin's video for this activity.
 **************************************************/
 
 let spyProfile = {
@@ -82,7 +80,10 @@ function draw() {
   NAME: ${spyProfile.name}
   ALIAS: ${spyProfile.alias}
   SECRET WEAPON: ${spyProfile.secretWeapon}
-  PASSWORD: ${spyProfile.password}`;
+  PASSWORD: ${spyProfile.password}
+
+  Press 'c' to delete profile
+  `;
 
   push();
   textFont(`Courier, monospace`);
@@ -91,4 +92,10 @@ function draw() {
   fill(0, 255, 0);
   text(profile, 100,100);
   pop();
+}
+
+function keyPressed(){
+  if(key === 'c'){
+    localStorage.removeItem(`spy-profile-data`);
+  }
 }
