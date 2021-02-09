@@ -4,6 +4,7 @@
 4.3. Exercise: Spy Profile Generator
 Paola Petitti
 **************************************************/
+let alarmSound = undefined;
 
 let spyProfile = {
   name: undefined,
@@ -25,6 +26,8 @@ function preload(){
   tarotData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/tarot_interpretations.json`);
   instrumentData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/music/instruments.json`);
   objectData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`);
+
+  alarmSound = loadSound(`assets/sounds/alarm.wav`);
 }
 
 
@@ -47,6 +50,7 @@ function setup() {
     }
     else {
       state = `profileNotFound`;
+
     }
   }
   else{
@@ -141,6 +145,7 @@ function profileNotFound(){
 
   ** PLEASE REFRESH PAGE **
   `;
+
   localStorage.removeItem(`spy-profile-data`);
   push();
   textFont(`Courier, monospace`);
@@ -159,6 +164,19 @@ function keyPressed(){
   if(keyCode === ENTER && state === `profileActive`){
     localStorage.removeItem(`spy-profile-data`);
     regenerateSpyProfile();
+  }
+  if(state === `profileNotFound`){
+    if(!alarmSound.isPlaying()){
+      alarmSound.play();
+    }
+  }
+}
+
+function mousePressed(){
+  if(state === `profileNotFound`){
+    if(!alarmSound.isPlaying()){
+      alarmSound.play();
+    }
   }
 }
 
