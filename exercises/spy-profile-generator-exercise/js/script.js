@@ -17,7 +17,7 @@ let objectData = undefined;
 let tarotData = undefined;
 
 
-let state = `profileActive`;
+let state = undefined;
 /**
 Description of preload()
 */
@@ -43,9 +43,14 @@ function setup() {
       spyProfile.alias = data.alias;
       spyProfile.secretWeapon = data.secretWeapon;
       spyProfile.password = data.password;
+      state = `profileActive`;
+    }
+    else {
+      state = `profileNotFound`;
     }
   }
   else{
+    state = `profileActive`;
     generateSpyProfile();
   }
 
@@ -83,6 +88,9 @@ function draw() {
   else if(state === `profileDeactivated`){
     deactivatedProfile();
   }
+  else if(state === `profileNotFound`){
+    profileNotFound();
+  }
 }
 
 function activeProfile(){
@@ -94,6 +102,7 @@ function activeProfile(){
   PASSWORD: ${spyProfile.password}
 
   Press 'c' to delete profile
+  Press 'Enter' to regenerate profile
   `;
 
   push();
@@ -125,9 +134,47 @@ function deactivatedProfile(){
   pop();
 }
 
+function profileNotFound(){
+  let notFound = `** INTRUDER! INTRUDER! **
+
+  ** PROFILE HAS BEEN DELETED **
+
+  ** PLEASE REFRESH PAGE **
+  `;
+  localStorage.removeItem(`spy-profile-data`);
+  push();
+  textFont(`Courier, monospace`);
+  textSize(32);
+  textAlign(LEFT,TOP);
+  fill(0, 255, 0);
+  text(notFound, 100,100);
+  pop();
+}
+
 function keyPressed(){
-  if(key === 'c'){
+  if(key === 'c' && state == `profileActive`){
     localStorage.removeItem(`spy-profile-data`);
     state = `profileDeactivated`;
   }
+  if(keyCode === ENTER && state === `profileActive`){
+    localStorage.removeItem(`spy-profile-data`);
+    regenerateSpyProfile();
+  }
+}
+
+function regenerateSpyProfile(){
+  // random instrument/alias generator
+  let instrument = random(instrumentData.instruments);
+  spyProfile.alias = `The ${instrument}`;
+
+  // random weapon generator
+  spyProfile.secretWeapon = random(objectData.objects);
+
+
+  // random password generator
+  let card = random(tarotData.tarot_interpretations);
+  spyProfile.password = random(card.keywords);
+
+  // Saving profile to local storage
+  localStorage.setItem(`spy-profile-data`,JSON.stringify(spyProfile));
 }
