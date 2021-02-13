@@ -99,6 +99,15 @@ function running() {
     for (let i = 0; i < predictions.length; i++) {
       // Get the object predicted
       let object = predictions[i];
+      if(object.label === `scissors`){
+        push();
+        fill(0);
+        rect(object.x, object.y, object.width, object.height);
+        pop();
+      }
+      else {
+        highlightObject(object);
+      }
       // Highlight it on the canvas
       highlightObject(object);
     }
