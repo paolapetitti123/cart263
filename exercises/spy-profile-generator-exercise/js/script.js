@@ -10,57 +10,57 @@ let spyProfile = {
   name: undefined,
   alias: undefined,
   secretWeapon: undefined,
-  password: undefined
+  password: undefined,
 };
 
 let instrumentData = undefined;
 let objectData = undefined;
 let tarotData = undefined;
 
-
 let state = undefined;
 /**
 Description of preload()
 */
-function preload(){
-  tarotData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/tarot_interpretations.json`);
-  instrumentData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/music/instruments.json`);
-  objectData = loadJSON(`https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`);
+function preload() {
+  tarotData = loadJSON(
+    `https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/tarot_interpretations.json`
+  );
+  instrumentData = loadJSON(
+    `https://raw.githubusercontent.com/dariusk/corpora/master/data/music/instruments.json`
+  );
+  objectData = loadJSON(
+    `https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`
+  );
 
   alarmSound = loadSound(`assets/sounds/alarm.wav`);
 }
-
 
 /**
 Description of setup()
 */
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
 
   let data = JSON.parse(localStorage.getItem(`spy-profile-data`));
-  if(data !== null){
+  if (data !== null) {
     let password = prompt(`ENTER PASSWORD`);
 
-    if(password === data.password){
+    if (password === data.password) {
       spyProfile.name = data.name;
       spyProfile.alias = data.alias;
       spyProfile.secretWeapon = data.secretWeapon;
       spyProfile.password = data.password;
       state = `profileActive`;
-    }
-    else {
+    } else {
       state = `profileNotFound`;
-
     }
-  }
-  else{
+  } else {
     state = `profileActive`;
     generateSpyProfile();
   }
-
 }
 
-function generateSpyProfile(){
+function generateSpyProfile() {
   // name prompt
   spyProfile.name = prompt(`What's your name?`);
 
@@ -71,13 +71,12 @@ function generateSpyProfile(){
   // random weapon generator
   spyProfile.secretWeapon = random(objectData.objects);
 
-
   // random password generator
   let card = random(tarotData.tarot_interpretations);
   spyProfile.password = random(card.keywords);
 
   // Saving profile to local storage
-  localStorage.setItem(`spy-profile-data`,JSON.stringify(spyProfile));
+  localStorage.setItem(`spy-profile-data`, JSON.stringify(spyProfile));
 }
 
 /**
@@ -86,18 +85,16 @@ Description of draw()
 function draw() {
   background(0);
 
-  if(state === `profileActive`){
+  if (state === `profileActive`) {
     activeProfile();
-  }
-  else if(state === `profileDeactivated`){
+  } else if (state === `profileDeactivated`) {
     deactivatedProfile();
-  }
-  else if(state === `profileNotFound`){
+  } else if (state === `profileNotFound`) {
     profileNotFound();
   }
 }
 
-function activeProfile(){
+function activeProfile() {
   let profile = `** SPY PROFILE! TOP SECRET **
 
   NAME: ${spyProfile.name}
@@ -112,13 +109,13 @@ function activeProfile(){
   push();
   textFont(`Courier, monospace`);
   textSize(32);
-  textAlign(LEFT,TOP);
+  textAlign(LEFT, TOP);
   fill(0, 255, 0);
-  text(profile, 100,100);
+  text(profile, 100, 100);
   pop();
 }
 
-function deactivatedProfile(){
+function deactivatedProfile() {
   let profileDeleted = `** SPY PROFILE! TOP SECRET **
 
   NAME: ${spyProfile.name}
@@ -132,13 +129,13 @@ function deactivatedProfile(){
   push();
   textFont(`Courier, monospace`);
   textSize(32);
-  textAlign(LEFT,TOP);
+  textAlign(LEFT, TOP);
   fill(0, 255, 0);
-  text(profileDeleted, 100,100);
+  text(profileDeleted, 100, 100);
   pop();
 }
 
-function profileNotFound(){
+function profileNotFound() {
   let notFound = `** INTRUDER! INTRUDER! **
 
   ** PROFILE HAS BEEN DELETED **
@@ -150,37 +147,37 @@ function profileNotFound(){
   push();
   textFont(`Courier, monospace`);
   textSize(32);
-  textAlign(LEFT,TOP);
+  textAlign(LEFT, TOP);
   fill(0, 255, 0);
-  text(notFound, 100,100);
+  text(notFound, 100, 100);
   pop();
 }
 
-function keyPressed(){
-  if(key === 'c' && state == `profileActive`){
+function keyPressed() {
+  if (key === "c" && state == `profileActive`) {
     localStorage.removeItem(`spy-profile-data`);
     state = `profileDeactivated`;
   }
-  if(keyCode === ENTER && state === `profileActive`){
+  if (keyCode === ENTER && state === `profileActive`) {
     localStorage.removeItem(`spy-profile-data`);
     regenerateSpyProfile();
   }
-  if(state === `profileNotFound`){
-    if(!alarmSound.isPlaying()){
+  if (state === `profileNotFound`) {
+    if (!alarmSound.isPlaying()) {
       alarmSound.play();
     }
   }
 }
 
-function mousePressed(){
-  if(state === `profileNotFound`){
-    if(!alarmSound.isPlaying()){
+function mousePressed() {
+  if (state === `profileNotFound`) {
+    if (!alarmSound.isPlaying()) {
       alarmSound.play();
     }
   }
 }
 
-function regenerateSpyProfile(){
+function regenerateSpyProfile() {
   // random instrument/alias generator
   let instrument = random(instrumentData.instruments);
   spyProfile.alias = `The ${instrument}`;
@@ -188,11 +185,10 @@ function regenerateSpyProfile(){
   // random weapon generator
   spyProfile.secretWeapon = random(objectData.objects);
 
-
   // random password generator
   let card = random(tarotData.tarot_interpretations);
   spyProfile.password = random(card.keywords);
 
   // Saving profile to local storage
-  localStorage.setItem(`spy-profile-data`,JSON.stringify(spyProfile));
+  localStorage.setItem(`spy-profile-data`, JSON.stringify(spyProfile));
 }
