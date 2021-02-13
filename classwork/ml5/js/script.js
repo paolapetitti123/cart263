@@ -1,10 +1,10 @@
 "use strict";
 
 /**************************************************
-Template p5 project
-Pippin Barr
+5.2. ml5.js: ObjectDetector
+Paola Petitti
 
-Here is a description of this template p5 project.
+Following along with the lecture video.
 **************************************************/
 
 // setup()
