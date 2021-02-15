@@ -26,7 +26,7 @@ function setup() {
   createCanvas(640, 480);
 
   // Accessing users webcam
-  video = createCanvas(VIDEO);
+  video = createCapture(VIDEO);
   video.hide();
 
   // Loading handpose model
