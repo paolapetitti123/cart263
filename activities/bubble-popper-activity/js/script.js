@@ -1,18 +1,11 @@
 "use strict";
 
 /**************************************************
-Bubble Popper Activity
+5.4. Bubble Popper Activity
 Paola Petitti
 
 Following Pippin's video for the activity.
 **************************************************/
-
-/*
-Description of preload() goes here.
-*/
-function preload(){
-
-}
 
 
 /*
