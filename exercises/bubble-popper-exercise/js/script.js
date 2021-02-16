@@ -19,6 +19,24 @@ let predictions = [];
 // The Bubble
 let bubble = undefined;
 
+let pin = {
+  tip: {
+    x: undefined,
+    y: undefined
+  },
+  head: {
+    x: undefined,
+    y: undefined,
+    size: 20
+  }
+};
+
+// The State of the game
+let state = `load`;
+
+// The point counter for the game
+let points = 0;
+
 /*
 Description of setup() goes here.
 */
@@ -32,11 +50,11 @@ function setup() {
   // Loading handpose model
   handpose = ml5.handpose(video, { flipHorizontal: true }, function() {
     console.log(`Model Loaded`);
+    state = `run`;
   });
 
   // Listen for predictions
   handpose.on(`predict`, function (results) {
-    console.log(results);
     predictions = results;
   });
 
@@ -46,7 +64,7 @@ function setup() {
     y: height,
     size: 100,
     vx: 0,
-    vy: -2,
+    vy: -5,
   };
 }
 
@@ -54,54 +72,104 @@ function setup() {
 Description of draw() goes here.
 */
 function draw() {
+  if(state === `load`){
+    loading();
+  }
+  else if(state === `run`){
+    running();
+  }
+
+}
+/*
+  This function gets the program to start, it updates the pin location & displays
+  it, checks if the pin touches the bubbles, creates and shows the bubble
+*/
+function running(){
   background(0);
 
-  if (predictions.length > 0) {
-    // Getting the x & y coordinates of the tip and base of your index finger
-    let hand = predictions[0];
-    let index = hand.annotations.indexFinger;
-    let tip = index[3];
-    let base = index[0];
-    let tipX = tip[0];
-    let tipY = tip[1];
-    let baseX = base[0];
-    let baseY = base[1];
+  if(predictions.length > 0){
+    updatePin(predictions[0]);
 
-    //Drawing the line for the pin
-    push();
-    noFill();
-    stroke(255, 255, 255);
-    strokeWeight(2);
-    line(baseX, baseY, tipX, tipY);
-    pop();
-
-    // Drawing the end of the pin
-    push();
-    noStroke();
-    fill(255, 0, 0);
-    ellipse(baseX, baseY, 20);
-    pop();
-
-    // check bubble popping
     let d = dist(tipX, tipY, bubble.x, bubble.y);
     if (d < bubble.size / 2) {
-      bubble.x = random(width);
-      bubble.y = height;
+      points += 1;
+      bubbleRestart();
     }
+    displayPin();
   }
 
   // Movement of the bubble
   bubble.x += bubble.vx;
   bubble.y += bubble.vy;
 
+  // Checking if out of bounds
   if (bubble.y < 0) {
-    bubble.x = random(width);
-    bubble.y = height;
+    bubbleRestart();
   }
 
+  // Displaying bubble
   push();
   fill(200, 0, 0);
   noStroke();
   ellipse(bubble.x, bubble.y, bubble.size);
+  pop();
+
+
+  // Displaying the points
+  push();
+  textSize(25);
+  text(points,50,50);
+  pop();
+}
+
+/*
+  This functions shows a little loading screen at the start while we wait
+  for ML5 to start.
+*/
+function loading(){
+  push();
+  textSize(64);
+  textAlign(CENTER,CENTER);
+  text(`Loading...`, width/2,height/2);
+  pop();
+}
+
+/*
+  If you touch the bubble or it gets off screen, it restarts and goes back to
+  the bottom.
+*/
+function bubbleRestart(){
+  bubble.x = random(width);
+  bubble.y = height;
+}
+
+/*
+  This function is constantly updating the location of the pin according to
+  handpose
+*/
+function updatePin(predictions){
+  pin.tip.x = prediction.annotations.indexFinger[3][0];
+  pin.tip.y = prediction.annotations.indexFinger[3][1];
+  pin.head.x = prediction.annotations.indexFinger[0][0];
+  pin.head.y = prediction.annotations.indexFinger[0][1];
+}
+
+/*
+  This function shows the pin
+*/
+function displayPin(){
+  //Drawing the line for the pin
+  push();
+  noFill();
+  stroke(255, 255, 255);
+  strokeWeight(2);
+  line(pin.tip.x, pin.tip.y, pin.head.x, pin.head.y);
+  pop();
+
+  // Drawing the end of the pin
+  push();
+  noStroke();
+  fill(255, 0, 0);
+  ellipse(pin.head.x, pin.head.y, pin.head.size);
   pop();
 }
