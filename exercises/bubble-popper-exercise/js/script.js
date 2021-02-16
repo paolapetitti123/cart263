@@ -124,6 +124,7 @@ function running() {
   // Displaying the points
   push();
   textSize(25);
+  fill(255);
   text(points, 50, 50);
   pop();
 }
