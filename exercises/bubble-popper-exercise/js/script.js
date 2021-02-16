@@ -37,6 +37,13 @@ let state = `load`;
 // The point counter for the game
 let points = 0;
 
+// Pop sound
+let popSound = undefined;
+
+function preload() {
+  popSound = loadSound(`assets/sounds/pop.wav`);
+}
+
 /*
 Description of setup() goes here.
 */
@@ -64,7 +71,7 @@ function setup() {
     y: height,
     size: 100,
     vx: 0,
-    vy: -5,
+    vy: -25,
   };
 }
 
@@ -90,8 +97,9 @@ function running(){
   if(predictions.length > 0){
     updatePin(predictions[0]);
 
-    let d = dist(tipX, tipY, bubble.x, bubble.y);
+    let d = dist(pin.tip.x, pin.tip.y, bubble.x, bubble.y);
     if (d < bubble.size / 2) {
+      popSound.play();
       points += 1;
       bubbleRestart();
     }
@@ -147,7 +155,7 @@ function bubbleRestart(){
   This function is constantly updating the location of the pin according to
   handpose
 */
-function updatePin(predictions){
+function updatePin(prediction){
   pin.tip.x = prediction.annotations.indexFinger[3][0];
   pin.tip.y = prediction.annotations.indexFinger[3][1];
   pin.head.x = prediction.annotations.indexFinger[0][0];
