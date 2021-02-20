@@ -22,9 +22,10 @@ baseball glove:
 https://www.freepik.com/free-vector/bundle-baseball-icons_5984920.htm#page=1&query=baseball%20glove&position=0
 
 Things to add:
-- intro screen with instructions 
+- intro screen with instructions
 - a timer (if time runs out you lose)
 - web storage to keep track of your best time
+- lose screen
 - fix the visuals once everything else is working
 
 **************************************************/
@@ -58,6 +59,9 @@ let basementFloodImg = undefined;
 
 // baseball glove to replace pin
 let gloveImg = undefined;
+
+// timer
+let timer = 15;
 
 /*
   Description of preload() goes here
@@ -114,12 +118,16 @@ function draw() {
   else if(state === `win`){
     winEnding();
   }
+  else if(state === `lose`){
+    loseEnding();
+  }
 }
 
 function running(){
-  background(0); // change this to the basement pic
+  background(0);
   imageMode(CORNER);
   image(basementClearImg, 0,0);
+  gameTimer();
   displayFlubber();
 
   if(predictions.length > 0){
@@ -179,10 +187,32 @@ function loading() {
   pop();
 }
 
+function gameTimer(){
+  textAlign(CENTER);
+  textSize(25);
+  text(timer, 50,50);
+  if(frameCount % 60 == 0 && timer > 0){
+    timer--;
+  }
+  if(timer == 0){
+    state = `lose`;
+  }
+}
+
 function winEnding(){
   push();
   textSize(64);
   textAlign(CENTER, CENTER);
   text(`You win!`, width / 2, height / 2);
+  pop();
+}
+
+function loseEnding(){
+  push();
+  imageMode(CORNER);
+  image(basementFloodImg, 0,0);
+  textSize(64);
+  textAlign(CENTER, CENTER);
+  text(`Flubber got away!`, width / 2, height / 2);
   pop();
 }
