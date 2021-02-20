@@ -48,11 +48,16 @@ let pin = {
 // State for the game
 let state = `loading`;
 
+// Background images
+let basementClearImg = undefined;
+let basementFloodImg = undefined;
+
 /*
   Description of preload() goes here
 */
 function preload() {
-
+  basementClearImg = loadImage(`assets/images/basement_clear.jpg`);
+  basementFloodImg = loadImage(`assets/images/basement_flood.jpg`);
 }
 
 /*
@@ -61,7 +66,7 @@ function preload() {
   the Flubber object.
 */
 function setup() {
-  createCanvas(1280,720);
+  createCanvas(979,487);
 
   // Getting Acess to the users webcam
   video = createCapture(VIDEO);
@@ -97,6 +102,8 @@ function draw() {
 
 function running(){
   background(0); // change this to the basement pic
+  imageMode(CORNER);
+  image(basementClearImg, 0,0);
   displayFlubber();
 
   if(predictions.length > 0){
