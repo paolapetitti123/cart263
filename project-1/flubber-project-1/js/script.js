@@ -71,14 +71,39 @@ function setup() {
     x: random(width),
     y: random(height),
     size: 35,
-    vx: 0,
-    vy: 0,
+    vx: 15,
+    vy: 15,
   };
+}
+
+function running(){
+  background(0);
+  displayFlubber();
+
+  flubber.x += flubber.vx;
+  flubber.y += flubber.vy;
+
+  if(flubber.x > width || flubber.x < 0){
+    flubber.vx = -flubber.vx;
+  }
+
+  if(flubber.y > height || flubber.y < 0){
+    flubber.vy = -flubber.vy;
+  }
+
+}
+
+function displayFlubber(){
+  push();
+  fill(0,255,26);
+  noStroke();
+  ellipse(flubber.x,flubber.y,flubber.size);
+  pop();
 }
 
 /*
   Description of draw() goes here
 */
 function draw() {
-
+  running();
 }
