@@ -9,7 +9,7 @@ on the Disney movie Flubber. The functionality will be somewhat
 similar to the bubble popper activity as the goal of the game
 will be to catch flubber using handpose.
 
-The background images are not mine, I got them off of shutterstock
+The background images and glove are not mine, I got them off of shutterstock
 however Philip (the scientist) & Weebo (the robot) were made by me
 
 Playing / win basement:
@@ -18,7 +18,11 @@ https://www.shutterstock.com/image-vector/basement-boiler-washer-stairs-shelf-to
 basement if you lose:
 https://www.shutterstock.com/image-vector/interior-flooded-basement-boiler-washer-stairs-1078364501
 
+baseball glove:
+https://www.freepik.com/free-vector/bundle-baseball-icons_5984920.htm#page=1&query=baseball%20glove&position=0
+
 Things to add:
+- intro screen with instructions 
 - a timer (if time runs out you lose)
 - web storage to keep track of your best time
 - fix the visuals once everything else is working
@@ -41,7 +45,7 @@ let pin = {
   tip: {
     x: undefined,
     y: undefined,
-    size: 25,
+    size: 40,
   },
 };
 
@@ -52,12 +56,16 @@ let state = `loading`;
 let basementClearImg = undefined;
 let basementFloodImg = undefined;
 
+// baseball glove to replace pin
+let gloveImg = undefined;
+
 /*
   Description of preload() goes here
 */
 function preload() {
   basementClearImg = loadImage(`assets/images/basement_clear.jpg`);
   basementFloodImg = loadImage(`assets/images/basement_flood.jpg`);
+  gloveImg = loadImage(`assets/images/baseball_glove.png`);
 }
 
 /*
@@ -97,7 +105,15 @@ function setup() {
   Description of draw() goes here
 */
 function draw() {
-  running();
+  if(state === `loading`){
+    loading();
+  }
+  else if(state === `running`){
+    running();
+  }
+  else if(state === `win`){
+    winEnding();
+  }
 }
 
 function running(){
@@ -112,8 +128,6 @@ function running(){
     let distance = dist(pin.tip.x, pin.tip.y, flubber.x, flubber.y);
     if(distance < flubber.size / 2){
       state = `win`;
-      winEnding(); // move this to draw once you incorporate the states properly
-      // win
     }
     displayPin();
   }
@@ -131,6 +145,7 @@ function running(){
 
 }
 
+
 function updatePin(prediction){
   pin.tip.x = prediction.annotations.indexFinger[3][0];
   pin.tip.y = prediction.annotations.indexFinger[3][1];
@@ -147,11 +162,22 @@ function displayFlubber(){
 function displayPin(){
   push();
   noStroke();
-  fill(255, 0, 0);
-  ellipse(pin.tip.x, pin.tip.y, pin.tip.size);
+  //fill(255, 0, 0);
+  imageMode(CENTER);
+  image(gloveImg, pin.tip.x, pin.tip.y, pin.tip.size, pin.tip.size);
+  //ellipse(pin.tip.x, pin.tip.y, pin.tip.size);
   pop();
 }
 
+function loading() {
+  push();
+  imageMode(CORNER);
+  image(basementClearImg, 0,0);
+  textSize(64);
+  textAlign(CENTER, CENTER);
+  text(`Loading...`, width / 2, height / 2);
+  pop();
+}
 
 function winEnding(){
   push();
