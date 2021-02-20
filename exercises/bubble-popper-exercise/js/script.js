@@ -149,7 +149,7 @@ function bubbleRestart() {
   bubble.x = random(width);
   bubble.y = height;
 
-  bubble.vy += 5;
+  bubble.vy -= 5;
 }
 
 /*
