@@ -63,6 +63,10 @@ let philipSadImg = undefined;
 
 // timer
 let timer = 15;
+let oldTime = undefined;
+let timeSave = {
+  time: undefined
+};
 
 // intro text
 let instructions =
@@ -110,6 +114,12 @@ function setup() {
     vx: 15,
     vy: 15,
   };
+
+  let data = JSON.parse(localStorage.getItem(`flubber-timer-score`));
+  if(data !== null){
+    oldTime = data.time;
+  }
+
 }
 
 
@@ -146,6 +156,9 @@ function running(){
 
     let distance = dist(pin.tip.x, pin.tip.y, flubber.x, flubber.y);
     if(distance < flubber.size / 2){
+      let caughtTime = 15 - timer;
+      timeSave.time = `${caughtTime}`;
+      localStorage.setItem(`flubber-timer-score`, JSON.stringify(timeSave));
       state = `win`;
     }
     displayPin();
@@ -225,11 +238,33 @@ function introScreen(){
 }
 
 function winEnding(){
+  
+  // Different messages for whether your last time playing was faster or slower
+  let betterTime = `
+  You caught flubber in ${timeSave.time} seconds!
+  That was ${oldTime - timeSave.time} seconds faster than the last time!`;
+  let slowerTime = `
+  You caught flubber in ${timeSave.time} seconds!
+  That was ${timeSave.timer - oldTime} seconds slower than the last time!`;
+  let defaultTime = `
+  You caught flubber in ${timeSave.time} seconds!`;
   push();
-  textSize(64);
+  textSize(32);
   textAlign(CENTER, CENTER);
-  text(`You win!`, width / 2, height / 2);
+  if(oldTime !== null){
+    if(oldTime > timeSave.time){
+      text(betterTime, width / 2, height / 2);
+    }
+    else if(oldTime < timeSave.time){
+      text(slowerTime,width/2, height/2);
+    }
+  }
+  else {
+    text(defaultTime,width/2, height/2);
+  }
   pop();
+
+
 }
 
 function loseEnding(){
