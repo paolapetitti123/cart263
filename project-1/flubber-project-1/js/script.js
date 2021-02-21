@@ -23,9 +23,7 @@ https://www.freepik.com/free-vector/bundle-baseball-icons_5984920.htm#page=1&que
 
 Things to add:
 - intro screen with instructions
-- a timer (if time runs out you lose)
 - web storage to keep track of your best time
-- lose screen
 - fix the visuals once everything else is working
 
 **************************************************/
@@ -51,7 +49,7 @@ let pin = {
 };
 
 // State for the game
-let state = `loading`;
+let state = `intro`;
 
 // Background images
 let basementClearImg = undefined;
@@ -60,8 +58,17 @@ let basementFloodImg = undefined;
 // baseball glove to replace pin
 let gloveImg = undefined;
 
+// Philip
+let philipImg = undefined;
+let philipSadImg = undefined;
+
 // timer
 let timer = 15;
+
+// intro text
+let instructions =
+`Please help me catch flubber!
+Use your hand to catch it before it escapes!`;
 
 /*
   Description of preload() goes here
@@ -70,6 +77,8 @@ function preload() {
   basementClearImg = loadImage(`assets/images/basement_clear.jpg`);
   basementFloodImg = loadImage(`assets/images/basement_flood.jpg`);
   gloveImg = loadImage(`assets/images/baseball_glove.png`);
+  philipImg = loadImage(`assets/images/philip.png`);
+  philipSadImg = loadImage(`assets/images/philipSad.png`);
 }
 
 /*
@@ -109,8 +118,8 @@ function setup() {
   Description of draw() goes here
 */
 function draw() {
-  if(state === `loading`){
-    loading();
+  if (state === `intro`){
+    introScreen();
   }
   else if(state === `running`){
     running();
@@ -123,10 +132,13 @@ function draw() {
   }
 }
 
+/*
+  This function allows for the game to start running by starting the game timer,
+  getting handpose to work with the predictions, gets flubber to bounce around and
+  checks to see if you 'catch' flubber.
+*/
 function running(){
-  background(0);
-  imageMode(CORNER);
-  image(basementClearImg, 0,0);
+  defaultBackground();
   gameTimer();
   displayFlubber();
 
@@ -170,22 +182,11 @@ function displayFlubber(){
 function displayPin(){
   push();
   noStroke();
-  //fill(255, 0, 0);
   imageMode(CENTER);
   image(gloveImg, pin.tip.x, pin.tip.y, pin.tip.size, pin.tip.size);
-  //ellipse(pin.tip.x, pin.tip.y, pin.tip.size);
   pop();
 }
 
-function loading() {
-  push();
-  imageMode(CORNER);
-  image(basementClearImg, 0,0);
-  textSize(64);
-  textAlign(CENTER, CENTER);
-  text(`Loading...`, width / 2, height / 2);
-  pop();
-}
 
 function gameTimer(){
   textAlign(CENTER);
@@ -197,6 +198,31 @@ function gameTimer(){
   if(timer == 0){
     state = `lose`;
   }
+}
+
+function defaultBackground(){
+  push();
+  imageMode(CORNER);
+  image(basementClearImg, 0,0);
+  pop();
+
+  push();
+  imageMode(CENTER);
+  image(philipImg,100, height - 175, 125/1.5,500/1.5);
+  pop();
+}
+
+
+function introScreen(){
+  defaultBackground();
+
+  push();
+  textSize(32);
+  fill(0);
+  textAlign(CENTER,CENTER)
+  text(instructions, width/2, height/2);
+  pop();
+
 }
 
 function winEnding(){
@@ -214,5 +240,10 @@ function loseEnding(){
   textSize(64);
   textAlign(CENTER, CENTER);
   text(`Flubber got away!`, width / 2, height / 2);
+  pop();
+
+  push();
+  imageMode(CENTER);
+  image(philipSadImg,100, height - 175, 125/1.5,500/1.5);
   pop();
 }
