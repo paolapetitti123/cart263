@@ -22,8 +22,7 @@ baseball glove:
 https://www.freepik.com/free-vector/bundle-baseball-icons_5984920.htm#page=1&query=baseball%20glove&position=0
 
 Things to add:
-- intro screen with instructions
-- web storage to keep track of your best time
+- web storage to keep track of your time
 - fix the visuals once everything else is working
 
 **************************************************/
