@@ -271,6 +271,7 @@ function winEnding(){
 }
 
 function loseEnding(){
+  localStorage.removeItem(`flubber-timer-score`);
   push();
   imageMode(CORNER);
   image(basementFloodImg, 0,0);
