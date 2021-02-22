@@ -62,7 +62,7 @@ let philipImg = undefined;
 let philipSadImg = undefined;
 
 // timer
-let timer = 15;
+let timer = 10;
 let oldTime = undefined;
 let timeSave = {
   time: undefined
@@ -91,7 +91,6 @@ function preload() {
 */
 function setup() {
   createCanvas(979,487);
-
   // Getting Acess to the users webcam
   video = createCapture(VIDEO);
   video.hide();
@@ -118,6 +117,9 @@ function setup() {
   let data = JSON.parse(localStorage.getItem(`flubber-timer-score`));
   if(data !== null){
     oldTime = data.time;
+  }
+  else {
+    oldTime = 0;
   }
 
 }
@@ -238,20 +240,21 @@ function introScreen(){
 }
 
 function winEnding(){
-  
+  console.log(`The old time is: ${oldTime}`);
   // Different messages for whether your last time playing was faster or slower
   let betterTime = `
   You caught flubber in ${timeSave.time} seconds!
   That was ${oldTime - timeSave.time} seconds faster than the last time!`;
   let slowerTime = `
   You caught flubber in ${timeSave.time} seconds!
-  That was ${timeSave.timer - oldTime} seconds slower than the last time!`;
+  That was ${timeSave.time - oldTime} seconds slower than the last time!`;
   let defaultTime = `
-  You caught flubber in ${timeSave.time} seconds!`;
+  You caught flubber in ${timeSave.time} seconds!
+  Try again to beat your current time!`;
   push();
   textSize(32);
   textAlign(CENTER, CENTER);
-  if(oldTime !== null){
+  if(oldTime !== 0){
     if(oldTime > timeSave.time){
       text(betterTime, width / 2, height / 2);
     }
@@ -271,13 +274,16 @@ function loseEnding(){
   push();
   imageMode(CORNER);
   image(basementFloodImg, 0,0);
-  textSize(64);
-  textAlign(CENTER, CENTER);
-  text(`Flubber got away!`, width / 2, height / 2);
   pop();
 
   push();
   imageMode(CENTER);
-  image(philipSadImg,100, height - 175, 125/1.5,500/1.5);
+  image(philipSadImg,300, height - 315, 125/2,500/2);
+  pop();
+
+  push();
+  textSize(64);
+  textAlign(CENTER, CENTER);
+  text(`Flubber got away!`, width / 2, height / 2);
   pop();
 }
