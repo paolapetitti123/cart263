@@ -74,7 +74,7 @@ let instructions =
 Use your hand to catch it before it escapes!`;
 
 /*
-  Description of preload() goes here
+  All the pictures used in the game get initialized here.
 */
 function preload() {
   basementClearImg = loadImage(`assets/images/basement_clear.jpg`);
@@ -87,7 +87,8 @@ function preload() {
 /*
   Initializing all the important things needed to make the program
   work here such as the video, the handpose model, the predictions and
-  the Flubber object.
+  the Flubber object, as well as webstorage to save your time for the next time
+  you play.
 */
 function setup() {
   createCanvas(979,487);
@@ -126,7 +127,8 @@ function setup() {
 
 
 /*
-  Description of draw() goes here
+  The draw function allows for the different states to take place throughout
+  the program.
 */
 function draw() {
   if (state === `intro`){
@@ -153,6 +155,10 @@ function running(){
   gameTimer();
   displayFlubber();
 
+  /*
+    If handpose detects there is a hand, this calculates the distance between
+    the tip of a finger and flubber as well as displaying the baseball glove pin
+  */
   if(predictions.length > 0){
     updatePin(predictions[0]);
 
@@ -163,9 +169,17 @@ function running(){
       localStorage.setItem(`flubber-timer-score`, JSON.stringify(timeSave));
       state = `win`;
     }
-    displayPin();
+    displayGlove();
   }
 
+  flubberMovement();
+}
+
+/*
+  This function allows for the flubber ball to move and bounce off the borders
+  of the canvas
+*/
+function flubberMovement(){
   flubber.x += flubber.vx;
   flubber.y += flubber.vy;
 
@@ -176,15 +190,22 @@ function running(){
   if(flubber.y > height || flubber.y < 0){
     flubber.vy = -flubber.vy;
   }
-
 }
 
 
+/*
+  This function takes the prediction from handpose and grabs the indexFinger
+  point to assign it to the correct pin object, and it does this throughout
+  the entire program.
+*/
 function updatePin(prediction){
   pin.tip.x = prediction.annotations.indexFinger[3][0];
   pin.tip.y = prediction.annotations.indexFinger[3][1];
 }
 
+/*
+  This function just displays a green circle to represent flubber
+*/
 function displayFlubber(){
   push();
   fill(0,255,26);
@@ -193,7 +214,11 @@ function displayFlubber(){
   pop();
 }
 
-function displayPin(){
+/*
+  This function displays the baseball glove that you can move with the tip of
+  your index finger to catch flubber.
+*/
+function displayGlove(){
   push();
   noStroke();
   imageMode(CENTER);
@@ -201,7 +226,11 @@ function displayPin(){
   pop();
 }
 
-
+/*
+  This function adds a timer to the game that runs for 15 seconds while showing
+  the countdown in the top left hand corner of the canvas, once the timer hits 0
+  it ends the game and changes the state to lose.
+*/
 function gameTimer(){
   textAlign(CENTER);
   textSize(25);
@@ -214,6 +243,10 @@ function gameTimer(){
   }
 }
 
+/*
+  Since many of my states & functions needed the same background with Philip in
+  the same location, I made this function to reduce rewriting it multiple times
+*/
 function defaultBackground(){
   push();
   imageMode(CORNER);
@@ -226,7 +259,10 @@ function defaultBackground(){
   pop();
 }
 
-
+/*
+  This functions call the defaultBackground function and shows the instructions
+  for the game while handpose/ml5js is loading.
+*/
 function introScreen(){
   defaultBackground();
 
@@ -239,8 +275,14 @@ function introScreen(){
 
 }
 
+/*
+  This function first creates the 3 different messages you can get if you win,
+  the default one just showing the time it took to catch flubber, now if you
+  play a second time & catch flubber, the function checks if your last time was
+  better or worse (through webstorage) and tells you the difference
+*/
 function winEnding(){
-  console.log(`The old time is: ${oldTime}`);
+
   // Different messages for whether your last time playing was faster or slower
   let betterTime = `
   You caught flubber in ${timeSave.time} seconds!
@@ -270,6 +312,12 @@ function winEnding(){
 
 }
 
+/*
+  The first thing the function does if you lose is delete the flubber-time-score
+  webstorage item, since you did not catch flubber, it wouldn't make sense to
+  save the time it took for you to lose flubber. Then it just moves philip to the
+  stairs to avoid being in water and tells you that flubber got away.
+*/
 function loseEnding(){
   localStorage.removeItem(`flubber-timer-score`);
   push();
