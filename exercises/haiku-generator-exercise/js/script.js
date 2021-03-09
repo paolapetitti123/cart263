@@ -58,43 +58,46 @@ let button = document.getElementById(`background-button`);
 let textVisible = document.getElementById("haiku");
 textVisible.style.display = "none";
 
+/*
+  This event listener checks what the title of the haiku is,
+  then according to the title it changes the background color, text color
+  and adds tiled gif that loops in the background while also displaying
+  the text
+*/
 button.addEventListener(`click`,function(event) {
+  textVisible.style.display = "block";
   if(haikuTitle === `Quasi Una Fantasia`){
     document.body.background = "assets/images/cherryblossom.gif";
     document.body.style[`background-color`] = `#b3fffb`;
-    textVisible.style.display = "block";
   }
   else if(haikuTitle === `Sword of Victory`){
     document.body.background = "assets/images/sword.gif";
     document.body.style[`background-color`] = `#000000`;
     document.body.style[`color`] = `#ffffff`;
-    textVisible.style.display = "block";
   }
   else if(haikuTitle === `Danger`){
     document.body.background = "assets/images/danger.gif";
     document.body.style[`background-color`] = `#eb8c34`;
     document.body.style[`color`] = `#ffffff`;
-    textVisible.style.display = "block";
   }
   else if(haikuTitle === `Checkmate`){
     document.body.background = "assets/images/chess.gif";
     document.body.style[`background-color`] = `#000000`;
     document.body.style[`color`] = `#ffffff`;
-    textVisible.style.display = "block";
   }
   else if(haikuTitle === `Catching Fire`){
     document.body.background = "assets/images/fire.gif";
     document.body.style[`background-color`] = `#000000`;
     document.body.style[`color`] = `#ffffff`;
-    textVisible.style.display = "block";
   }
 });
 
+// If a line is clicked, the fadeout function is called
 function lineClicked(event){
-
   fadeOut(event.target, 1);
 }
 
+// lowers the opacity of the line you clicked and makes a new line fade in
 function fadeOut(element, opacity) {
   opacity -= 0.01;
   element.style[`opacity`] = opacity;
@@ -109,6 +112,7 @@ function fadeOut(element, opacity) {
   }
 }
 
+// Gets the new line to fade in by increasing the opacity
 function fadeIn(element, opacity) {
   opacity += 0.01;
   element.style[`opacity`] = opacity;
@@ -122,6 +126,7 @@ function fadeIn(element, opacity) {
   }
 }
 
+// Changes the line of text you clicked on
 function setNewLine(element) {
   if(element === line1P || element === line3P) {
     element.innerText = random(fiveSyllableLines);
@@ -131,6 +136,7 @@ function setNewLine(element) {
   }
 }
 
+// returns a random number of the array that got sent over.
 function random(array) {
   let index = Math.floor(Math.random() * array.length);
   return array[index];
