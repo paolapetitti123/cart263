@@ -8,11 +8,12 @@ Paola Petitti
 // Get the <h1> element by its id and store it in a variable
 let $mainHeading = $(`#main-heading`);
 // Set its color property using the .css() method
-$mainHeading.css(`color`, `#339966`);
-$mainHeading.css(`font-size`, `5rem`);
-$mainHeading.css(`font-family`, `Helvetica, sans-serif`);
-$mainHeading.css(`background-color`, `#000000`);
-
+$(`#main-heading`).css({
+  "color": `#339966`,
+  "font-size": `5rem`,
+  "font-family": `Helvetica, sans-serif`,
+  "background-color": `#000000`
+});
 
 /// This code causes jQuery to search for every element matching .header once
 // let $headers = $(`.header`);
