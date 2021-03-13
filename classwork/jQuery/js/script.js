@@ -20,3 +20,11 @@ $(`#main-heading`).css({
 // $headers.css(`color`,`red`);
 // $headers.css(`background-color`,`black`);
 // $headers.css(`font-size`,`3rem`);
+
+
+// Get the current text in the span
+let spanText = $(`#example-span`).text();
+// Reverse it
+let reverseSpanText = spanText.split(``).reverse().join(``);
+// Set the span's text to the reversed version
+$(`#example-span`).text(reverseSpanText);
