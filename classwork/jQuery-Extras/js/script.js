@@ -1,11 +1,10 @@
 /**
-Title of Project
-Author Name
-
-This is a template. You must fill in the title,
-author, and this description to match your project!
+jQuery Extras
+Paola Petitti
 */
 
 "use strict";
 
-// Code goes here
+setInterval(function(){
+  $(`.header`).toggleClass(`highlight`);
+}, 500);
