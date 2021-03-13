@@ -28,3 +28,8 @@ let spanText = $(`#example-span`).text();
 let reverseSpanText = spanText.split(``).reverse().join(``);
 // Set the span's text to the reversed version
 $(`#example-span`).text(reverseSpanText);
+
+// Get the HTML content of the span
+let spanHTML = $(`#example-span`).html();
+// Set the HTML content of the span as the original content wrapped in a <strong> tag
+$(`#example-span`).html(`<strong>${spanHTML}</strong>`);
