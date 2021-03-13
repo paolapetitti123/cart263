@@ -5,6 +5,8 @@ Paola Petitti
 
 "use strict";
 
-setInterval(function(){
-  $(`.header`).toggleClass(`highlight`);
-}, 500);
+$(`#button`).on(`click`, function(event) {
+  $(`.header`).fadeOut(2500,function(){
+    $(`.header`).fadeIn(2500);
+  });
+});
