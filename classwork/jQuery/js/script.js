@@ -33,3 +33,9 @@ $(`#example-span`).text(reverseSpanText);
 let spanHTML = $(`#example-span`).html();
 // Set the HTML content of the span as the original content wrapped in a <strong> tag
 $(`#example-span`).html(`<strong>${spanHTML}</strong>`);
+
+$(`#main-heading`).attr(`contenteditable`, `true`);
+
+if ($(`#thicc-link`).attr(`href`) === `https://thi.cc`) {
+  $(`#thicc-link`).text(`thicc, thicc link`);
+}
