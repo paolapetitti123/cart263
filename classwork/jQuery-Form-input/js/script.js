@@ -5,7 +5,8 @@ Paola Petitti
 
 "use strict";
 
-$(`#example-button`).on(`click`, function(event) {
-  let input = $(`#example-text-input`).val();
-  alert(input);
+$(`#range-slider`).on(`change`, function(event) {
+  // Use .val() to access the current value of the slider
+  let value = $(this).val();
+  alert(value);
 });
