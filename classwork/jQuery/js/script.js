@@ -39,3 +39,14 @@ $(`#main-heading`).attr(`contenteditable`, `true`);
 if ($(`#thicc-link`).attr(`href`) === `https://thi.cc`) {
   $(`#thicc-link`).text(`thicc, thicc link`);
 }
+
+
+// Create a <p> element
+let $newP = $(`<p></p>`);
+// Set the text inside the new <p> element so it has something to say!
+$newP.text(`Hot off the presses!`);
+// Add it to the second section (selected by id)
+$(`#second-section`).append($newP);
+
+// removes the heading
+$(`#main-heading`).remove();
