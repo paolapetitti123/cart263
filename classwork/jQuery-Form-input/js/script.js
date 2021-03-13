@@ -1,11 +1,11 @@
 /**
-Title of Project
-Author Name
-
-This is a template. You must fill in the title,
-author, and this description to match your project!
+jQuery Form Input
+Paola Petitti
 */
 
 "use strict";
 
-// Code goes here
+$(`#example-button`).on(`click`, function(event) {
+  let input = $(`#example-text-input`).val();
+  alert(input);
+});
