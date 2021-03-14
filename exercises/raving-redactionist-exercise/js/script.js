@@ -7,6 +7,7 @@ Following along the activity video
 "use strict";
 let bgMusic = undefined;
 let state = `start`;
+document.body.style.overflow = 'hidden';
 
 function preload(){
   bgMusic = loadSound(`assets/sounds/HOMERUNOrchestra.mp3`);
@@ -24,12 +25,6 @@ function draw(){
   else if(state === `game`){
     game();
   }
-  else if(state === `win`){
-    win();
-  }
-  else if(state === `lose`){
-    lose();
-  }
 }
 
 function intro(){
@@ -44,16 +39,22 @@ function intro(){
 function keyPressed(){
   if(keyCode === ENTER){
     state = `game`;
+    bgMusic.play();
   }
 }
 
 function game(){
-  remove();
+  window.addEventListener('scroll',noScroll);
+  // remove();
   $(`#secret-document`).show();
   $(`.top-secret`).on(`click`,redact);
 
 }
 
+function noScroll(){
+  window.scrollTo(0,0);
+
+}
 
 function redact(event){
   $(this).removeClass(`redacted`);
