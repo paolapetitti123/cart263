@@ -5,15 +5,7 @@ Paola Petitti
 
 "use strict";
 
-$(`#button`).on(`click`, function(event) {
-  $(`.header`).animate({
-    "opacity": 0.5,
-    "height": "200px"
-  },{
-    duration: 2000,
-    complete: function() {
-      $(this).text("ANIMATED");
-    },
-    easing: `linear`
-  });
+$(`.header`).each(function(event) {
+  let reverseText = $(this).text().split(``).reverse().join(``);
+  $(this).text(reverseText);
 });
