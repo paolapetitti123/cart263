@@ -6,7 +6,14 @@ Paola Petitti
 "use strict";
 
 $(`#button`).on(`click`, function(event) {
-  $(`.header`).fadeOut(2500,function(){
-    $(`.header`).fadeIn(2500);
+  $(`.header`).animate({
+    "opacity": 0.5,
+    "height": "200px"
+  },{
+    duration: 2000,
+    complete: function() {
+      $(this).text("ANIMATED");
+    },
+    easing: `linear`
   });
 });
