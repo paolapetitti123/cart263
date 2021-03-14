@@ -44,8 +44,7 @@ function keyPressed(){
 }
 
 function game(){
-  window.addEventListener('scroll',noScroll);
-  // remove();
+  noCanvas();
   $(`#secret-document`).show();
   $(`.top-secret`).on(`click`,redact);
 
