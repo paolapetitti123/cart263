@@ -8,3 +8,15 @@ p,h1 {
   color: white;
   text-align: center;
 }
+
+#title {
+
+}
+
+div {
+  color:white;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-top: 250px;
+  font-size: 1.5rem;
+}
