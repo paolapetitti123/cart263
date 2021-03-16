@@ -6,6 +6,9 @@ Paola Petitti
 This is the link to the typewriter library I found:
 https://github.com/mrvautin/typewrite
 
+Link to the audio for the intro:
+https://www.youtube.com/watch?v=eXubmzAgA10&ab_channel=KQENTERTAINMENT
+
 This is a prototype for my final project. This prototype will contain a start screen
 where it's actually a html page with jQuery that provides a backstory for the game,
 once you get through the backstory you'll be able to play the game. For this prototype
@@ -17,6 +20,12 @@ todo: - get text to start when user presses play for audio
 in terms of visuals for the intro:
 - make it look like a terminal
 **************************************************/
+let bgImg = undefined;
+
+
+function preload(){
+  bgImg = loadImage(`assets/images/pirateship-01.png`);
+}
 
 // setup()
 //
@@ -124,10 +133,21 @@ function setup() {
   setTimeout(function () {
     $(`#gameButtonContainer`).show();
   }, 98000);
+
+  $(`#gameButton`).on(`click`,function(){
+    $(`#story`).hide();
+    $(`#gameButtonContainer`).hide();
+    createCanvas(1280,720);
+    imageMode(CORNER);
+    bgImg.resize(1280,720);
+    image(bgImg, 0,0);
+  });
 }
 
 
 // draw()
 //
 // Description of draw() goes here.
-function draw() {}
+function draw() {
+
+}
