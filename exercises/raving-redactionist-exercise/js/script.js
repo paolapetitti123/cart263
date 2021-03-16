@@ -1,8 +1,9 @@
 /**
-Raving Redactionist Activity
+Raving Redactionist Exercise
 Paola Petitti
 
-Following along the activity video
+The idea of this exercise is to reveal the hidden text and steal the Declaration
+of Independence
 */
 "use strict";
 let bgMusic = undefined;
