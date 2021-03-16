@@ -15,85 +15,60 @@ p,h1 {
 
 #musicPlayer, #story {
   color:white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif; font-weight:400;
   text-align: center;
-  padding-top: 175px;
+  padding-top: 200px;
   font-size: 1.5rem;
 }
 
 #skip {
   color:white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif; font-weight:400;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 50px;
   font-size: 1.5rem;
 }
 
 #gameButtonContainer {
   color:white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif; font-weight:400;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 150px;
   font-size: 1.5rem;
 }
 
 /*
-  used this website to help design the button
-  https://css3buttongenerator.com/
+  The CSS for the buttons was taken from here:
+  https://codepen.io/ozer/pen/KwvKoR?editors=1100
 */
-#playerButton {
-  background: #d93434;
-  background-image: -webkit-linear-gradient(top, #d93434, #b82b2b);
-  background-image: -moz-linear-gradient(top, #d93434, #b82b2b);
-  background-image: -ms-linear-gradient(top, #d93434, #b82b2b);
-  background-image: -o-linear-gradient(top, #d93434, #b82b2b);
-  background-image: linear-gradient(to bottom, #d93434, #b82b2b);
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Courier New;
-  color: #ffffff;
-  font-size: 27px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-}
-#playerButton:hover {
-  background: #fc3c3c;
-  background-image: -webkit-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: -moz-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: -ms-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: -o-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: linear-gradient(to bottom, #fc3c3c, #d93434);
-  text-decoration: none;
+
+#playerButton, #gameButton, #skipButton,
+input[type="submit"]{
+	cursor: pointer;
+  border-radius: 0px;
+    text-decoration: none;
+    padding: 18px 24px;
+    font-size: 14px;
+    line-height: 40px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif; font-weight:400;
+    letter-spacing: 3px;
+    -webkit-transition: all .4s ease-in-out;
+       -moz-transition: all .4s ease-in-out;
+        -ms-transition: all .4s ease-in-out;
+         -o-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+            border:solid 2px #fff;
+    background: transparent;
+    color: #fff !important;
 }
 
-#gameButton {
-
-  background: #d93434;
-  background-image: -webkit-linear-gradient(top, #d93434, #b82b2b);
-  background-image: -moz-linear-gradient(top, #d93434, #b82b2b);
-  background-image: -ms-linear-gradient(top, #d93434, #b82b2b);
-  background-image: -o-linear-gradient(top, #d93434, #b82b2b);
-  background-image: linear-gradient(to bottom, #d93434, #b82b2b);
-  -webkit-border-radius: 19;
-  -moz-border-radius: 19;
-  border-radius: 19px;
-  font-family: Courier New;
-  color: #ffffff;
-  font-size: 20px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
+#playerButton:hover, #gameButton:hover, #skipButton:hover {
+  border:solid 2px #fff;
+      background: #fff;
+      color: #1f1f1f !important;
 }
 
-#gameButton:hover {
-  background: #fc3c3c;
-  background-image: -webkit-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: -moz-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: -ms-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: -o-linear-gradient(top, #fc3c3c, #d93434);
-  background-image: linear-gradient(to bottom, #fc3c3c, #d93434);
-  text-decoration: none;
-}
 
 canvas {
   padding-top: 10px;

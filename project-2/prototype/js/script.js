@@ -84,7 +84,7 @@ function setup() {
         { delay: 1400 },
         { type: "<br>" },
         { type: `We're at the starting point of this long journey` },
-        { speed: 105 },
+        { speed: 185 },
         { select: { from: 0, to: 201 } },
         { speed: 20 },
         { remove: { num: 201, type: "whole" } },
@@ -95,8 +95,8 @@ function setup() {
         { type: "<br>" },
         { delay: 400 },
         { type: `The vibrations of the sand may swallow us` },
-        { delay: 200 },
-        { speed: 115 },
+        { delay: 185 },
+        { speed: 185 },
         { select: { from: 0, to: 125 } },
         { speed: 20 },
         { remove: { num: 125, type: "whole" } },
@@ -115,7 +115,7 @@ function setup() {
         { type: "<br>" },
         { type: `So let me ask you` },
         { delay: 1000 },
-        { speed: 105 },
+        { speed: 155 },
         { select: { from: 0, to: 57 } },
         { speed: 20 },
         { remove: { num: 57, type: "whole" } },
@@ -132,10 +132,10 @@ function setup() {
       ],
     });
     setTimeout(function () {
-      $(`#gameButtonContainer`).show();
+      $(`#gameButtonContainer`).fadeIn();
     }, 98000);
     setTimeout(function () {
-      $(`#skip`).show();
+      $(`#skip`).fadeIn();
     }, 11000);
     $(`#skip`).on(`click`,function(){
       audio.pause();
@@ -171,5 +171,5 @@ function gameInstructions(){
   textAlign(CENTER);
   textFont(`monospace`);
   fill(255);
-  text(`Press Enter to Play`,width / 2, height / 2);
+  text(`TESTING`,width / 2, height / 2);
 }
