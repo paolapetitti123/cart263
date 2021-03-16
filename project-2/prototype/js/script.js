@@ -14,23 +14,24 @@ where it's actually a html page with jQuery that provides a backstory for the ga
 once you get through the backstory you'll be able to play the game. For this prototype
 there won't be many objects to find, I'm merely going to get the functionality working.
 
-todo: - get text to start when user presses play for audio
-      - hide the music player once it's clicked
-
+todo:
 in terms of visuals for the intro:
 - make it look like a terminal
 **************************************************/
 let bgImg = undefined;
+let bgMusic = undefined;
 
 
 function preload(){
   bgImg = loadImage(`assets/images/pirateship-01.png`);
+  bgMusic = loadSound(`assets/sounds/Im_The_One.mp3`);
 }
 
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
+  createCanvas(0,0);
   $(`#gameButtonContainer`).hide();
   $(`#skip`).hide();
   $("#playerButton").on(`click`, function (event) {
@@ -136,17 +137,21 @@ function setup() {
     setTimeout(function () {
       $(`#skip`).show();
     }, 11000);
-  });
-
-
-  $(`#gameButton`).on(`click`,function(){
-    $(`#story`).hide();
-    $(`#gameButtonContainer`).hide();
-    $(`#skip`).hide();
-    createCanvas(1280,720);
-    imageMode(CORNER);
-    bgImg.resize(1280,720);
-    image(bgImg, 0,0);
+    $(`#skip`).on(`click`,function(){
+      audio.pause();
+      $(`#story`).hide();
+      $(`#gameButtonContainer`).hide();
+      $(`#skip`).hide();
+      resizeCanvas(1280,720);
+      bgMusic.play();
+    });
+    $(`#gameButton`).on(`click`,function(){
+      $(`#story`).hide();
+      $(`#gameButtonContainer`).hide();
+      $(`#skip`).hide();
+      resizeCanvas(1280,720);
+      bgMusic.play();
+    });
   });
 }
 
@@ -155,5 +160,16 @@ function setup() {
 //
 // Description of draw() goes here.
 function draw() {
+  imageMode(CORNER);
+  bgImg.resize(1280,720);
+  image(bgImg, 0,0);
+  gameInstructions();
+}
 
+function gameInstructions(){
+  textSize(50);
+  textAlign(CENTER);
+  textFont(`monospace`);
+  fill(255);
+  text(`Press Enter to Play`,width / 2, height / 2);
 }
