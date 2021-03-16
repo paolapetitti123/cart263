@@ -18,7 +18,6 @@ in terms of visuals for the intro:
 - make it look like a terminal
 **************************************************/
 
-
 // setup()
 //
 // Description of setup() goes here.
@@ -122,11 +121,11 @@ function setup() {
       ],
     });
   });
-// make button to proceed into game appear here
-setTimeout(function(){
-  $(`#gameButtonContainer`).show();
-},98000);
+  setTimeout(function () {
+    $(`#gameButtonContainer`).show();
+  }, 98000);
 }
+
 
 // draw()
 //
