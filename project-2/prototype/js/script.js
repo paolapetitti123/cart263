@@ -1,5 +1,4 @@
 "use strict";
-// import Typewriter from 'typewriter-effect/dist/core';
 /**************************************************
 Hidden Object Game Prototype (Project 2)
 Paola Petitti
@@ -8,51 +7,106 @@ This is a prototype for my final project. This prototype will contain a start sc
 where it's actually a html page with jQuery that provides a backstory for the game,
 once you get through the backstory you'll be able to play the game. For this prototype
 there won't be many objects to find, I'm merely going to get the functionality working.
+
+in terms of visuals for the intro:
+- make it look like a terminal 
 **************************************************/
-let counter = 0;
-let titleTxt = `TREASURE`;
-let speed = 500;
-let i = 0;
-let j = 0;
-
-const textDisplay = document.getElementById('title');
-const phrases = [
-  'People want it',
-  'People dream about it',
-  'It can be different to every individual',
-  'It can complete us',
-  'Or it can destroy us',
-  'And it can change the world',
-  `People call it 'treasure'`,
-  `The sound of wind blowing from the horizon`,
-  `The warmth of the sun hitting the ocean waves`,
-  `The vibration of sand beating like the hearts of youth`,
-  `We're at the starting point of this long journey`,
-  `The freezing winds may make us shiver`,
-  `The heat of the sun may make us thirsty`,
-  `The vibrations of the sand may swallow us`,
-  `But we'll never stop`,
-  `Gold, eternal life, honor, love, fame`,
-  `It doesn't matter what you dream for`,
-  `So let me ask you`,
-  `What is your treasure?`,
-  `Will you join us?`];
-
 
 $(document).ready(function(){
   $(`#story`).typewrite({
+    cursor: '_',
     actions: [
       {delay: 11500},
       {type: 'People want it'},
       {type: '<br>'},
       {delay: 2000},
       {type: 'People dream about it'},
-      {speed: 25},
+      {speed: 20},
       {select: {from: 0, to: 38}},
-      {remove: {num: 38, type: 'whole'}}
+      {remove: {num: 38, type: 'whole'}},
+      {speed: 20},
+      {type: 'It can be different to every individual'},
+      {speed: 10},
+      {select: {from: 0, to: 39}},
+      {remove: {num: 39, type: 'whole'}},
+      {speed: 20},
+      {type: 'It can complete us'},
+      {delay: 1700},
+      {type: '<br>'},
+      {type: 'Or it can destroy us'},
+      {delay: 1700},
+      {type: '<br>'},
+      {type: 'And it can change the world'},
+      {speed: 35},
+      {select: {from: 0, to: 73}},
+      {remove: {num: 73, type: 'whole'}},
+      {speed: 15},
+      {type: 'People call it'},
+      {delay: 1700},
+      {remove: {num: 14, type: 'stepped'}},
+      {type: 'TREASURE'},
+      {delay: 8500},
+      {remove: {num: 8, type: 'stepped'}},
+      {speed: 20},
+      {type: `The sound of wind blowing from the horizon`},
+      {type: '<br>'},
+      {delay: 1500},
+      {type: `The warmth of the sun hitting the ocean waves`},
+      {type: '<br>'},
+      {delay: 1500},
+      {type: `The vibration of sand beating like the hearts of youth`},
+      {delay: 1400},
+      {type: '<br>'},
+      {type: `We're at the starting point of this long journey`},
+      {speed: 105},
+      {select: {from: 0, to: 201}},
+      {speed: 20},
+      {remove: {num: 201, type: 'whole'}},
+      {type: `The freezing winds may make us shiver`},
+      {type: '<br>'},
+      {delay: 400},
+      {type: `The heat of the sun may make us thirsty`},
+      {type: '<br>'},
+      {delay: 400},
+      {type: `The vibrations of the sand may swallow us`},
+      {delay: 200},
+      {speed: 115},
+      {select: {from: 0, to: 125}},
+      {speed: 20},
+      {remove: {num: 125, type: 'whole'}},
+      {type: `But we'll never stop`},
+      {type: '<br>'},
+      {delay: 400},
+      {type: `Gold, eternal life, `},
+      {delay: 700},
+      {type: `honor, love, fame`},
+      {delay: 400},
+      {speed: 105},
+      {select: {from: 0, to: 61}},
+      {speed: 20},
+      {remove: {num: 61, type: 'whole'}},
+      {type: `It doesn't matter what you dream for`},
+      {type: '<br>'},
+      {type: `So let me ask you`},
+      {delay: 1000},
+      {speed: 105},
+      {select: {from: 0, to: 57}},
+      {speed: 20},
+      {remove: {num: 57, type: 'whole'}},
+      {type: `What `},
+      {delay: 500},
+      {type: `is `},
+      {delay: 500},
+      {type: `your `},
+      {delay: 500},
+      {type: `treasure?`},
+      {delay: 9000},
+      {remove: {num: 22, type: 'stepped'}},
+      {type: `Will You Join Us?`}
     ]
   });
 });
+
 
 
 // setup()
