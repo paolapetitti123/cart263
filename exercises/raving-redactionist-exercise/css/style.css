@@ -20,6 +20,7 @@ p {
   width: 50vw;
   margin: auto;
   font-size: 1.1rem;
+  text-align: center;
 }
 
 h2 {
@@ -28,4 +29,15 @@ h2 {
   margin: auto;
   font-size: 1.5rem;
   font-weight: bold;
+  text-align: center;
+}
+
+h3 {
+  font-family: fantasy;
+  width: 50vw;
+  margin: auto;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 250px;
+  text-align: center;
 }
