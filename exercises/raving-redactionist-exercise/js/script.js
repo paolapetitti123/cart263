@@ -29,6 +29,9 @@ function draw(){
   }
 }
 
+/*
+  Starting off with the document hidden showing the users the instructions
+*/
 function intro(){
   $(`#secret-document`).hide();
   $(`#stealButton`).hide();
@@ -40,6 +43,10 @@ function intro(){
     PRESS ENTER TO START`, width/2, height/2);
 }
 
+/*
+  Once the enter key is pressed it'll bring the users into the game and music
+  will start
+*/
 function keyPressed(){
   if(keyCode === ENTER){
     state = `game`;
@@ -47,6 +54,11 @@ function keyPressed(){
   }
 }
 
+/*
+  The canvas gets removed entirely, the document gets shown, you can click on the
+  redacted words/phrases to uncover them, and the steal button brings you to the
+  end of the game
+*/
 function game(){
   noCanvas();
   $(`#secret-document`).show();
@@ -55,14 +67,21 @@ function game(){
     $(`#secret-document`).hide();
     $(`#win`).fadeIn();
     $(this).fadeOut();
+    bgMusic.stop();
   });
 }
 
+// This stops the user from scrolling
 function noScroll(){
   window.scrollTo(0,0);
 
 }
 
+/*
+  This function gets rid of the redaction and reveals the redacted word/phrase
+  while also keeping track of a counter to know when the user finishes to then
+  get the steal button to fade in to allow the user to end the game.
+*/
 function redact(event){
   $(this).removeClass(`redacted`);
   $(this).addClass(`revealed`);
