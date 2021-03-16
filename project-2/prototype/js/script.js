@@ -32,6 +32,7 @@ function preload(){
 // Description of setup() goes here.
 function setup() {
   $(`#gameButtonContainer`).hide();
+  $(`#skip`).hide();
   $("#playerButton").on(`click`, function (event) {
     let audio = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
     audio.play();
@@ -129,14 +130,19 @@ function setup() {
         { type: `Will You Join Us?` },
       ],
     });
+    setTimeout(function () {
+      $(`#gameButtonContainer`).show();
+    }, 98000);
+    setTimeout(function () {
+      $(`#skip`).show();
+    }, 11000);
   });
-  setTimeout(function () {
-    $(`#gameButtonContainer`).show();
-  }, 98000);
+
 
   $(`#gameButton`).on(`click`,function(){
     $(`#story`).hide();
     $(`#gameButtonContainer`).hide();
+    $(`#skip`).hide();
     createCanvas(1280,720);
     imageMode(CORNER);
     bgImg.resize(1280,720);
