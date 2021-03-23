@@ -1,6 +1,29 @@
-/*********************************************
+#prison {
+  /* Dimensions of the prison */
+  width: 30vw;
+  height: 30vw;
+  /* The prison walls */
+  border: 5px dashed black;
+  /* CSS grid for alignment of elements in the prison */
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
 
-Here is a description of any special CSS used.
-By default that's nothing.
+#prisoner {
+  font-size: 2rem;
+}
 
-**********************************************/
+#escape-tunnel {
+  /* Tunnel dimensions */
+  width: 5vw;
+  height: 5vw;
+  /* Tunnel outline */
+  border: 2px dashed black;
+  /* Make it a circle */
+  border-radius: 100%;
+  /* Use CSS grid to align the label in it */
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}

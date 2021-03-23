@@ -4,5 +4,10 @@ Paola Petitti
 */
 
 "use strict";
+$(`#prisoner`).draggable();
 
-// Code goes here
+$(`#escape-tunnel`).droppable({
+  drop: function(event, ui) {
+    ui.draggable.remove();
+  }
+});
