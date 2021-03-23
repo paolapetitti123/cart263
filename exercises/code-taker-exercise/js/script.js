@@ -53,6 +53,9 @@ $(`#answer`).droppable({
     counter++;
     // Check if they got it right
     if($(this).text() === `Theremin`){
+      $(`#answer`).effect({
+        effect: `bounce`
+      });
       $(`#solved-dialog`).dialog(`open`);
     }
     else if($(this).text() != `Theremin` && counter == letterTotal){
