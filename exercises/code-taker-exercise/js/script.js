@@ -4,7 +4,8 @@ Paola Petitti
 
 Following along activity video
 */
-
+let counter = 0;
+let letterTotal = 8;
 "use strict";
 
 $(`#solved-dialog`).dialog({
@@ -14,6 +15,16 @@ $(`#solved-dialog`).dialog({
       $(this).dialog(`close`);
     }
   }
+});
+
+$(`#wrong-dialog`).dialog({
+  autoOpen: false,
+  buttons: {
+    "It be like that": function(){
+      $(this).dialog(`close`);
+    }
+  },
+  modal: true
 });
 
 $(`#instruct-dialog`).dialog({
@@ -39,10 +50,16 @@ $(`#answer`).droppable({
     $(this).append(character);
     ui.draggable.draggable(`disable`);
     ui.draggable.removeClass(`found`);
-
+    counter++;
     // Check if they got it right
     if($(this).text() === `Theremin`){
       $(`#solved-dialog`).dialog(`open`);
+    }
+    else if($(this).text() != `Theremin` && counter == letterTotal){
+      $(`#answer`).effect({
+        effect: `shake`
+      });
+      $(`#wrong-dialog`).dialog(`open`);
     }
   }
 });
