@@ -14,8 +14,23 @@
 
     <!-- CSS stylesheet(s) -->
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css"
+    />
 
     <!-- Library script(s) go here -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+      integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+      crossorigin="anonymous"
+    ></script>
   </head>
 
   <body>
@@ -45,6 +60,12 @@
 
     <!-- The secret answer area-->
     <section id="answer"></section>
+
+    <div id="solved-dialog" title="Da Vinci?!">
+      <p>
+        You are soooooo smart!
+      </p>
+    </div>
 
     <!-- My script(s) -->
     <script src="js/script.js"></script>
