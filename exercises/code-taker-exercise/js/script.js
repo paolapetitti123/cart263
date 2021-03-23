@@ -16,6 +16,16 @@ $(`#solved-dialog`).dialog({
   }
 });
 
+$(`#instruct-dialog`).dialog({
+  autoOpen: true,
+  buttons: {
+    "Got it!": function(){
+      $(this).dialog(`close`);
+    }
+  },
+  modal: true
+});
+
 $(`.secret`).one(`mouseover`, function(event){
   $(this).addClass(`found`,500);
   $(this).draggable({
