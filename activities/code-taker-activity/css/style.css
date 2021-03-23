@@ -1,0 +1,7 @@
+#answer {
+  height: 30vw;
+  border: 5px dashed black;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
