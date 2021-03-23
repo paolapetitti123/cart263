@@ -1,9 +1,29 @@
 /**
-jQuery UI Effects
+jQuery UI Widgets
 Paola Petitti
 */
 
 "use strict";
+
+// Hide the escape tunnel initially
+$(`#escape-tunnel`).hide();
+
+$(`#introduction-dialog`).dialog({
+  modal: true,
+  buttons: {
+    "Imagination": function() {
+      // NEW!
+      // Remove the restriction of the prisoner being contained by the prison!
+      $(`#prisoner`).draggable(`option`,`containment`,`none`);
+      $(this).dialog(`close`);
+    },
+    "Escape tunnel": function() {
+      // If they want an escape tunnel, give it to them...
+      $(`#escape-tunnel`).show();
+      $(this).dialog(`close`);
+    }
+  }
+});
 $(`#prisoner`).effect({
   effect: `shake`,
   duration: 2000,
