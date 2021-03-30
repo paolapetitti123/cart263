@@ -13,15 +13,47 @@ class Play extends Phaser.Scene {
     }
     let gameDescription = `Look a Sprite and Image!`;
     this.add.text(150,100,gameDescription,style);
-    this.wall = this.physics.add.image(400,300,`wall`);
-    this.wall.setTint(0xdd3333);
 
-    this.avatar = this.physics.add.sprite(300,300,`avatar`);
+
+    this.walls = this.physics.add.group({
+      key: `wall`,
+      immovable: true,
+      quantity: 24
+    });
+
+    this.walls.children.each(function(wall){
+      let x = Math.random() * this.sys.canvas.width;
+      let y = Math.random() * this.sys.canvas.height;
+      wall.setPosition(x,y);
+      wall.setTint(0xdd3333);
+    },this);
+
+
+    this.collectables = this.physics.add.group({
+      key: `wall`,
+      quantity: 100
+    });
+
+    this.collectables.children.each(function(collectable){
+      let x = Math.random() * this.sys.canvas.width;
+      let y = Math.random() * this.sys.canvas.height;
+      collectable.setPosition(x,y);
+      collectable.setTint(0x33dd33);
+    },this);
+
+    this.avatar = this.physics.add.sprite(400,400,`avatar`);
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
     this.avatar.setCollideWorldBounds(true);
 
+    this.physics.add.collider(this.avatar, this.walls);
+    this.physics.add.overlap(this.avatar, this.collectables, this.collectItem, null,this);
+
     this.cursors = this.input.keyboard.createCursorKeys();
+  }
+
+  collectItem(avatar, collectable){
+    collectable.destroy();
   }
 
   createAnimations(){
