@@ -13,12 +13,15 @@ class Play extends Phaser.Scene {
     }
     let gameDescription = `Look a Sprite and Image!`;
     this.add.text(150,100,gameDescription,style);
-    this.wall = this.add.image(400,300,`wall`);
+    this.wall = this.physics.add.image(400,300,`wall`);
     this.wall.setTint(0xdd3333);
 
-    this.avatar = this.add.sprite(300,300,`avatar`);
+    this.avatar = this.physics.add.sprite(300,300,`avatar`);
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
+    this.avatar.setCollideWorldBounds(true);
+
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   createAnimations(){
@@ -43,7 +46,28 @@ class Play extends Phaser.Scene {
   }
 
   update(){
+    this.avatar.setVelocity(0);
 
+    if(this.cursors.left.isDown){
+      this.avatar.setVelocityX(-300);
+    }
+    else if(this.cursors.right.isDown){
+      this.avatar.setVelocityX(300);
+    }
+
+    if(this.cursors.up.isDown){
+      this.avatar.setVelocityY(-300);
+    }
+    else if(this.cursors.down.isDown){
+      this.avatar.setVelocityY(300);
+    }
+
+    if(this.avatar.body.velocity.x !== 0 || this.avatar.body.velocity.y !== 0){
+      this.avatar.play(`avatar-moving`, true);
+    }
+    else {
+      this.avatar.play(`avatar-idle`, true);
+    }
   }
 
 }
