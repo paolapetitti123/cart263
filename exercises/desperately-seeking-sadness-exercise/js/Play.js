@@ -6,6 +6,9 @@ class Play extends Phaser.Scene {
   }
 
   create(){
+    // clown horn
+    let clownSound = this.sound.add(`clownHorn`);
+
     // Creating the avatar
     this.avatar = this.physics.add.sprite(400,300,`avatar`);
     this.avatar.setCollideWorldBounds(true);
@@ -16,7 +19,7 @@ class Play extends Phaser.Scene {
 
     this.happiness = this.physics.add.group({
       key: `thumbsUp`,
-      quantity: 100,
+      quantity: 50,
       bounceX: 1,
       bounceY: 1,
       collideWorldBounds: true,
@@ -24,12 +27,27 @@ class Play extends Phaser.Scene {
       dragY: 50
     });
 
+    this.clown = this.physics.add.group({
+      key: `clown`,
+      quantity: 10,
+      bounceX: 0.5,
+      bounceY: 0.5,
+      collideWorldBounds: true,
+      dragX: 50,
+      dragY: 50
+    });
+
     Phaser.Actions.RandomRectangle(this.happiness.getChildren(), this.physics.world.bounds);
+    Phaser.Actions.RandomRectangle(this.clown.getChildren(), this.physics.world.bounds);
 
     this.physics.add.overlap(this.avatar, this.sadness, this.getSad, null, this);
+    this.physics.add.overlap(this.avatar, this.clown, this.getClown, null, this);
     this.physics.add.collider(this.avatar, this.happiness);
     this.physics.add.collider(this.happiness, this.happiness);
+    this.physics.add.collider(this.happiness, this.clown);
     this.physics.add.collider(this.sadness, this.happiness);
+    this.physics.add.collider(this.sadness, this.clown);
+
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -38,6 +56,11 @@ class Play extends Phaser.Scene {
     let x = Math.random() * this.sys.canvas.width;
     let y = Math.random() * this.sys.canvas.height;
     this.sadness.setPosition(x,y);
+  }
+  getClown(avatar, clown){
+    let clownSound = this.sound.add(`clownHorn`);
+    clown.destroy();
+    clownSound.play();
   }
 
   update(){
