@@ -16,6 +16,7 @@ class Play extends Phaser.Scene {
     let x = Math.random() * this.sys.canvas.width;
     let y = Math.random() * this.sys.canvas.height;
     this.sadness = this.physics.add.sprite(x,y,`thumbsDown`);
+    this.sadness.setCollideWorldBounds(true);
 
     this.happiness = this.physics.add.group({
       key: `thumbsUp`,
@@ -26,6 +27,9 @@ class Play extends Phaser.Scene {
       dragX: 50,
       dragY: 50
     });
+
+    this.happiness.setVelocityX(-1,10);
+    this.happiness.setVelocityY(-1,10);
 
     this.clown = this.physics.add.group({
       key: `clown`,
@@ -51,12 +55,16 @@ class Play extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
-
+  // This function allows the user to collect the clown emojis and they are
+  // immediately moved to a new location.
   getSad(avatar, sadness){
     let x = Math.random() * this.sys.canvas.width;
     let y = Math.random() * this.sys.canvas.height;
     this.sadness.setPosition(x,y);
   }
+
+  // This function allows the user to collect the clown emojis and they are
+  // immediately destroyed.
   getClown(avatar, clown){
     let clownSound = this.sound.add(`clownHorn`);
     clown.destroy();
@@ -74,10 +82,12 @@ class Play extends Phaser.Scene {
       this.avatar.setAngularVelocity(0);
     }
     if(this.cursors.up.isDown){
-      this.physics.velocityFromRotation(this.avatar.rotation, 200, this.avatar.body.acceleration);
+      this.physics.velocityFromRotation(this.avatar.rotation, 600, this.avatar.body.acceleration);
     }
     else{
       this.avatar.setAcceleration(0);
     }
+
+
   }
 }
