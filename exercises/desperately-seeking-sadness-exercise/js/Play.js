@@ -6,8 +6,6 @@ class Play extends Phaser.Scene {
   }
 
   create(){
-    // clown horn
-    let clownSound = this.sound.add(`clownHorn`);
 
     // Creating the avatar
     this.avatar = this.physics.add.sprite(400,300,`avatar`);
@@ -58,9 +56,11 @@ class Play extends Phaser.Scene {
   // This function allows the user to collect the clown emojis and they are
   // immediately moved to a new location.
   getSad(avatar, sadness){
+    let popSound = this.sound.add(`pop`);
     let x = Math.random() * this.sys.canvas.width;
     let y = Math.random() * this.sys.canvas.height;
     this.sadness.setPosition(x,y);
+    popSound.play();
   }
 
   // This function allows the user to collect the clown emojis and they are
