@@ -18,6 +18,18 @@ todo:
 in terms of visuals for the intro:
 - make it look like a terminal
 **************************************************/
+let config = {
+  type: Phaser.AUTO,
+  width: 1280,
+  height: 720,
+  physics: {
+    default: `arcade`
+  },
+  scene: [Boot,Play]
+};
+
+let game = new Phaser.Game(config);
+
 let bgImg = undefined;
 let bgMusic = undefined;
 
