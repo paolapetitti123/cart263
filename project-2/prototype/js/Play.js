@@ -9,15 +9,15 @@ class Play extends Phaser.Scene {
     this.background = this.add.image(640,360,`background`);
 
 
-    // this.avatar = this.add.sprite(300,300,`avatar`);
-    // this.createAnimations();
-    // this.avatar.play(`avatar-idle`);
+    this.avatar = this.add.sprite(400,500,`avatar`).setScale(2.5,2.5);
+    this.createAnimations();
+    this.avatar.play(`avatar-idle`);
   }
 
   createAnimations(){
     this.anims.create({
       key: `avatar-moving-up`,
-      frame: this.anims.generateFrameNumbers(`avatar`, {
+      frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 0,
         end: 8
       }),
@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
     });
     this.anims.create({
       key: `avatar-moving-left `,
-      frame: this.anims.generateFrameNumbers(`avatar`, {
+      frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 9,
         end: 17
       }),
@@ -35,7 +35,7 @@ class Play extends Phaser.Scene {
     });
     this.anims.create({
       key: `avatar-moving-down`,
-      frame: this.anims.generateFrameNumbers(`avatar`, {
+      frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 18,
         end: 26
       }),
@@ -43,7 +43,7 @@ class Play extends Phaser.Scene {
       repeat: -1
     });this.anims.create({
       key: `avatar-moving-right`,
-      frame: this.anims.generateFrameNumbers(`avatar`, {
+      frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 27,
         end: 35
       }),
@@ -52,7 +52,7 @@ class Play extends Phaser.Scene {
     });
     this.anims.create({
       key: `avatar-idle`,
-      frame: this.anims.generateFrameNumbers(`avatar`, {
+      frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 18,
         end: 18
       }),
