@@ -27,24 +27,14 @@ let config = {
   },
   scene: [Boot,Play]
 };
-// let game = new Phaser.Game(config);
 
 
 
-// let bgImg = undefined;
-// let bgMusic = undefined;
-//
-//
-// function preload(){
-//   bgImg = loadImage(`assets/images/pirateship-01.png`);
-//   bgMusic = loadSound(`assets/sounds/Im_The_One.mp3`);
-// }
 
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
-  // createCanvas(0,0);
   $(`#gameButtonContainer`).hide();
   $(`#skip`).hide();
   $("#playerButton").on(`click`, function (event) {
@@ -155,6 +145,8 @@ function setup() {
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
+      $(`#gameButton`).hide();
+      $(`#gameButtonContainer`).remove();
       let game = new Phaser.Game(config);
     });
     $(`#gameButton`).on(`click`,function(){

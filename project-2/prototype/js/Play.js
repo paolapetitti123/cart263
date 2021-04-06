@@ -6,12 +6,12 @@ class Play extends Phaser.Scene {
   }
 
   create(){
-    this.background = this.add.image(0,0,`background`);
+    this.background = this.add.image(640,360,`background`);
 
 
-    this.avatar = this.add.sprite(300,300,`avatar`);
-    this.createAnimations();
-    this.avatar.play(`avatar-idle`);
+    // this.avatar = this.add.sprite(300,300,`avatar`);
+    // this.createAnimations();
+    // this.avatar.play(`avatar-idle`);
   }
 
   createAnimations(){
