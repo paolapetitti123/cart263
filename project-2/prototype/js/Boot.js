@@ -26,10 +26,10 @@ class Boot extends Phaser.Scene {
     let style = {
       fontFamily: 'sans-serif',
       fontSize: `40px`,
-      color: '#00000'
+      color: '#ffffff'
     }
     let loadString = `Loading...`;
-    this.add.text(100,100,loadString,style);
+    this.add.text(640,360,loadString,style);
   }
 
 
