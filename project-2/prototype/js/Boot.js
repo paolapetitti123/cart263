@@ -7,12 +7,15 @@ class Boot extends Phaser.Scene {
 
   preload(){
     this.load.image(`background`, `assets/images/pirateship-01.png`);
+
+
     this.load.audio(`bgMusic`, [`assets/sounds/Im_The_One.mp3`]);
     this.load.spritesheet(`avatar`, `assets/images/avatar.png`, {
-      rameWidth: 32,
+      frameWidth: 32,
       frameHeight: 32,
       endFrame: 35
     });
+
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
     });

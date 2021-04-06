@@ -27,23 +27,24 @@ let config = {
   },
   scene: [Boot,Play]
 };
-
-let game = new Phaser.Game(config);
-
-let bgImg = undefined;
-let bgMusic = undefined;
+// let game = new Phaser.Game(config);
 
 
-function preload(){
-  bgImg = loadImage(`assets/images/pirateship-01.png`);
-  bgMusic = loadSound(`assets/sounds/Im_The_One.mp3`);
-}
+
+// let bgImg = undefined;
+// let bgMusic = undefined;
+//
+//
+// function preload(){
+//   bgImg = loadImage(`assets/images/pirateship-01.png`);
+//   bgMusic = loadSound(`assets/sounds/Im_The_One.mp3`);
+// }
 
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
-  createCanvas(0,0);
+  // createCanvas(0,0);
   $(`#gameButtonContainer`).hide();
   $(`#skip`).hide();
   $("#playerButton").on(`click`, function (event) {
@@ -154,34 +155,13 @@ function setup() {
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
-      resizeCanvas(1280,720);
-      bgMusic.play();
+      let game = new Phaser.Game(config);
     });
     $(`#gameButton`).on(`click`,function(){
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
-      resizeCanvas(1280,720);
-      bgMusic.play();
+      let game = new Phaser.Game(config);
     });
   });
-}
-
-
-// draw()
-//
-// Description of draw() goes here.
-function draw() {
-  imageMode(CORNER);
-  bgImg.resize(1280,720);
-  image(bgImg, 0,0);
-  gameInstructions();
-}
-
-function gameInstructions(){
-  textSize(50);
-  textAlign(CENTER);
-  textFont(`monospace`);
-  fill(255);
-  text(`TESTING`,width / 2, height / 2);
 }
