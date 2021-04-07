@@ -6,18 +6,31 @@ class Play extends Phaser.Scene {
   }
 
   create(){
-    this.background = this.add.image(640,360,`background`);
 
+    this.background = this.add.image(640,360,`background`);
 
     this.avatar = this.physics.add.sprite(400,500,`avatar`).setScale(2.5,2.5);
     this.avatar.setCollideWorldBounds(true);
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
 
+    // this.water = this.add.tileSprite(0,0,192,193,`water`);
+    // this.water.animations.add(`water-moving`);
+    // this.water.animations.play(`water-moving`,20,true);
+
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   createAnimations(){
+    this.anims.create({
+      key: `water-moving`,
+      frames: this.anims.generateFrameNumbers(`water`, {
+        start: 0,
+        end: 1
+      }),
+      frameRate: 2,
+      repeat: -1
+    });
     this.anims.create({
       key: `avatar-moving-up`,
       frames: this.anims.generateFrameNumbers(`avatar`, {

@@ -6,7 +6,7 @@ class Boot extends Phaser.Scene {
   }
 
   preload(){
-    this.load.image(`background`, `assets/images/pirateship-01.png`);
+    this.load.image(`background`, `assets/images/boat-01.png`);
 
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
@@ -18,7 +18,11 @@ class Boot extends Phaser.Scene {
       frameHeight: 60,
       endFrame: 35
     });
-
+    this.load.spritesheet(`water`, `assets/images/water.png`, {
+      frameWidth: 192,
+      frameHeight: 192,
+      endFrame: 1
+    });
 
   }
 
