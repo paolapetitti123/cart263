@@ -49,9 +49,15 @@ class Play extends Phaser.Scene {
 
     // map collisions
     this.physics.add.collider(this.avatar, binLayer);
+    this.physics.add.collider(this.avatar, chestLayer);
+    this.physics.add.collider(this.avatar, decoLayer);
+    this.physics.add.collider(this.avatar, tableLayer);
+    this.physics.add.collider(this.avatar, swordLayer);
+    this.physics.add.collider(this.avatar, barrel2Layer);
+    this.physics.add.collider(this.avatar, barrelLayer);
+    this.physics.add.collider(this.avatar, polesLayer);
 
-    // chestLayer.setCollisionByProperty({collide:true});
-    // binLayer.setCollisionByProperty({ collides: true });
+    chestLayer.setCollisionByExclusion(-1,true);
     binLayer.setCollisionByExclusion(-1,true);
     decoLayer.setCollisionByExclusion(-1,true);
     tableLayer.setCollisionByExclusion(-1,true);
