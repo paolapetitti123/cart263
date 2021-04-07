@@ -34,9 +34,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -52,9 +52,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -70,9 +70,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -88,9 +88,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -106,9 +106,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -124,9 +124,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -171,9 +171,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }, 
                 {
                  "name":"keyFound",
@@ -206,9 +206,9 @@
          "opacity":1,
          "properties":[
                 {
-                 "name":"collide",
+                 "name":"collides",
                  "type":"bool",
-                 "value":true
+                 "value":false
                 }, 
                 {
                  "name":"hasKey",
