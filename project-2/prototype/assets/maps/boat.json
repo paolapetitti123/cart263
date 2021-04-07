@@ -32,6 +32,12 @@
          "id":15,
          "name":"Poles",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collide",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -44,6 +50,12 @@
          "id":5,
          "name":"barrel",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collide",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -56,6 +68,12 @@
          "id":10,
          "name":"barrel2",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collide",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -153,6 +171,11 @@
          "opacity":1,
          "properties":[
                 {
+                 "name":"collide",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
                  "name":"keyFound",
                  "type":"string",
                  "value":"You Found a Key!"
@@ -182,6 +205,11 @@
          "name":"Chest",
          "opacity":1,
          "properties":[
+                {
+                 "name":"collide",
+                 "type":"bool",
+                 "value":true
+                }, 
                 {
                  "name":"hasKey",
                  "type":"bool",
@@ -229,7 +257,7 @@
         {
          "columns":1,
          "firstgid":733,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Downloads\/Pirate Bomb\/Sprites\/7-Objects\/12-Other Objects\/Barrel.png",
+         "image":"..\/images\/Barrel.png",
          "imageheight":44,
          "imagewidth":42,
          "margin":0,
@@ -252,7 +280,7 @@
         {
          "columns":1,
          "firstgid":734,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Downloads\/PP4_Prancheta 1.png",
+         "image":"..\/images\/PP4_Prancheta 1.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
@@ -275,7 +303,7 @@
         {
          "columns":14,
          "firstgid":735,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Downloads\/Destructible Objects Sprite Sheet.png",
+         "image":"..\/images\/Destructible Objects Sprite Sheet.png",
          "imageheight":768,
          "imagewidth":448,
          "margin":0,
@@ -301,7 +329,7 @@
         {
          "columns":5,
          "firstgid":1072,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Desktop\/furniture-24x24-5x4-sheet.png",
+         "image":"..\/images\/furniture-24x24-5x4-sheet.png",
          "imageheight":192,
          "imagewidth":240,
          "margin":0,
@@ -314,7 +342,7 @@
         {
          "columns":5,
          "firstgid":1092,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Desktop\/furniture-2-24x24-5x5-sheet.png",
+         "image":"..\/images\/furniture-2-24x24-5x5-sheet.png",
          "imageheight":240,
          "imagewidth":240,
          "margin":0,
@@ -327,7 +355,7 @@
         {
          "columns":5,
          "firstgid":1117,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Desktop\/shrines-altars-24x24-5x4-sheet.png",
+         "image":"..\/images\/shrines-altars-24x24-5x4-sheet.png",
          "imageheight":192,
          "imagewidth":240,
          "margin":0,
@@ -340,13 +368,13 @@
         {
          "columns":15,
          "firstgid":1137,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Downloads\/chests (1).PNG",
+         "image":"..\/images\/chests (1).PNG",
          "imageheight":645,
          "imagewidth":492,
          "margin":0,
          "name":"chests (1)",
          "spacing":0,
-         "tilecount":690,
+         "tilecount":300,
          "tileheight":32,
          "tilewidth":32
         }],

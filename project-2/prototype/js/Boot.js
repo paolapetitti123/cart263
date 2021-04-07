@@ -7,7 +7,16 @@ class Boot extends Phaser.Scene {
 
   preload(){
     this.load.image(`background`, `assets/images/boat-01.png`);
+    this.load.image(`furniture1`, `assets/images/furniture-2-24x24-5x5-sheet.png`);
+    this.load.image(`furniture2`, `assets/images/furniture-24x24-5x4-sheet.png`);
+    this.load.image(`furniture3`, `assets/images/shrines-altars-24x24-5x4-sheet.png`);
+    this.load.image(`tileSheet`, `assets/images/tilesheet.png`);
+    this.load.image(`chests`, `assets/images/chests (1).png`);
+    this.load.image(`destructible`, `assets/images/Destructible Objects Sprite Sheet.png`);
+    this.load.image(`barrel`, `assets/images/Barrel.png`);
+    this.load.image(`water`, `assets/images/water.png`);
 
+    this.load.tilemapTiledJSON(`map`, `assets/maps/boat.json`);
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
     });
@@ -18,11 +27,7 @@ class Boot extends Phaser.Scene {
       frameHeight: 60,
       endFrame: 35
     });
-    this.load.spritesheet(`water`, `assets/images/water.png`, {
-      frameWidth: 192,
-      frameHeight: 192,
-      endFrame: 1
-    });
+    
 
   }
 
