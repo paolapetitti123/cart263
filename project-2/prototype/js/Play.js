@@ -40,8 +40,8 @@ class Play extends Phaser.Scene {
     // layers
     let waterLayer = mappy.createLayer(`Water`, [water]).setDepth(-1);
     let boatLayer = mappy.createLayer(`Boat`, [boat]).setDepth(-1);
-
     let destructibleLayer = mappy.createLayer(`Debris`, [destructible]).setDepth(-1);
+    let borderLayer = mappy.createLayer(`Border`, [destructible]).setDepth(-1);
     let barrelLayer = mappy.createLayer(`barrel`, [barrel]).setDepth(-1);
     let swordLayer = mappy.createLayer(`Swords`, [furniture2]).setDepth(-1);
     let tableLayer = mappy.createLayer(`Tables`, [furniture2]).setDepth(-1);
@@ -58,6 +58,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, tableLayer);
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
+    this.physics.add.collider(this.avatar, borderLayer);
 
     chestLayer.setCollisionByExclusion(-1,true);
     binLayer.setCollisionByExclusion(-1,true);
@@ -65,6 +66,7 @@ class Play extends Phaser.Scene {
     tableLayer.setCollisionByExclusion(-1,true);
     swordLayer.setCollisionByExclusion(-1,true);
     barrelLayer.setCollisionByExclusion(-1,true);
+    borderLayer.setCollisionByExclusion(-1,true);
 
 
   }
