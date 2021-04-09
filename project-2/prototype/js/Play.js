@@ -1,4 +1,5 @@
 class Play extends Phaser.Scene {
+
   constructor(){
     super({
       key: `play`
@@ -12,7 +13,7 @@ class Play extends Phaser.Scene {
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
     this.createTileMap();
-
+    this.createObjects();
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -71,6 +72,38 @@ class Play extends Phaser.Scene {
 
   }
 
+  createObjects(){
+    let mappy = this.add.tilemap(`map`);
+    let keyLayer = mappy.getObjectLayer(`Key`,[`objects`]);
+    let key = this.physics.add.staticGroup();
+
+    keyLayer.forEach(object => {
+      let obj = key.create(object.x, object.y, `key`);
+      obj.setScale(object.width/16,object.height/16);
+      obj.setOrigin(0);
+      obj.body.width = object.width;
+      obj.body.height = object.height;
+    }, i);
+
+
+
+
+    this.physics.add.overlap(this.avatar, this.key, this.collectKey, null, this);
+
+    // text to say if you have a key or not
+    let keyScore = 0;
+    let text = this.add.text(570,70, `Keys: ${keyScore}`,{
+      fontSize: `20px`,
+      fill: `#ffffff`
+    });
+    text.setScrollFactor(0);
+  }
+
+  collectKey(avatar, key){
+    key.destroy(key.x,key.y);
+    keyScore++;text.setText(`Keys: ${keyScore}`);
+    re
+  }
 
   createAnimations(){
     this.anims.create({

@@ -15,6 +15,7 @@ class Boot extends Phaser.Scene {
     this.load.image(`destructible`, `assets/images/Destructible Objects Sprite Sheet.png`);
     this.load.image(`barrel`, `assets/images/Barrel.png`);
     this.load.image(`water`, `assets/images/water.png`);
+    this.load.image(`key`, `assets/images/PP4_Prancheta 1.png`);
 
     this.load.tilemapTiledJSON(`map`, `assets/maps/boat.json`);
     this.load.on(`complete`, () => {
@@ -27,7 +28,7 @@ class Boot extends Phaser.Scene {
       frameHeight: 60,
       endFrame: 35
     });
-    
+
 
   }
 
