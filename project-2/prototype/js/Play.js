@@ -21,6 +21,8 @@ class Play extends Phaser.Scene {
   Been following this youtube tutorial but tweaking it every so often to the new
   code since some of it is a little outdated:
   https://www.youtube.com/watch?v=uznkhVMbVr8&ab_channel=jestarray
+
+  Try to figure out why the pole layer is showing the debris
 */
   createTileMap(){
     let mappy = this.add.tilemap(`map`);
@@ -38,9 +40,8 @@ class Play extends Phaser.Scene {
     // layers
     let waterLayer = mappy.createLayer(`Water`, [water]).setDepth(-1);
     let boatLayer = mappy.createLayer(`Boat`, [boat]).setDepth(-1);
-    let polesLayer = mappy.createLayer(`Poles`, [furniture1]).setDepth(1);
-    let destructibleLayer = mappy.createLayer(`Debris`, [destructible]).setDepth(-1);
 
+    let destructibleLayer = mappy.createLayer(`Debris`, [destructible]).setDepth(-1);
     let barrelLayer = mappy.createLayer(`barrel`, [barrel]).setDepth(-1);
     let swordLayer = mappy.createLayer(`Swords`, [furniture2]).setDepth(-1);
     let tableLayer = mappy.createLayer(`Tables`, [furniture2]).setDepth(-1);
@@ -57,7 +58,6 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, tableLayer);
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
-    // this.physics.add.collider(this.avatar, polesLayer);
 
     chestLayer.setCollisionByExclusion(-1,true);
     binLayer.setCollisionByExclusion(-1,true);
@@ -65,7 +65,6 @@ class Play extends Phaser.Scene {
     tableLayer.setCollisionByExclusion(-1,true);
     swordLayer.setCollisionByExclusion(-1,true);
     barrelLayer.setCollisionByExclusion(-1,true);
-    polesLayer.setCollisionByExclusion(-1,true);
 
 
   }
