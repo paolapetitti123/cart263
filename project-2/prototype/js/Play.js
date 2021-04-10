@@ -35,7 +35,6 @@ class Play extends Phaser.Scene {
     let tilesheet = mappy.addTilesetImage(`tilesheet`, `tilesheet`);
     let barrel = mappy.addTilesetImage(`Barrel`, `barrel`);
     let water = mappy.addTilesetImage(`water`, `water`);
-    let key = mappy.getObjectLayer(`PP4_Prancheta`, [`key`]);
 
 
     // layers
@@ -51,7 +50,9 @@ class Play extends Phaser.Scene {
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
     // let keyLayer = mappy.createLayer(`Key`, [key]);
-    let keyLayer = mappy.createFromObjects(`Key`, 20, {key: `key`});
+    // let keyLayer = mappy.createFromObjects(`Key`, 734, {key: `key`});
+
+    let keyLayer = mappy.createFromObjects(`Key`, {id: 1});
     console.log(`first log ${keyLayer}`);
 
     keyLayer.forEach((key,i) => {
