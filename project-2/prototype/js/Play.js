@@ -13,7 +13,6 @@ class Play extends Phaser.Scene {
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
     this.createTileMap();
-    this.createObjects();
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -36,6 +35,7 @@ class Play extends Phaser.Scene {
     let tilesheet = mappy.addTilesetImage(`tilesheet`, `tilesheet`);
     let barrel = mappy.addTilesetImage(`Barrel`, `barrel`);
     let water = mappy.addTilesetImage(`water`, `water`);
+    let key = mappy.getObjectLayer(`PP4_Prancheta`, [`key`]);
 
 
     // layers
@@ -50,7 +50,14 @@ class Play extends Phaser.Scene {
     let binLayer = mappy.createLayer(`Bin`, [furniture2]).setDepth(-1);
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
+    // let keyLayer = mappy.createLayer(`Key`, [key]);
+    let keyLayer = mappy.createFromObjects(`Key`, 26, {key: `Key`});
+    console.log(`first log ${keyLayer}`);
 
+    keyLayer.forEach((key,i) => {
+      this.physics.world.enable(key);
+    });
+    console.log(`Second log ${keyLayer}`);
 
     // map collisions
     this.physics.add.collider(this.avatar, binLayer);
@@ -60,6 +67,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
     this.physics.add.collider(this.avatar, borderLayer);
+    this.physics.add.overlap(this.avatar, this.keyLayer, this.collectKey, null, this);
 
     chestLayer.setCollisionByExclusion(-1,true);
     binLayer.setCollisionByExclusion(-1,true);
@@ -72,37 +80,10 @@ class Play extends Phaser.Scene {
 
   }
 
-  createObjects(){
-    let mappy = this.add.tilemap(`map`);
-    let keyLayer = mappy.getObjectLayer(`Key`,[`objects`]);
-    let key = this.physics.add.staticGroup();
-
-    keyLayer.forEach(object => {
-      let obj = key.create(object.x, object.y, `key`);
-      obj.setScale(object.width/16,object.height/16);
-      obj.setOrigin(0);
-      obj.body.width = object.width;
-      obj.body.height = object.height;
-    }, i);
-
-
-
-
-    this.physics.add.overlap(this.avatar, this.key, this.collectKey, null, this);
-
-    // text to say if you have a key or not
-    let keyScore = 0;
-    let text = this.add.text(570,70, `Keys: ${keyScore}`,{
-      fontSize: `20px`,
-      fill: `#ffffff`
-    });
-    text.setScrollFactor(0);
-  }
-
   collectKey(avatar, key){
     key.destroy(key.x,key.y);
-    keyScore++;text.setText(`Keys: ${keyScore}`);
-    re
+    keyScore++;
+    text.setText(`Keys: ${keyScore}`);
   }
 
   createAnimations(){
