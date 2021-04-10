@@ -51,7 +51,7 @@ class Play extends Phaser.Scene {
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
     // let keyLayer = mappy.createLayer(`Key`, [key]);
-    let keyLayer = mappy.createFromObjects(`Key`, 26, {key: `Key`});
+    let keyLayer = mappy.createFromObjects(`Key`, 20, {key: `key`});
     console.log(`first log ${keyLayer}`);
 
     keyLayer.forEach((key,i) => {
@@ -67,7 +67,9 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
     this.physics.add.collider(this.avatar, borderLayer);
-    this.physics.add.overlap(this.avatar, this.keyLayer, this.collectKey, null, this);
+
+    let keyScore = 0;
+    this.physics.add.collider(this.avatar, keyLayer, this.collectKey, null, this);
 
     chestLayer.setCollisionByExclusion(-1,true);
     binLayer.setCollisionByExclusion(-1,true);
@@ -81,9 +83,12 @@ class Play extends Phaser.Scene {
   }
 
   collectKey(avatar, key){
+    let keyScore = 0;
+
     key.destroy(key.x,key.y);
     keyScore++;
-    text.setText(`Keys: ${keyScore}`);
+    console.log(`Keys: ${keyScore}`);
+
   }
 
   createAnimations(){
