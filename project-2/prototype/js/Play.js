@@ -7,7 +7,6 @@ class Play extends Phaser.Scene {
   }
 
   create(){
-
     this.avatar = this.physics.add.sprite(400,500,`avatar`);
     this.avatar.setCollideWorldBounds(true);
     this.createAnimations();
