@@ -49,10 +49,9 @@ class Play extends Phaser.Scene {
     let binLayer = mappy.createLayer(`Bin`, [furniture2]).setDepth(-1);
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
-    // let keyLayer = mappy.createLayer(`Key`, [key]);
-    // let keyLayer = mappy.createFromObjects(`Key`, 734, {key: `key`});
 
-    let keyLayer = mappy.createFromObjects(`Key`, {id: 1});
+
+    let keyLayer = mappy.createFromObjects(`Key`, {gid: 734, key: `key`});
     console.log(`first log ${keyLayer}`);
 
     keyLayer.forEach((key,i) => {
