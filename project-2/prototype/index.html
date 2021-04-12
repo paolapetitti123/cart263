@@ -72,8 +72,19 @@
       </p>
     </div>
     <div id="mini-game-box" title="Find The Key!">
-      <canvas id="gameCanvas">
-      </canvas>
+      <!-- <canvas id="gameCanvas">
+      </canvas> -->
+
+
     </div>
+    <script>
+    // let sketch = function(p) {
+    //   p.setup = function(){
+    //     p.createCanvas(800,500);
+    //     p.background(255);
+    //   }
+    // };
+    new p5(sketch, window.document.getElementById('mini-game-box'));
+    </script>
   </body>
 </html>

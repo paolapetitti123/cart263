@@ -31,6 +31,26 @@ let config = {
   scene: [Boot,Play]
 };
 
+// for the bin mini game
+let sketch = function(p) {
+  p.setup = function(){
+    p.createCanvas(800,400);
+    p.background(255);
+  }
+};
+
+
+
+
+// let gameArea = {
+//   canvas : document.getElementById(`gameCanvas`),
+//   start : function(){
+//     this.canvas.width = 850;
+//     this.canvas.height = 270;
+//     this.context = this.canvas.getContext("2d");
+//     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+//   }
+// };
 
 // setup()
 //
@@ -52,6 +72,8 @@ function setup() {
     modal: true,
     height: 500,
     width: 850,
+    resizable: false,
+    draggable: false,
     autoOpen: false
   });
   // hiding the buttons by default
