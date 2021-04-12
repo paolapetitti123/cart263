@@ -13,7 +13,7 @@ class Play extends Phaser.Scene {
   method so that the map I made in Tiled gets displayed. And then I make the modal
   box pop up that has the game instructions.
 
-  In other words all the setup stuff is in this method. 
+  In other words all the setup stuff is in this method.
 */
   create(){
     this.avatar = this.physics.add.sprite(400,500,`avatar`);
@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
     });
 
     // map collisions with regular tiles
-    this.physics.add.collider(this.avatar, binLayer);
+    this.physics.add.collider(this.avatar, binLayer, this.openMiniGame, null, this);
     this.physics.add.collider(this.avatar, chestLayer);
     this.physics.add.collider(this.avatar, decoLayer);
     this.physics.add.collider(this.avatar, tableLayer);
@@ -101,6 +101,10 @@ class Play extends Phaser.Scene {
     keyScore++;
     console.log(`Keys: ${keyScore}`);
 
+  }
+
+  openMiniGame(avatar, binLayer){
+    $(`#intro-dialog`).dialog(`open`);
   }
 
 /*
