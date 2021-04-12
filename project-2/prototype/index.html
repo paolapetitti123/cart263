@@ -7,16 +7,24 @@
     <title>Project 2 Prototype</title>
 
     <!-- CSS stylesheet(s) -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link
       rel="stylesheet"
       type="text/css"
       href="https://code.jquery.com/ui/1.12.1/themes/ui-darkness/jquery-ui.css"
     />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
 
     <!-- Library script(s) -->
     <script src="js/libraries/p5.min.js"></script>
     <script src="js/libraries/p5.sound.min.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+    ></script>
+
+    <!-- JqueryUI -->
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -27,11 +35,7 @@
       integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
       crossorigin="anonymous"
     ></script>
-
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
-    ></script>
+    <!-- TypeWriter library -->
     <script
       type="text/javascript"
       src="https://cdn.rawgit.com/mrvautin/typewrite/master/dist/typewrite.min.js"
@@ -40,7 +44,8 @@
     <!-- Phaser -->
     <script src="//cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser.min.js"></script>
 
-    <!-- My script(s) -->
+
+
   </head>
 
   <body>
@@ -48,11 +53,7 @@
     <script src="js/Play.js"></script>
     <script src="js/main.js"></script>
     <!-- HTML would go here if needed. -->
-    <!-- <div id="intro-dialog" title="Welcome aboard!">
-      <p>
-        testing
-      </p>
-    </div> -->
+
     <div id="skip">
       <input id="skipButton" type="button" value="Skip Intro" />
     </div>
@@ -63,6 +64,11 @@
 
     <div id="gameButtonContainer">
       <input id="gameButton" type="button" value="Join" />
+    </div>
+    <div id="intro-dialog" title="Welcome aboard!">
+      <p>
+        testing
+      </p>
     </div>
   </body>
 </html>

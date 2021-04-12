@@ -31,10 +31,20 @@ let config = {
 
 
 
+
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
+  $(`#intro-dialog`).hide();
+  $(`#intro-dialog`).dialog({
+      autoOpen: true,
+      buttons: {
+        "GOT IT!": function(){
+          $(this).dialog(`close`);
+        }
+      }
+    });
   $(`#gameButtonContainer`).hide();
   $(`#skip`).hide();
   $("#playerButton").on(`click`, function (event) {
@@ -147,13 +157,15 @@ function setup() {
       $(`#skip`).hide();
       $(`#gameButton`).hide();
       $(`#gameButtonContainer`).remove();
-      let game = new Phaser.Game(config);
+      $(`#intro-dialog`).dialog(`open`);
+      let game = new Phaser.Game(config); // starts the game
     });
     $(`#gameButton`).on(`click`,function(){
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
-      let game = new Phaser.Game(config);
+      $(`#intro-dialog`).dialog(`open`);
+      let game = new Phaser.Game(config); // starts the game
     });
   });
 }
