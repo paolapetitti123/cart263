@@ -36,7 +36,9 @@ let config = {
 //
 // Description of setup() goes here.
 function setup() {
+  // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
+  // turning autoOpen to false so that the intro modal only opens when the game starts
   $(`#intro-dialog`).dialog({
       autoOpen: false,
       buttons: {
@@ -45,8 +47,16 @@ function setup() {
         }
       }
     });
+  // hiding the buttons by default
   $(`#gameButtonContainer`).hide();
   $(`#skip`).hide();
+
+  /*
+    When the play button gets pressed, the audio starts playing, the button and
+    music player are hidden, the typewriter effects starts in the story div and
+    once the voice starts speaking in the audio, that's when the skip button
+    fades in and the join us button shows up once the audio is over
+  */
   $("#playerButton").on(`click`, function (event) {
     let audio = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
     audio.play();
@@ -150,6 +160,12 @@ function setup() {
     setTimeout(function () {
       $(`#skip`).fadeIn();
     }, 11000);
+
+    /*
+    Once clicked, the story div and buttons are hidden, and the div the join
+    us button is in gets deleted so it doesn't show up if you click on the skip
+    button instead. Then the game starts.
+    */
     $(`#skip`).on(`click`,function(){
       audio.pause();
       $(`#story`).hide();
@@ -157,15 +173,18 @@ function setup() {
       $(`#skip`).hide();
       $(`#gameButton`).hide();
       $(`#gameButtonContainer`).remove();
-
       let game = new Phaser.Game(config); // starts the game
-      // $(`#intro-dialog`).dialog(`open`);
     });
+    /*
+      Very similar to the comment above however the gameButtonContainer isn't
+      deleted as for this one the button would have already shown up so hidding
+      the button is more than enough. Also the audio is finished by then so
+      there's no need to pause the audio.
+    */
     $(`#gameButton`).on(`click`,function(){
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
-      // $(`#intro-dialog`).dialog(`open`);
       let game = new Phaser.Game(config); // starts the game
     });
   });
