@@ -5,6 +5,9 @@ class Boot extends Phaser.Scene {
     });
   }
 
+/*
+  Loading all the images, spritesheets, audio and the tilemap json file
+*/
   preload(){
     this.load.image(`background`, `assets/images/boat-01.png`);
     this.load.image(`furniture1`, `assets/images/furniture-2-24x24-5x5-sheet.png`);
@@ -32,6 +35,10 @@ class Boot extends Phaser.Scene {
 
   }
 
+/*
+  This is supposed to show a loading message, gotta figure out what I'm doing
+  wrong here.
+*/
   create(){
     let style = {
       fontFamily: 'sans-serif',

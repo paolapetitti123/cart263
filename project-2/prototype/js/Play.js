@@ -6,6 +6,15 @@ class Play extends Phaser.Scene {
     });
   }
 
+/*
+  Here I add physics to the avatar sprite, turn on colliding for the avatar,
+  I then call the createAnimations method and by default leave the avatar in the
+  idle animation when no keys are pressed. I proceed to call the createTileMap
+  method so that the map I made in Tiled gets displayed. And then I make the modal
+  box pop up that has the game instructions.
+
+  In other words all the setup stuff is in this method. 
+*/
   create(){
     this.avatar = this.physics.add.sprite(400,500,`avatar`);
     this.avatar.setCollideWorldBounds(true);
@@ -17,8 +26,8 @@ class Play extends Phaser.Scene {
   }
 
 /*
-  Been following this youtube tutorial but tweaking it every so often to the new
-  code since some of it is a little outdated:
+  Been following this youtube tutorial but tweaking it every so often to new
+  code found on the phaser website since some of it is a little outdated:
   https://www.youtube.com/watch?v=uznkhVMbVr8&ab_channel=jestarray
 
   Try to figure out why the pole layer is showing the debris
@@ -49,16 +58,18 @@ class Play extends Phaser.Scene {
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
 
-
+    /*
+      Here I am getting the key object since it's different from the regular
+      tiles, I got the gid from the JSON file, then I proceeded to add a foreach
+      loop to enable physics for the object.
+    */
     let keyLayer = mappy.createFromObjects(`Key`, {gid: 734, key: `key`});
-    console.log(`first log ${keyLayer}`);
 
     keyLayer.forEach((key,i) => {
       this.physics.world.enable(key);
     });
-    console.log(`Second log ${keyLayer}`);
 
-    // map collisions
+    // map collisions with regular tiles
     this.physics.add.collider(this.avatar, binLayer);
     this.physics.add.collider(this.avatar, chestLayer);
     this.physics.add.collider(this.avatar, decoLayer);
@@ -66,10 +77,10 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
     this.physics.add.collider(this.avatar, borderLayer);
-
-    let keyScore = 0;
+    // Map collision with object
     this.physics.add.collider(this.avatar, keyLayer, this.collectKey, null, this);
 
+    // This turns the collisions on for the tile layers
     chestLayer.setCollisionByExclusion(-1,true);
     binLayer.setCollisionByExclusion(-1,true);
     decoLayer.setCollisionByExclusion(-1,true);
@@ -82,14 +93,19 @@ class Play extends Phaser.Scene {
   }
 
   collectKey(avatar, key){
+    // this is to keep track of whether or not the player collected a key
     let keyScore = 0;
 
+    // Once you hit the key, the key is destroyed & the keyScore gets added 1
     key.destroy(key.x,key.y);
     keyScore++;
     console.log(`Keys: ${keyScore}`);
 
   }
 
+/*
+  Here I create the animations for the avatar walking
+*/
   createAnimations(){
     this.anims.create({
       key: `avatar-moving-up`,
@@ -138,10 +154,21 @@ class Play extends Phaser.Scene {
     });
   }
 
+/*
+  Constantly checking if the arrow keys are being pressed
+*/
   update(){
     this.handleInput();
   }
 
+/*
+  Changes the velocity of the avatar's movements depending on which arrow key
+  is being pressed. Also changes the animations depending on which key is being
+  pressed.
+
+  To Do:
+    - Add an animation for when L/R arrow key is clicked WITH U/D arrow key
+*/
   handleInput(){
     // Left & right arrow keys
     if(this.cursors.left.isDown){
