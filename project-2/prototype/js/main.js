@@ -38,6 +38,7 @@ let config = {
 function setup() {
   // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
+  $(`#mini-game-box`).hide();
   // turning autoOpen to false so that the intro modal only opens when the game starts
   $(`#intro-dialog`).dialog({
       autoOpen: false,
@@ -47,6 +48,12 @@ function setup() {
         }
       }
     });
+  $(`#mini-game-box`).dialog({
+    modal: true,
+    height: 500,
+    width: 850,
+    autoOpen: false
+  });
   // hiding the buttons by default
   $(`#gameButtonContainer`).hide();
   $(`#skip`).hide();
