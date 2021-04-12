@@ -12,7 +12,7 @@ class Play extends Phaser.Scene {
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
     this.createTileMap();
-
+    $(`#intro-dialog`).dialog(`open`);
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
