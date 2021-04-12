@@ -1,6 +1,6 @@
 "use strict";
 /**************************************************
-Hidden Object Game Prototype (Project 2)
+Pirate Game (Project 2)
 Paola Petitti
 
 This is the link to the typewriter library I found:
@@ -11,12 +11,15 @@ https://www.youtube.com/watch?v=eXubmzAgA10&ab_channel=KQENTERTAINMENT
 
 This is a prototype for my final project. This prototype will contain a start screen
 where it's actually a html page with jQuery that provides a backstory for the game,
-once you get through the backstory you'll be able to play the game. For this prototype
-there won't be many objects to find, I'm merely going to get the functionality working.
+once you get through the backstory you'll be able to play the game.
 
 todo:
-in terms of visuals for the intro:
-- make it look like a terminal
+- try getting a mini game to appear in a modal box when you hit the
+bin layer
+  -> the mini game: a where's waldo type game to find the key
+- be able to interact with the treasure chests
+  -> no key: pop up saying you need a key (either text, alert or modal)
+  -> with key: get a modal box with a mini game (maybe a handpose game)
 **************************************************/
 let config = {
   type: Phaser.AUTO,
