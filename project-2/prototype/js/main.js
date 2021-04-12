@@ -30,27 +30,26 @@ let config = {
   },
   scene: [Boot,Play]
 };
+let color = 255;
 
-// for the bin mini game
+/*
+  Creating canvas for modal box mini game
+*/
 let sketch = function(p) {
   p.setup = function(){
     p.createCanvas(800,400);
-    p.background(255);
+  }
+  p.draw = function(){
+    p.background(color);
+  }
+  p.mousePressed= function(){
+    if (color === 0) {
+    color = 255;
+  } else {
+    color = 0;
+  }
   }
 };
-
-
-
-
-// let gameArea = {
-//   canvas : document.getElementById(`gameCanvas`),
-//   start : function(){
-//     this.canvas.width = 850;
-//     this.canvas.height = 270;
-//     this.context = this.canvas.getContext("2d");
-//     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-//   }
-// };
 
 // setup()
 //
@@ -218,3 +217,8 @@ function setup() {
     });
   });
 }
+
+// function draw(){
+//   background(color);
+//   color++;
+// }
