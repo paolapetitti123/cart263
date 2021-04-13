@@ -105,8 +105,6 @@ class Play extends Phaser.Scene {
 
   openMiniGame(avatar, binLayer){
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
-
-    
   }
 
 /*

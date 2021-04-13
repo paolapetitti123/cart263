@@ -26,29 +26,25 @@ let config = {
   width: 1280,
   height: 720,
   physics: {
-    default: `arcade`
+    default: `arcade`,
   },
-  scene: [Boot,Play]
+  scene: [Boot, Play],
 };
-let color = 255;
+let color = 0;
 
 /*
   Creating canvas for modal box mini game
 */
-let sketch = function(p) {
-  p.setup = function(){
-    p.createCanvas(800,400);
-  }
-  p.draw = function(){
+let sketch = function (p) {
+  p.setup = function () {
+    p.createCanvas(800, 400);
+  };
+  p.draw = function () {
     p.background(color);
-  }
-  p.mousePressed= function(){
-    if (color === 0) {
-    color = 255;
-  } else {
-    color = 0;
-  }
-  }
+  };
+  p.mousePressed = function () {
+    
+  };
 };
 
 // setup()
@@ -60,20 +56,20 @@ function setup() {
   $(`#mini-game-box`).hide();
   // turning autoOpen to false so that the intro modal only opens when the game starts
   $(`#intro-dialog`).dialog({
-      autoOpen: false,
-      buttons: {
-        "GOT IT!": function(){
-          $(this).dialog(`close`);
-        }
-      }
-    });
+    autoOpen: false,
+    buttons: {
+      "GOT IT!": function () {
+        $(this).dialog(`close`);
+      },
+    },
+  });
   $(`#mini-game-box`).dialog({
     modal: true,
     height: 500,
     width: 850,
     resizable: false,
     draggable: false,
-    autoOpen: false
+    autoOpen: false,
   });
   // hiding the buttons by default
   $(`#gameButtonContainer`).hide();
@@ -194,7 +190,7 @@ function setup() {
     us button is in gets deleted so it doesn't show up if you click on the skip
     button instead. Then the game starts.
     */
-    $(`#skip`).on(`click`,function(){
+    $(`#skip`).on(`click`, function () {
       audio.pause();
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
@@ -209,7 +205,7 @@ function setup() {
       the button is more than enough. Also the audio is finished by then so
       there's no need to pause the audio.
     */
-    $(`#gameButton`).on(`click`,function(){
+    $(`#gameButton`).on(`click`, function () {
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
