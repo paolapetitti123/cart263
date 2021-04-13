@@ -30,27 +30,43 @@ let config = {
   },
   scene: [Boot, Play],
 };
-let color = 0;
+const NUM_PIRATE_ITEMS_IMG = 9;
+const NUM_PIRATE_ITEMS = 72;
 
+let pirateItemsImages = [];
+let pirateItems = [];
+
+let keyImage = undefined;
+let key = undefined;
+let keyScore = 0;
+
+let binImg = undefined;
 /*
   Creating canvas for modal box mini game
 */
-let sketch = function (p) {
-  p.setup = function () {
-    p.createCanvas(800, 400);
-  };
-  p.draw = function () {
-    p.background(color);
-  };
-  p.mousePressed = function () {
-    
-  };
-};
+
+
+function preload(){
+  for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
+    let pirateItemsImage = loadImage(
+      `assets/images/minigame/pirateItem${i}.png`
+    );
+    pirateItemsImages.push(pirateItemsImage);
+  }
+
+  keyImage = loadImage(`assets/images/minigame/key.png`);
+  binImg = loadImage(`assets/images/binBackground-01.png`);
+}
+
 
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
+  let miniGameCanvas = createCanvas(800, 400);
+      miniGameCanvas.parent(`mini-game-box`);
+      createKeys();
+      createItems();
   // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
   $(`#mini-game-box`).hide();
@@ -214,7 +230,49 @@ function setup() {
   });
 }
 
-// function draw(){
-//   background(color);
-//   color++;
-// }
+function draw(){
+  miniGameBackground();
+  miniGame();
+}
+
+function miniGameBackground(){
+  push();
+  imageMode(CORNER);
+  image(binImg, 0,0);
+  pop();
+}
+
+function createKeys(){
+  let x = random(30, width - 50);
+  let y = random(30, height - 50);
+  key = new Key(x, y, keyImage);
+}
+
+function createItems(){
+  for(let i = 0; i < NUM_PIRATE_ITEMS; i++){
+    let x = random(30, width - 50);
+    let y = random(30, height - 50);
+    let pirateImg = random(pirateItemsImages);
+    let item = new Item(x,y,pirateImg);
+    pirateItems.push(item);
+  }
+}
+
+function miniGame(){
+  for(let i = 0; i < pirateItems.length; i++){
+    pirateItems[i].update();
+  }
+  if(key.active){
+    key.update();
+  }
+
+}
+
+function mousePressed(){
+  key.mousePressed();
+
+  if(key.found && key.active){
+    keyScore++;
+    console.log(keyScore);
+  }
+}

@@ -94,7 +94,7 @@ class Play extends Phaser.Scene {
 
   collectKey(avatar, key){
     // this is to keep track of whether or not the player collected a key
-    let keyScore = 0;
+
 
     // Once you hit the key, the key is destroyed & the keyScore gets added 1
     key.destroy(key.x,key.y);
