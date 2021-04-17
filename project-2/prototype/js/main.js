@@ -41,9 +41,7 @@ let key = undefined;
 let keyScore = 0;
 
 let binImg = undefined;
-/*
-  Creating canvas for modal box mini game
-*/
+
 
 
 function preload(){
@@ -67,9 +65,12 @@ function setup() {
       miniGameCanvas.parent(`mini-game-box`);
       createKeys();
       createItems();
+  let poseNetMiniGameCanvas = createCanvas(800,400);
+  poseNetMiniGameCanvas.parent(`posenet-mini-game`);
   // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
   $(`#mini-game-box`).hide();
+  $(`#posenet-mini-game`).hide();
   // turning autoOpen to false so that the intro modal only opens when the game starts
   $(`#intro-dialog`).dialog({
     autoOpen: false,
@@ -80,6 +81,14 @@ function setup() {
     },
   });
   $(`#mini-game-box`).dialog({
+    modal: true,
+    height: 500,
+    width: 850,
+    resizable: false,
+    draggable: false,
+    autoOpen: false,
+  });
+  $(`#posenet-mini-game`).dialog({
     modal: true,
     height: 500,
     width: 850,

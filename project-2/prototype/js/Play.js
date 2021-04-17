@@ -72,7 +72,7 @@ class Play extends Phaser.Scene {
     // map collisions with regular tiles
     this.physics.add.collider(this.avatar, binLayer, this.openMiniGame, null, this);
     this.physics.add.collider(this.avatar, chestLayer);
-    this.physics.add.collider(this.avatar, decoLayer);
+    this.physics.add.collider(this.avatar, decoLayer, this.openPoseMiniGame, null, this);
     this.physics.add.collider(this.avatar, tableLayer);
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
@@ -105,6 +105,10 @@ class Play extends Phaser.Scene {
 
   openMiniGame(avatar, binLayer){
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
+  }
+
+  openPoseMiniGame(avatar, decoLayer){
+    $(`#posenet-mini-game`).dialog(`open`);
   }
 
 /*
