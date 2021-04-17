@@ -1,12 +1,11 @@
 class Play extends Phaser.Scene {
-
-  constructor(){
+  constructor() {
     super({
-      key: `play`
+      key: `play`,
     });
   }
 
-/*
+  /*
   Here I add physics to the avatar sprite, turn on colliding for the avatar,
   I then call the createAnimations method and by default leave the avatar in the
   idle animation when no keys are pressed. I proceed to call the createTileMap
@@ -15,8 +14,8 @@ class Play extends Phaser.Scene {
 
   In other words all the setup stuff is in this method.
 */
-  create(){
-    this.avatar = this.physics.add.sprite(400,500,`avatar`);
+  create() {
+    this.avatar = this.physics.add.sprite(400, 500, `avatar`);
     this.avatar.setCollideWorldBounds(true);
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
@@ -25,35 +24,50 @@ class Play extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
-/*
+  /*
   Been following this youtube tutorial but tweaking it every so often to new
   code found on the phaser website since some of it is a little outdated:
   https://www.youtube.com/watch?v=uznkhVMbVr8&ab_channel=jestarray
 
   Try to figure out why the pole layer is showing the debris
 */
-  createTileMap(){
+  createTileMap() {
     let mappy = this.add.tilemap(`map`);
     let boat = mappy.addTilesetImage(`boat-01`, `background`);
     let chests = mappy.addTilesetImage(`chests (1)`, `chests`);
-    let destructible = mappy.addTilesetImage(`Destructible Objects Sprite Sheet`, `destructible`);
-    let furniture1 = mappy.addTilesetImage(`furniture-2-24x24-5x5-sheet`, `furniture1`);
-    let furniture2 = mappy.addTilesetImage(`furniture-24x24-5x4-sheet`, `furniture2`);
-    let furniture3 = mappy.addTilesetImage(`shrines-altars-24x24-5x4-sheet`, `furniture3`);
+    let destructible = mappy.addTilesetImage(
+      `Destructible Objects Sprite Sheet`,
+      `destructible`
+    );
+    let furniture1 = mappy.addTilesetImage(
+      `furniture-2-24x24-5x5-sheet`,
+      `furniture1`
+    );
+    let furniture2 = mappy.addTilesetImage(
+      `furniture-24x24-5x4-sheet`,
+      `furniture2`
+    );
+    let furniture3 = mappy.addTilesetImage(
+      `shrines-altars-24x24-5x4-sheet`,
+      `furniture3`
+    );
     let tilesheet = mappy.addTilesetImage(`tilesheet`, `tilesheet`);
     let barrel = mappy.addTilesetImage(`Barrel`, `barrel`);
     let water = mappy.addTilesetImage(`water`, `water`);
 
-
     // layers
     let waterLayer = mappy.createLayer(`Water`, [water]).setDepth(-1);
     let boatLayer = mappy.createLayer(`Boat`, [boat]).setDepth(-1);
-    let destructibleLayer = mappy.createLayer(`Debris`, [destructible]).setDepth(-1);
+    let destructibleLayer = mappy
+      .createLayer(`Debris`, [destructible])
+      .setDepth(-1);
     let borderLayer = mappy.createLayer(`Border`, [destructible]).setDepth(-1);
     let barrelLayer = mappy.createLayer(`barrel`, [barrel]).setDepth(-1);
     let swordLayer = mappy.createLayer(`Swords`, [furniture2]).setDepth(-1);
     let tableLayer = mappy.createLayer(`Tables`, [furniture2]).setDepth(-1);
-    let decoLayer = mappy.createLayer(`Deco`, [furniture1,furniture2]).setDepth(-1);
+    let decoLayer = mappy
+      .createLayer(`Deco`, [furniture1, furniture2])
+      .setDepth(-1);
     let binLayer = mappy.createLayer(`Bin`, [furniture2]).setDepth(-1);
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
@@ -63,115 +77,196 @@ class Play extends Phaser.Scene {
       tiles, I got the gid from the JSON file, then I proceeded to add a foreach
       loop to enable physics for the object.
     */
-    let keyLayer = mappy.createFromObjects(`Key`, {gid: 734, key: `key`});
+    let keyLayer = mappy.createFromObjects(`Key`, { gid: 734, key: `key` });
 
-    keyLayer.forEach((key,i) => {
+    keyLayer.forEach((key, i) => {
       this.physics.world.enable(key);
     });
 
     // map collisions with regular tiles
-    this.physics.add.collider(this.avatar, binLayer, this.openMiniGame, null, this);
+    this.physics.add.collider(
+      this.avatar,
+      binLayer,
+      this.openMiniGame,
+      null,
+      this
+    );
     this.physics.add.collider(this.avatar, chestLayer);
-    this.physics.add.collider(this.avatar, decoLayer, this.openPoseMiniGame, null, this);
+    this.physics.add.collider(
+      this.avatar,
+      decoLayer,
+      this.openPoseMiniGame,
+      null,
+      this
+    );
     this.physics.add.collider(this.avatar, tableLayer);
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
     this.physics.add.collider(this.avatar, borderLayer);
     // Map collision with object
-    this.physics.add.collider(this.avatar, keyLayer, this.collectKey, null, this);
+    this.physics.add.collider(
+      this.avatar,
+      keyLayer,
+      this.collectKey,
+      null,
+      this
+    );
 
     // This turns the collisions on for the tile layers
-    chestLayer.setCollisionByExclusion(-1,true);
-    binLayer.setCollisionByExclusion(-1,true);
-    decoLayer.setCollisionByExclusion(-1,true);
-    tableLayer.setCollisionByExclusion(-1,true);
-    swordLayer.setCollisionByExclusion(-1,true);
-    barrelLayer.setCollisionByExclusion(-1,true);
-    borderLayer.setCollisionByExclusion(-1,true);
-
-
+    chestLayer.setCollisionByExclusion(-1, true);
+    binLayer.setCollisionByExclusion(-1, true);
+    decoLayer.setCollisionByExclusion(-1, true);
+    tableLayer.setCollisionByExclusion(-1, true);
+    swordLayer.setCollisionByExclusion(-1, true);
+    barrelLayer.setCollisionByExclusion(-1, true);
+    borderLayer.setCollisionByExclusion(-1, true);
   }
 
-  collectKey(avatar, key){
+  collectKey(avatar, key) {
     // this is to keep track of whether or not the player collected a key
 
-
     // Once you hit the key, the key is destroyed & the keyScore gets added 1
-    key.destroy(key.x,key.y);
+    key.destroy(key.x, key.y);
     keyScore++;
     console.log(`Keys: ${keyScore}`);
-
   }
 
-  openMiniGame(avatar, binLayer){
+  openMiniGame(avatar, binLayer) {
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
 
-    let myp5 = new p5(miniGame1, `mini-game-box`);
+    let myp5 = new p5((sketch) => {
+      const NUM_PIRATE_ITEMS_IMG = 9;
+      const NUM_PIRATE_ITEMS = 72;
+      let pirateItemsImages = [];
+      let pirateItems = [];
+
+      let keyImage = undefined;
+      let key = undefined;
+      let keyScore = 0;
+
+      let binImg = undefined;
+      sketch.preload = () => {
+        for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
+          let pirateItemsImage = sketch.loadImage(
+            `assets/images/minigame/pirateItem${i}.png`
+          );
+          pirateItemsImages.push(pirateItemsImage);
+        }
+
+        keyImage = sketch.loadImage(`assets/images/minigame/key.png`);
+        binImg = sketch.loadImage(`assets/images/binBackground-01.png`);
+      };
+      sketch.setup = () => {
+        sketch.createCanvas(800, 400);
+        sketch.createKeys();
+        sketch.createItems();
+      };
+      sketch.draw = () => {
+        sketch.miniGameBackground();
+        sketch.miniGame();
+      };
+      sketch.mousePressed = () => {
+        key.mousePressed();
+
+        if (key.found && key.active) {
+          keyScore++;
+          sketch.console.log(keyScore);
+        }
+      };
+      sketch.createKeys = () => {
+        let x = sketch.random(30, sketch.width - 50);
+        let y = sketch.random(30, sketch.height - 50);
+        key = new Key(x, y, keyImage);
+      };
+      sketch.createItems = () => {
+        for (let i = 0; i < NUM_PIRATE_ITEMS; i++) {
+          let x = sketch.random(30, sketch.width - 50);
+          let y = sketch.random(30, sketch.height - 50);
+          let pirateImg = sketch.random(pirateItemsImages);
+          let item = new Item(x, y, pirateImg);
+          pirateItems.push(item);
+        }
+      };
+      sketch.miniGameBackground = () => {
+        sketch.push();
+        sketch.imageMode(CORNER);
+        sketch.image(binImg, 0, 0);
+        sketch.pop();
+      };
+      sketch.miniGame = () => {
+        for (let i = 0; i < pirateItems.length; i++) {
+          pirateItems[i].update();
+        }
+        if (sketch.key.active) {
+          key.update();
+        }
+      };
+    }, `mini-game-box`);
   }
 
-  openPoseMiniGame(avatar, decoLayer){
+  openPoseMiniGame(avatar, decoLayer) {
     $(`#posenet-mini-game`).dialog(`open`);
   }
 
-/*
+  /*
   Here I create the animations for the avatar walking
 */
-  createAnimations(){
+  createAnimations() {
     this.anims.create({
       key: `avatar-moving-up`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 0,
-        end: 8
+        end: 8,
       }),
       frameRate: 12,
-      repeat: -1
+      repeat: -1,
     });
     this.anims.create({
       key: `avatar-moving-left`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 9,
-        end: 17
+        end: 17,
       }),
       frameRate: 12,
-      repeat: -1
+      repeat: -1,
     });
     this.anims.create({
       key: `avatar-moving-down`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 18,
-        end: 26
+        end: 26,
       }),
       frameRate: 12,
-      repeat: -1
+      repeat: -1,
     });
     this.anims.create({
       key: `avatar-moving-right`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 27,
-        end: 35
+        end: 35,
       }),
       frameRate: 12,
-      repeat: -1
+      repeat: -1,
     });
     this.anims.create({
       key: `avatar-idle`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 18,
-        end: 18
+        end: 18,
       }),
       frameRate: 12,
-      repeat: -1
+      repeat: -1,
     });
   }
 
-/*
+  /*
   Constantly checking if the arrow keys are being pressed
 */
-  update(){
+  update() {
     this.handleInput();
   }
 
-/*
+  /*
   Changes the velocity of the avatar's movements depending on which arrow key
   is being pressed. Also changes the animations depending on which key is being
   pressed.
@@ -179,54 +274,54 @@ class Play extends Phaser.Scene {
   To Do:
     - Add an animation for when L/R arrow key is clicked WITH U/D arrow key
 */
-  handleInput(){
+  handleInput() {
     // Left & right arrow keys
-    if(this.cursors.left.isDown){
+    if (this.cursors.left.isDown) {
       this.avatar.setVelocityX(-100);
-    }
-    else if (this.cursors.right.isDown){
+    } else if (this.cursors.right.isDown) {
       this.avatar.setVelocityX(100);
-    }
-    else {
+    } else {
       this.avatar.setVelocityX(0);
     }
 
     // Up & Down arrow keys
-    if(this.cursors.up.isDown){
+    if (this.cursors.up.isDown) {
       this.avatar.setVelocityY(-100);
-    }
-    else if(this.cursors.down.isDown){
+    } else if (this.cursors.down.isDown) {
       this.avatar.setVelocityY(100);
-    }
-    else {
+    } else {
       this.avatar.setVelocityY(0);
     }
 
     // Changing the animations (L,R,U,D)
-    if(this.avatar.body.velocity.x !== 0 || this.avatar.body.velocity.y !== 0){
-      if(this.avatar.body.velocity.x < 0){
+    if (
+      this.avatar.body.velocity.x !== 0 ||
+      this.avatar.body.velocity.y !== 0
+    ) {
+      if (this.avatar.body.velocity.x < 0) {
         this.avatar.play(`avatar-moving-left`, true);
-      }
-      else if(this.avatar.body.velocity.x > 0){
+      } else if (this.avatar.body.velocity.x > 0) {
+        this.avatar.play(`avatar-moving-right`, true);
+      } else if (
+        this.avatar.body.velocity.x < 0 &&
+        (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)
+      ) {
+        this.avatar.play(`avatar-moving-left`, true);
+      } else if (
+        this.avatar.body.velocity.x > 0 &&
+        (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)
+      ) {
         this.avatar.play(`avatar-moving-right`, true);
       }
-      else if(this.avatar.body.velocity.x < 0 && (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)){
-        this.avatar.play(`avatar-moving-left`, true);
-      }
-      else if(this.avatar.body.velocity.x > 0 && (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)){
-        this.avatar.play(`avatar-moving-right`, true);
-      }
-      if(this.avatar.body.velocity.y < 0){
-        this.avatar.play(`avatar-moving-up`,true);
-      }
-      else if(this.avatar.body.velocity.y > 0){
-        this.avatar.play(`avatar-moving-down`,true);
+      if (this.avatar.body.velocity.y < 0) {
+        this.avatar.play(`avatar-moving-up`, true);
+      } else if (this.avatar.body.velocity.y > 0) {
+        this.avatar.play(`avatar-moving-down`, true);
       }
     }
     // Default animation
     else {
       this.avatar.play(`avatar-idle`, true);
     }
-
   }
 }

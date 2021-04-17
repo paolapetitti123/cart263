@@ -31,7 +31,7 @@ let config = {
   scene: [Boot, Play],
 };
 
-let miniGame1 = undefined;
+// let miniGame1 = undefined;
 
 
 
@@ -41,75 +41,7 @@ let miniGame1 = undefined;
 //
 // Description of setup() goes here.
 function setup() {
-  miniGame1 = (sketch) => {
-    const NUM_PIRATE_ITEMS_IMG = 9;
-    const NUM_PIRATE_ITEMS = 72;
-    let pirateItemsImages = [];
-    let pirateItems = [];
 
-    let keyImage = undefined;
-    let key = undefined;
-    let keyScore = 0;
-
-    let binImg = undefined;
-    sketch.preload = () => {
-      for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
-        let pirateItemsImage = sketch.loadImage(
-          `assets/images/minigame/pirateItem${i}.png`
-        );
-        pirateItemsImages.push(pirateItemsImage);
-      }
-
-      keyImage = sketch.loadImage(`assets/images/minigame/key.png`);
-      binImg = sketch.loadImage(`assets/images/binBackground-01.png`);
-    }
-    sketch.setup = () => {
-    sketch.createCanvas(800,400);
-      sketch.createKeys();
-      sketch.createItems();
-    };
-    sketch.createKeys = () => {
-      let x = sketch.random(30, sketch.width - 50);
-      let y = sketch.random(30, sketch.height - 50);
-      key = new Key(x, y, keyImage);
-    };
-    sketch.createItems = () => {
-      for(let i = 0; i < NUM_PIRATE_ITEMS; i++){
-        let x = sketch.random(30, sketch.width - 50);
-        let y = sketch.random(30, sketch.height - 50);
-        let pirateImg = sketch.random(pirateItemsImages);
-        let item = new Item(x,y,pirateImg);
-        pirateItems.push(item);
-      }
-    };
-    sketch.draw = () => {
-      sketch.background(255);
-      sketch.miniGameBackground();
-      sketch.miniGame();
-    };
-    sketch.mousePressed = () => {
-      sketch.key.mousePressed();
-
-      if(sketch.key.found && sketch.key.active){
-        sketch.keyScore++;
-        sketch.console.log(keyScore);
-      }
-    };
-    sketch.miniGameBackground = () => {
-      sketch.push();
-      sketch.imageMode(CORNER);
-      sketch.image(binImg, 0,0);
-      sketch.pop();
-    };
-    sketch.miniGame = () => {
-      for(let i = 0; i < sketch.pirateItems.length; i++){
-        sketch.pirateItems[i].update();
-      }
-      if(sketch.key.active){
-        sketch.key.update();
-      }
-    };
-  };
   // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
   $(`#mini-game-box`).hide();
