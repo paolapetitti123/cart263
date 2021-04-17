@@ -30,43 +30,86 @@ let config = {
   },
   scene: [Boot, Play],
 };
-const NUM_PIRATE_ITEMS_IMG = 9;
-const NUM_PIRATE_ITEMS = 72;
 
-let pirateItemsImages = [];
-let pirateItems = [];
-
-let keyImage = undefined;
-let key = undefined;
-let keyScore = 0;
-
-let binImg = undefined;
+let miniGame1 = undefined;
 
 
 
-function preload(){
-  for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
-    let pirateItemsImage = loadImage(
-      `assets/images/minigame/pirateItem${i}.png`
-    );
-    pirateItemsImages.push(pirateItemsImage);
-  }
-
-  keyImage = loadImage(`assets/images/minigame/key.png`);
-  binImg = loadImage(`assets/images/binBackground-01.png`);
-}
 
 
 // setup()
 //
 // Description of setup() goes here.
 function setup() {
-  let miniGameCanvas = createCanvas(800, 400);
-      miniGameCanvas.parent(`mini-game-box`);
-      createKeys();
-      createItems();
-  let poseNetMiniGameCanvas = createCanvas(800,400);
-  poseNetMiniGameCanvas.parent(`posenet-mini-game`);
+  miniGame1 = (sketch) => {
+    const NUM_PIRATE_ITEMS_IMG = 9;
+    const NUM_PIRATE_ITEMS = 72;
+    let pirateItemsImages = [];
+    let pirateItems = [];
+
+    let keyImage = undefined;
+    let key = undefined;
+    let keyScore = 0;
+
+    let binImg = undefined;
+    sketch.preload = () => {
+      for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
+        let pirateItemsImage = sketch.loadImage(
+          `assets/images/minigame/pirateItem${i}.png`
+        );
+        pirateItemsImages.push(pirateItemsImage);
+      }
+
+      keyImage = sketch.loadImage(`assets/images/minigame/key.png`);
+      binImg = sketch.loadImage(`assets/images/binBackground-01.png`);
+    }
+    sketch.setup = () => {
+    sketch.createCanvas(800,400);
+      sketch.createKeys();
+      sketch.createItems();
+    };
+    sketch.createKeys = () => {
+      let x = sketch.random(30, sketch.width - 50);
+      let y = sketch.random(30, sketch.height - 50);
+      key = new Key(x, y, keyImage);
+    };
+    sketch.createItems = () => {
+      for(let i = 0; i < NUM_PIRATE_ITEMS; i++){
+        let x = sketch.random(30, sketch.width - 50);
+        let y = sketch.random(30, sketch.height - 50);
+        let pirateImg = sketch.random(pirateItemsImages);
+        let item = new Item(x,y,pirateImg);
+        pirateItems.push(item);
+      }
+    };
+    sketch.draw = () => {
+      sketch.background(255);
+      sketch.miniGameBackground();
+      sketch.miniGame();
+    };
+    sketch.mousePressed = () => {
+      sketch.key.mousePressed();
+
+      if(sketch.key.found && sketch.key.active){
+        sketch.keyScore++;
+        sketch.console.log(keyScore);
+      }
+    };
+    sketch.miniGameBackground = () => {
+      sketch.push();
+      sketch.imageMode(CORNER);
+      sketch.image(binImg, 0,0);
+      sketch.pop();
+    };
+    sketch.miniGame = () => {
+      for(let i = 0; i < sketch.pirateItems.length; i++){
+        sketch.pirateItems[i].update();
+      }
+      if(sketch.key.active){
+        sketch.key.update();
+      }
+    };
+  };
   // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
   $(`#mini-game-box`).hide();
@@ -239,49 +282,49 @@ function setup() {
   });
 }
 
-function draw(){
-  miniGameBackground();
-  miniGame();
-}
+// function draw(){
+//   miniGameBackground();
+//   miniGame();
+// }
 
-function miniGameBackground(){
-  push();
-  imageMode(CORNER);
-  image(binImg, 0,0);
-  pop();
-}
+// function miniGameBackground(){
+//   push();
+//   imageMode(CORNER);
+//   image(binImg, 0,0);
+//   pop();
+// }
 
-function createKeys(){
-  let x = random(30, width - 50);
-  let y = random(30, height - 50);
-  key = new Key(x, y, keyImage);
-}
+// function createKeys(){
+//   let x = random(30, width - 50);
+//   let y = random(30, height - 50);
+//   key = new Key(x, y, keyImage);
+// }
 
-function createItems(){
-  for(let i = 0; i < NUM_PIRATE_ITEMS; i++){
-    let x = random(30, width - 50);
-    let y = random(30, height - 50);
-    let pirateImg = random(pirateItemsImages);
-    let item = new Item(x,y,pirateImg);
-    pirateItems.push(item);
-  }
-}
+// function createItems(){
+//   for(let i = 0; i < NUM_PIRATE_ITEMS; i++){
+//     let x = random(30, width - 50);
+//     let y = random(30, height - 50);
+//     let pirateImg = random(pirateItemsImages);
+//     let item = new Item(x,y,pirateImg);
+//     pirateItems.push(item);
+//   }
+// }
 
-function miniGame(){
-  for(let i = 0; i < pirateItems.length; i++){
-    pirateItems[i].update();
-  }
-  if(key.active){
-    key.update();
-  }
-
-}
-
-function mousePressed(){
-  key.mousePressed();
-
-  if(key.found && key.active){
-    keyScore++;
-    console.log(keyScore);
-  }
-}
+// function miniGame(){
+//   for(let i = 0; i < pirateItems.length; i++){
+//     pirateItems[i].update();
+//   }
+//   if(key.active){
+//     key.update();
+//   }
+//
+// }
+//
+// function mousePressed(){
+//   key.mousePressed();
+//
+//   if(key.found && key.active){
+//     keyScore++;
+//     console.log(keyScore);
+//   }
+// }
