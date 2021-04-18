@@ -208,6 +208,7 @@ let mainGame = function (p) {
   };
 };
 let mainCanvas = new p5(mainGame);
+  let keyScore = 0;
 
 let keyGame = function (p) {
   const NUM_PIRATE_ITEMS_IMG = 9;
@@ -217,7 +218,7 @@ let keyGame = function (p) {
 
   p.keyImage = undefined;
   let key = undefined;
-  let keyScore = 0;
+
 
   let binImg = undefined;
 
