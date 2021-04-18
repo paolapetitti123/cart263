@@ -15,7 +15,7 @@ todo:
   -> The game will be using Posenet or Handpose (ml5)
     - First finish the design in Illustrator
     - The game will have the user with their hand/arm follow along the circle/X
-      to 'cut' open the dummy and you'll get a key from that. 
+      to 'cut' open the dummy and you'll get a key from that.
 - be able to interact with the treasure chests
   -> no key: pop up saying you need a key (either text, alert or modal)
   -> with key: get a modal box with a mini game (maybe a handpose game)
@@ -285,3 +285,8 @@ let keyGame = function (p) {
 
 // creating the instance canvas for the mini game
 let keyCanvas = new p5(keyGame, `mini-game-box`);
+
+
+let swordGame = function (p){};
+
+let swordCanvas = new p5(swordGame, `posenet-mini-game`);
