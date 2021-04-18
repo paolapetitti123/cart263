@@ -134,64 +134,81 @@ class Play extends Phaser.Scene {
   openMiniGame(avatar, binLayer) {
 
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
-    let myp5 = new p5((sketch) => {
-      sketch.preload = () => {
+    // let myp5 = new p5((sketch) => {
+    //
+    // }, `mini-game-box`);
+    let keyGame = function (p){
+      const NUM_PIRATE_ITEMS_IMG = 9;
+      const NUM_PIRATE_ITEMS = 72;
+      let pirateItemsImages = [];
+      let pirateItems = [];
+
+      let keyImage = undefined;
+      let key = undefined;
+      let keyScore = 0;
+
+      let binImg = undefined;
+
+      p.preload = function() {
         for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
-          let pirateItemsImage = sketch.loadImage(
+          let pirateItemsImage = p.loadImage(
             `assets/images/minigame/pirateItem${i}.png`
           );
           pirateItemsImages.push(pirateItemsImage);
         }
 
-        keyImage = sketch.loadImage(`assets/images/minigame/key.png`);
-        binImg = sketch.loadImage(`assets/images/binBackground-01.png`);
-      };
-      sketch.setup = () => {
-        sketch.createCanvas(800, 400);
-        sketch.createKeys();
-        sketch.createItems();
-      };
-      sketch.draw = () => {
-        sketch.miniGameBackground();
-        sketch.miniGame();
-      };
-      sketch.mousePressed = () => {
+        keyImage = p.loadImage(`assets/images/minigame/key.png`);
+        binImg = p.loadImage(`assets/images/binBackground-01.png`);
+      }
+
+      p.setup = function() {
+        p.createCanvas(800, 400);
+        p.createKeys();
+        p.createItems();
+      }
+      p.draw = function() {
+        p.miniGameBackground();
+        p.miniGame();
+      }
+      p.mousePressed = function() {
         key.mousePressed();
 
         if (key.found && key.active) {
           keyScore++;
-          sketch.console.log(keyScore);
+          p.console.log(keyScore);
         }
-      };
-      sketch.createKeys = () => {
-        let x = sketch.random(30, sketch.width - 50);
-        let y = sketch.random(30, sketch.height - 50);
+      }
+      p.createKeys = function() {
+        let x = p.random(30, p.width - 50);
+        let y = p.random(30, p.height - 50);
         key = new Key(x, y, keyImage);
-      };
-      sketch.createItems = () => {
+      }
+      p.createItems = function() {
         for (let i = 0; i < NUM_PIRATE_ITEMS; i++) {
-          let x = sketch.random(30, sketch.width - 50);
-          let y = sketch.random(30, sketch.height - 50);
-          let pirateImg = sketch.random(pirateItemsImages);
+          let x = p.random(30, p.width - 50);
+          let y = p.random(30, p.height - 50);
+          let pirateImg = p.random(pirateItemsImages);
           let item = new Item(x, y, pirateImg);
           pirateItems.push(item);
         }
-      };
-      sketch.miniGameBackground = () => {
-        sketch.push();
-        sketch.imageMode(CORNER);
-        sketch.image(binImg, 0, 0);
-        sketch.pop();
-      };
-      sketch.miniGame = () => {
+      }
+      p.miniGameBackground = function() {
+        p.push();
+        p.imageMode(p.CORNER);
+        p.image(binImg, 0, 0);
+        p.pop();
+      }
+      p.miniGame = function() {
         for (let i = 0; i < pirateItems.length; i++) {
           pirateItems[i].update();
         }
-        if (sketch.key.active) {
-          sketch.key.update();
+        if (p.key.active) {
+          p.key.update();
         }
-      };
-    }, `mini-game-box`);
+      }
+    };
+
+    let keyCanvas = new p5(keyGame, `mini-game-box`);
   }
 
   openPoseMiniGame(avatar, decoLayer) {
