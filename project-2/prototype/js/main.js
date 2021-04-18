@@ -9,14 +9,13 @@ https://github.com/mrvautin/typewrite
 Link to the audio for the intro:
 https://www.youtube.com/watch?v=eXubmzAgA10&ab_channel=KQENTERTAINMENT
 
-This is a prototype for my final project. This prototype will contain a start screen
-where it's actually a html page with jQuery that provides a backstory for the game,
-once you get through the backstory you'll be able to play the game.
 
 todo:
-- try getting a mini game to appear in a modal box when you hit the
-bin layer
-  -> the mini game: a where's waldo type game to find the key
+- Add canvas to decoLayer box
+  -> The game will be using Posenet or Handpose (ml5)
+    - First finish the design in Illustrator
+    - The game will have the user with their hand/arm follow along the circle/X
+      to 'cut' open the dummy and you'll get a key from that. 
 - be able to interact with the treasure chests
   -> no key: pop up saying you need a key (either text, alert or modal)
   -> with key: get a modal box with a mini game (maybe a handpose game)
@@ -30,6 +29,9 @@ let config = {
   },
   scene: [Boot, Play],
 };
+let keyScore = 0; // Going to be used for all the mini games on the ship
+
+
 let mainGame = function (p) {
   let audio = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
   let game;
@@ -208,7 +210,7 @@ let mainGame = function (p) {
   };
 };
 let mainCanvas = new p5(mainGame);
-  let keyScore = 0;
+
 
 let keyGame = function (p) {
   const NUM_PIRATE_ITEMS_IMG = 9;
@@ -236,11 +238,13 @@ let keyGame = function (p) {
 
   p.setup = function () {
     p.createCanvas(800, 400);
-    // createKeys();
+
+    // creating the keys
     p.x1 = p.random(30, p.width - 50);
     p.y1 = p.random(30, p.height - 50);
     key = new Key(p,p.x1, p.y1, p.keyImage);
-    // createItems();
+
+    // creating the items
     for (let i = 0; i < NUM_PIRATE_ITEMS; i++) {
       p.x = p.random(30, p.width - 50);
       p.y = p.random(30, p.height - 50);
@@ -250,12 +254,13 @@ let keyGame = function (p) {
     }
   };
   p.draw = function () {
-    // miniGameBackground();
+    // creating the background image
     p.push();
     p.imageMode(p.CORNER);
     p.image(binImg, 0, 0);
     p.pop();
-    // miniGame();
+
+    // getting the items & key to appear
     for (let i = 0; i < pirateItems.length; i++) {
       pirateItems[i].update();
     }
@@ -263,8 +268,9 @@ let keyGame = function (p) {
       key.update();
     }
   };
+
+  // checking if the mouse clicked on the key
   p.mousePressed = function() {
-    console.log("CLICKING");
     if(key.mousePressed()){
       console.log("TOUCHING");
     }
@@ -277,4 +283,5 @@ let keyGame = function (p) {
   };
 };
 
+// creating the instance canvas for the mini game
 let keyCanvas = new p5(keyGame, `mini-game-box`);
