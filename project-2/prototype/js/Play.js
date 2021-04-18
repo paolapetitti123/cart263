@@ -132,19 +132,9 @@ class Play extends Phaser.Scene {
   }
 
   openMiniGame(avatar, binLayer) {
+
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
-
     let myp5 = new p5((sketch) => {
-      const NUM_PIRATE_ITEMS_IMG = 9;
-      const NUM_PIRATE_ITEMS = 72;
-      let pirateItemsImages = [];
-      let pirateItems = [];
-
-      let keyImage = undefined;
-      let key = undefined;
-      let keyScore = 0;
-
-      let binImg = undefined;
       sketch.preload = () => {
         for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
           let pirateItemsImage = sketch.loadImage(
@@ -198,7 +188,7 @@ class Play extends Phaser.Scene {
           pirateItems[i].update();
         }
         if (sketch.key.active) {
-          key.update();
+          sketch.key.update();
         }
       };
     }, `mini-game-box`);
@@ -207,6 +197,7 @@ class Play extends Phaser.Scene {
   openPoseMiniGame(avatar, decoLayer) {
     $(`#posenet-mini-game`).dialog(`open`);
   }
+
 
   /*
   Here I create the animations for the avatar walking

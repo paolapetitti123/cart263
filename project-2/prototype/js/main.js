@@ -30,9 +30,16 @@ let config = {
   },
   scene: [Boot, Play],
 };
+const NUM_PIRATE_ITEMS_IMG = 9;
+const NUM_PIRATE_ITEMS = 72;
+let pirateItemsImages = [];
+let pirateItems = [];
 
-// let miniGame1 = undefined;
+let keyImage = undefined;
+let key = undefined;
+let keyScore = 0;
 
+let binImg = undefined;
 
 
 
@@ -41,7 +48,6 @@ let config = {
 //
 // Description of setup() goes here.
 function setup() {
-
   // hiding the dialog text as it shows up outside the modal if i don't
   $(`#intro-dialog`).hide();
   $(`#mini-game-box`).hide();
