@@ -31,9 +31,8 @@ let config = {
 };
 let keyScore = 0; // Going to be used for all the mini games on the ship
 
-
 let mainGame = function (p) {
-  let audio = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
+  let audio1 = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
   let game;
   p.setup = function () {
     $(`#intro-dialog`).hide();
@@ -75,8 +74,8 @@ let mainGame = function (p) {
       fades in and the join us button shows up once the audio is over
     */
     $("#playerButton").on(`click`, function (event) {
-      if (!audio.play()) {
-        audio.play();
+      if (!audio1.play()) {
+        audio1.play();
       }
       // audio.play();
       $(this).hide();
@@ -188,7 +187,7 @@ let mainGame = function (p) {
     */
     let skipButton = document.getElementById(`skip`);
     skipButton.onclick = function () {
-      audio.pause();
+      audio1.pause();
       $(`#story`).hide();
       $(`#gameButtonContainer`).remove();
       $(`#skip`).hide();
@@ -211,7 +210,6 @@ let mainGame = function (p) {
 };
 let mainCanvas = new p5(mainGame);
 
-
 let keyGame = function (p) {
   const NUM_PIRATE_ITEMS_IMG = 9;
   const NUM_PIRATE_ITEMS = 72;
@@ -220,7 +218,6 @@ let keyGame = function (p) {
 
   p.keyImage = undefined;
   let key = undefined;
-
 
   let binImg = undefined;
 
@@ -242,14 +239,14 @@ let keyGame = function (p) {
     // creating the keys
     p.x1 = p.random(30, p.width - 50);
     p.y1 = p.random(30, p.height - 50);
-    key = new Key(p,p.x1, p.y1, p.keyImage);
+    key = new Key(p, p.x1, p.y1, p.keyImage);
 
     // creating the items
     for (let i = 0; i < NUM_PIRATE_ITEMS; i++) {
       p.x = p.random(30, p.width - 50);
       p.y = p.random(30, p.height - 50);
       p.pirateImg = p.random(pirateItemsImages);
-      p.item = new Item(p,p.x, p.y, p.pirateImg);
+      p.item = new Item(p, p.x, p.y, p.pirateImg);
       pirateItems.push(p.item);
     }
   };
@@ -270,8 +267,8 @@ let keyGame = function (p) {
   };
 
   // checking if the mouse clicked on the key
-  p.mousePressed = function() {
-    if(key.mousePressed()){
+  p.mousePressed = function () {
+    if (key.mousePressed()) {
       console.log("TOUCHING");
     }
     key.mousePressed();
@@ -286,7 +283,54 @@ let keyGame = function (p) {
 // creating the instance canvas for the mini game
 let keyCanvas = new p5(keyGame, `mini-game-box`);
 
+/*
+  To get started I'm following along this tutorial to at the very least have
+  PoseNet set up.
+  https://www.youtube.com/watch?v=OIo-DIOkNVg&ab_channel=TheCodingTrain
 
-let swordGame = function (p){};
+  To Do:
+  - add background and dummy object
+  - get the game to detect which hand is raised (L/R)
+  - display the sword in the right direction depending on the hand raised first
+  - add a circle or X on the target dummy that the player has to trace with the sword
+  - Once that's done, a key is given
+*/
 
-let swordCanvas = new p5(swordGame, `posenet-mini-game`);
+let dialogActive = false;
+  let swordGame = function (p) {
+    let video = undefined;
+    let poseNet = undefined;
+    let predictions = [];
+
+    let fenceBgImg = undefined;
+    let practiceDummyImg = undefined;
+    let swordImg = undefined;
+    p.preload = function () {
+      fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
+      swordImg = p.loadImage(`assets/images/swordMiniGame/Sword-01.png`);
+      practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
+    };
+    p.setup = function () {
+      p.createCanvas(800, 400);
+      video = p.createCapture(p.VIDEO);
+      video.hide();
+    };
+    p.draw = function () {
+      if(dialogActive == true && poseNet == undefined){
+        poseNet = ml5.poseNet(video, p.modelLoaded);
+      }
+      p.backgroundLoad();
+
+    };
+    p.modelLoaded = function () {
+      console.log("poseNet is ready!");
+    };
+    p.backgroundLoad = function() {
+      p.push();
+      p.imageMode(p.CORNER);
+      p.image(fenceBgImg, 0, 0);
+      p.pop();
+    };
+  };
+
+  let swordCanvas = new p5(swordGame, `posenet-mini-game`);
