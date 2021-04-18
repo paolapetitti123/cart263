@@ -1,6 +1,6 @@
 class Key extends Item {
-  constructor(x,y,image){
-    super(x,y,image);
+  constructor(p,x,y,image){
+    super(p,x,y,image);
     this.found = false;
     this.rotationSpeed = 0.25;
     this.active = true;
@@ -13,10 +13,10 @@ class Key extends Item {
     }
   }
   mousePressed(){
-    if(mouseX > this.x - this.image.width/2 &&
-     mouseX < this.x + this.image.width/2 &&
-     mouseY > this.y - this.image.height/2 &&
-     mouseY < this.y + this.image.height/2){
+    if(this.p.mouseX > this.x - this.image.width/2 &&
+     this.p.mouseX < this.x + this.image.width/2 &&
+     this.p.mouseY > this.y - this.image.height/2 &&
+     this.p.mouseY < this.y + this.image.height/2){
        this.found = true;
   }
   }
