@@ -30,12 +30,21 @@ let config = {
   },
   scene: [Boot, Play],
 };
+// const NUM_PIRATE_ITEMS_IMG = 9;
+// const NUM_PIRATE_ITEMS = 72;
+// let pirateItemsImages = [];
+// let pirateItems = [];
+//
+// let keyImage = undefined;
+// let key = undefined;
+// let keyScore = 0;
+//
+// let binImg = undefined;
 
-
-let mainGame = function (p){
+let mainGame = function (p) {
   let audio = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
   let game;
-  p.setup = function() {
+  p.setup = function () {
     $(`#intro-dialog`).hide();
     $(`#mini-game-box`).hide();
     $(`#posenet-mini-game`).hide();
@@ -75,7 +84,7 @@ let mainGame = function (p){
       fades in and the join us button shows up once the audio is over
     */
     $("#playerButton").on(`click`, function (event) {
-      if(!audio.play()){
+      if (!audio.play()) {
         audio.play();
       }
       // audio.play();
@@ -181,19 +190,19 @@ let mainGame = function (p){
       }, 11000);
     });
 
-
     /*
     Once clicked, the story div and buttons are hidden, and the div the join
     us button is in gets deleted so it doesn't show up if you click on the skip
     button instead. Then the game starts.
-    */let skipButton = document.getElementById(`skip`);
-    skipButton.onclick = function(){
+    */
+    let skipButton = document.getElementById(`skip`);
+    skipButton.onclick = function () {
       audio.pause();
       $(`#story`).hide();
-      $(`#gameButtonContainer`).hide();
+      $(`#gameButtonContainer`).remove();
       $(`#skip`).hide();
       game = new Phaser.Game(config); // starts the game
-    }
+    };
     /*
       Very similar to the comment above however the gameButtonContainer isn't
       deleted as for this one the button would have already shown up so hidding
@@ -201,19 +210,17 @@ let mainGame = function (p){
       there's no need to pause the audio.
     */
     let gameButton = document.getElementById(`gameButton`);
-    gameButton.onclick = function(){
+    gameButton.onclick = function () {
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
       game = new Phaser.Game(config); // starts the game
-    }
-  }
-
-
+    };
+  };
 };
 let mainCanvas = new p5(mainGame);
 
-let keyGame = function (p){
+let keyGame = function (p) {
   const NUM_PIRATE_ITEMS_IMG = 9;
   const NUM_PIRATE_ITEMS = 72;
   let pirateItemsImages = [];
@@ -225,7 +232,7 @@ let keyGame = function (p){
 
   let binImg = undefined;
 
-  p.preload = function() {
+  p.preload = function () {
     for (let i = 0; i < NUM_PIRATE_ITEMS_IMG; i++) {
       let pirateItemsImage = p.loadImage(
         `assets/images/minigame/pirateItem${i}.png`
@@ -235,95 +242,125 @@ let keyGame = function (p){
 
     keyImage = p.loadImage(`assets/images/minigame/key.png`);
     binImg = p.loadImage(`assets/images/binBackground-01.png`);
-  }
+  };
 
-  p.setup = function() {
+  p.setup = function () {
     p.createCanvas(800, 400);
-    p.createKeys();
-    p.createItems();
-  }
-  p.draw = function() {
-    p.miniGameBackground();
-    p.miniGame();
-  }
-  p.mousePressed = function() {
-    key.mousePressed();
-
-    if (key.found && key.active) {
-      keyScore++;
-      p.console.log(keyScore);
-    }
-  }
-  p.createKeys = function() {
-    let x = p.random(30, p.width - 50);
-    let y = p.random(30, p.height - 50);
-    key = new Key(x, y, keyImage);
-  }
-  p.createItems = function() {
+    // createKeys();
+    p.x1 = p.random(30, p.width - 50);
+    p.y1 = p.random(30, p.height - 50);
+    key = new Key(p.x1, p.y1, keyImage);
+    // createItems();
     for (let i = 0; i < NUM_PIRATE_ITEMS; i++) {
-      let x = p.random(30, p.width - 50);
-      let y = p.random(30, p.height - 50);
-      let pirateImg = p.random(pirateItemsImages);
-      let item = new Item(x, y, pirateImg);
-      pirateItems.push(item);
+      p.x = p.random(30, p.width - 50);
+      p.y = p.random(30, p.height - 50);
+      p.pirateImg = p.random(pirateItemsImages);
+      p.item = new Item(p.x, p.y, p.pirateImg);
+      pirateItems.push(p.item);
     }
-  }
-  p.miniGameBackground = function() {
+  };
+  p.draw = function () {
+    // miniGameBackground();
     p.push();
     p.imageMode(p.CORNER);
     p.image(binImg, 0, 0);
     p.pop();
-  }
-  p.miniGame = function() {
+    // miniGame();
     for (let i = 0; i < pirateItems.length; i++) {
       pirateItems[i].update();
     }
     if (p.key.active) {
       p.key.update();
     }
-  }
+  };
+  // p.mousePressed = function() {
+  //   key.mousePressed();
+  //
+  //   if (key.found && key.active) {
+  //     keyScore++;
+  //     p.console.log(keyScore);
+  //   }
+  // }
+  // p.createKeys = function() {
+  //   let x = p.random(30, p.width - 50);
+  //   let y = p.random(30, p.height - 50);
+  //   key = new Key(x, y, keyImage);
+  // }
+  // p.createItems = function() {
+  //   for (let i = 0; i < NUM_PIRATE_ITEMS; i++) {
+  //     let x = p.random(30, p.width - 50);
+  //     let y = p.random(30, p.height - 50);
+  //     let pirateImg = p.random(pirateItemsImages);
+  //     let item = new Item(x, y, pirateImg);
+  //     pirateItems.push(item);
+  //   }
+  // }
+  // p.miniGameBackground = function() {
+  //   p.push();
+  //   p.imageMode(p.CORNER);
+  //   p.image(binImg, 0, 0);
+  //   p.pop();
+  // }
+  // p.miniGame = function() {
+  //   for (let i = 0; i < pirateItems.length; i++) {
+  //     pirateItems[i].update();
+  //   }
+  //   if (p.key.active) {
+  //     p.key.update();
+  //   }
+  // }
 };
 
 let keyCanvas = new p5(keyGame, `mini-game-box`);
 
-// function miniGameBackground(){
-//   keyGame.push();
-//   keyGame.imageMode(CORNER);
-//   keyGame.image(binImg, 0,0);
-//   keyGame.pop();
-// }
-//
-// function createKeys(){
-//   let x = random(30, keyGame.width - 50);
-//   let y = random(30, keyGame.height - 50);
-//   key = new Key(x, y, keyImage);
-// }
-//
-// function createItems(){
-//   for(let i = 0; i < NUM_PIRATE_ITEMS; i++){
-//     let x = random(30, keyGame.width - 50);
-//     let y = random(30, keyGame.height - 50);
-//     let pirateImg = random(pirateItemsImages);
-//     let item = new Item(x,y,pirateImg);
-//     pirateItems.push(item);
-//   }
-// }
-//
-// function miniGame(){
-//   for(let i = 0; i < pirateItems.length; i++){
-//     pirateItems[i].update();
-//   }
-//   if(key.active){
-//     key.update();
-//   }
-//
-// }
-//
-// function mousePressed(){
-//   key.mousePressed();
-//
-//   if(key.found && key.active){
-//     keyScore++;
-//     console.log(keyScore);
-//   }
-// }
+function miniGameBackground() {
+  keyGame.push();
+  keyGame.imageMode(CORNER);
+  keyGame.image(keyGame.binImg, 0, 0);
+  keyGame.pop();
+}
+
+function createKeys() {
+  // let x = random(30, keyGame.width - 50);
+  // let y = random(30, keyGame.height - 50);
+
+  let x = randomIntFromInterval(30, keyGame.width - 50);
+  let y = randomIntFromInterval(30, keyGame.width - 50);
+  keyGame.key = new Key(x, y, keyGame.keyImage);
+}
+
+function createItems() {
+  for (let i = 0; i < keyGame.NUM_PIRATE_ITEMS; i++) {
+    // let x = random(30, keyGame.width - 50);
+    // let y = random(30, keyGame.height - 50);
+
+    let x = randomIntFromInterval(30, keyGame.width - 50);
+    let y = randomIntFromInterval(30, keyGame.width - 50);
+
+    let pirateImg = random(keyGame.pirateItemsImages);
+    let item = new Item(x, y, pirateImg);
+    keyGame.pirateItems.push(item);
+  }
+}
+
+function randomIntFromInterval(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function miniGame() {
+  for (let i = 0; i < keyGame.pirateItems.length; i++) {
+    keyGame.pirateItems[i].update();
+  }
+  if (keyGame.key.active) {
+    keyGame.key.update();
+  }
+}
+
+function mousePressed() {
+  keyGame.key.mousePressed();
+
+  if (keyGame.key.found && key.active) {
+    keyGame.keyScore++;
+    console.log(keyGame.keyScore);
+  }
+}
