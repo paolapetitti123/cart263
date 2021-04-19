@@ -34,7 +34,13 @@ let keyScore = 0; // Going to be used for all the mini games on the ship
 let mainGame = function (p) {
   let audio1 = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
   let game;
+  let longJourneyVideo;
+  let introVideo = document.getElementById(`introVideo`);
+  let timer = null;
   p.setup = function () {
+    longJourneyVideo = p.createVideo(`assets/videos/Intro_Long_Journey.mp4`);
+    longJourneyVideo.hide();
+    $(`#introVideo`).hide();
     $(`#intro-dialog`).hide();
     $(`#mini-game-box`).hide();
     $(`#posenet-mini-game`).hide();
@@ -74,110 +80,28 @@ let mainGame = function (p) {
       fades in and the join us button shows up once the audio is over
     */
     $("#playerButton").on(`click`, function (event) {
+
+      longJourneyVideo.size(1280/2,720/2);
+
       if (!audio1.play()) {
         audio1.play();
       }
-      // audio.play();
       $(this).hide();
       $(`#musicPlayer`).hide();
-      $(`#story`).typewrite({
-        cursor: "_",
-        actions: [
-          { delay: 11500 },
-          { type: "People want it" },
-          { type: "<br>" },
-          { delay: 2000 },
-          { type: "People dream about it" },
-          { speed: 20 },
-          { select: { from: 0, to: 38 } },
-          { remove: { num: 38, type: "whole" } },
-          { speed: 20 },
-          { type: "It can be different to every individual" },
-          { speed: 10 },
-          { select: { from: 0, to: 39 } },
-          { remove: { num: 39, type: "whole" } },
-          { speed: 20 },
-          { type: "It can complete us" },
-          { delay: 1700 },
-          { type: "<br>" },
-          { type: "Or it can destroy us" },
-          { delay: 1700 },
-          { type: "<br>" },
-          { type: "And it can change the world" },
-          { speed: 35 },
-          { select: { from: 0, to: 73 } },
-          { remove: { num: 73, type: "whole" } },
-          { speed: 15 },
-          { type: "People call it" },
-          { delay: 1700 },
-          { remove: { num: 14, type: "stepped" } },
-          { type: "TREASURE" },
-          { delay: 8500 },
-          { remove: { num: 8, type: "stepped" } },
-          { speed: 20 },
-          { type: `The sound of wind blowing from the horizon` },
-          { type: "<br>" },
-          { delay: 1500 },
-          { type: `The warmth of the sun hitting the ocean waves` },
-          { type: "<br>" },
-          { delay: 1500 },
-          { type: `The vibration of sand beating like the hearts of youth` },
-          { delay: 1500 },
-          { type: "<br>" },
-          { type: `We're at the starting point of this long journey` },
-          { speed: 155 },
-          { select: { from: 0, to: 201 } },
-          { speed: 20 },
-          { remove: { num: 201, type: "whole" } },
-          { type: `The freezing winds may make us shiver` },
-          { type: "<br>" },
-          { delay: 400 },
-          { type: `The heat of the sun may make us thirsty` },
-          { type: "<br>" },
-          { delay: 400 },
-          { type: `The vibrations of the sand may swallow us` },
-          { delay: 175 },
-          { speed: 135 },
-          { select: { from: 0, to: 125 } },
-          { speed: 20 },
-          { remove: { num: 125, type: "whole" } },
-          { type: `But we'll never stop` },
-          { type: "<br>" },
-          { delay: 700 },
-          { type: `Gold, eternal life, ` },
-          { delay: 900 },
-          { type: `honor, love, fame` },
-          { delay: 400 },
-          { speed: 105 },
-          { select: { from: 0, to: 61 } },
-          { speed: 20 },
-          { remove: { num: 61, type: "whole" } },
-          { type: `It doesn't matter what you dream for` },
-          { type: "<br>" },
-          { type: `So let me ask you` },
-          { delay: 1200 },
-          { speed: 100 },
-          { select: { from: 0, to: 57 } },
-          { speed: 20 },
-          { remove: { num: 57, type: "whole" } },
-          { type: `What ` },
-          { delay: 500 },
-          { type: `is ` },
-          { delay: 500 },
-          { type: `your ` },
-          { delay: 500 },
-          { type: `treasure?` },
-          { delay: 9000 },
-          { remove: { num: 22, type: "stepped" } },
-          { type: `Will You Join Us?` },
-        ],
-      });
-      setTimeout(function () {
-        $(`#gameButtonContainer`).fadeIn();
-      }, 98000);
+      longJourneyVideo.show();
+      p.imageMode(p.CENTER);
+      longJourneyVideo.play();
+
       setTimeout(function () {
         $(`#skip`).fadeIn();
       }, 11000);
+      setTimeout(function (){
+        $(`#skip`).fadeOut();
+      },96000);
+      setTimeout(function () {
+        $(`#gameButtonContainer`).fadeIn();
+      }, 98000);
+
     });
 
     /*
@@ -188,6 +112,7 @@ let mainGame = function (p) {
     let skipButton = document.getElementById(`skip`);
     skipButton.onclick = function () {
       audio1.pause();
+      longJourneyVideo.hide();
       $(`#story`).hide();
       $(`#gameButtonContainer`).remove();
       $(`#skip`).hide();
@@ -201,12 +126,14 @@ let mainGame = function (p) {
     */
     let gameButton = document.getElementById(`gameButton`);
     gameButton.onclick = function () {
+      longJourneyVideo.hide();
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
       game = new Phaser.Game(config); // starts the game
     };
   };
+
 };
 let mainCanvas = new p5(mainGame);
 

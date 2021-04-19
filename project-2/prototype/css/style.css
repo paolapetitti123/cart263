@@ -79,3 +79,9 @@ canvas {
   display: block;
   width: 800px;
 }
+
+video {
+  margin-left: auto;
+      margin-right: auto;
+      display: block
+}
