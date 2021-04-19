@@ -297,40 +297,44 @@ let keyCanvas = new p5(keyGame, `mini-game-box`);
 */
 
 let dialogActive = false;
-  let swordGame = function (p) {
-    let video = undefined;
-    let poseNet = undefined;
-    let predictions = [];
-
-    let fenceBgImg = undefined;
-    let practiceDummyImg = undefined;
-    let swordImg = undefined;
-    p.preload = function () {
-      fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
-      swordImg = p.loadImage(`assets/images/swordMiniGame/Sword-01.png`);
-      practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
-    };
-    p.setup = function () {
-      p.createCanvas(800, 400);
-      video = p.createCapture(p.VIDEO);
-      video.hide();
-    };
-    p.draw = function () {
-      if(dialogActive == true && poseNet == undefined){
-        poseNet = ml5.poseNet(video, p.modelLoaded);
-      }
-      p.backgroundLoad();
-
-    };
-    p.modelLoaded = function () {
-      console.log("poseNet is ready!");
-    };
-    p.backgroundLoad = function() {
-      p.push();
-      p.imageMode(p.CORNER);
-      p.image(fenceBgImg, 0, 0);
-      p.pop();
-    };
-  };
-
-  let swordCanvas = new p5(swordGame, `posenet-mini-game`);
+  // let swordGame = function (p) {
+  //   p.video = undefined;
+  //   let poseNet = undefined;
+  //   let predictions = [];
+  //
+  //   let fenceBgImg = undefined;
+  //   let practiceDummyImg = undefined;
+  //   let swordImg = undefined;
+  //   p.preload = function () {
+  //     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
+  //     swordImg = p.loadImage(`assets/images/swordMiniGame/Sword-01.png`);
+  //     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
+  //   };
+  //   p.setup = function () {
+  //     p.createCanvas(800, 400);
+  //     p.video = p.createCapture(p.VIDEO);
+  //     p.video.hide();
+  //     if(dialogActive == false){
+  //
+  //     }
+  //   };
+  //   p.draw = function () {
+  //     if(dialogActive == true && poseNet == undefined){
+  //       p.video.play();
+  //       poseNet = ml5.poseNet(p.video, p.modelLoaded);
+  //     }
+  //     p.backgroundLoad();
+  //
+  //   };
+  //   p.modelLoaded = function () {
+  //     console.log("poseNet is ready!");
+  //   };
+  //   p.backgroundLoad = function() {
+  //     p.push();
+  //     p.imageMode(p.CORNER);
+  //     p.image(fenceBgImg, 0, 0);
+  //     p.pop();
+  //   };
+  // };
+  //
+  // let swordCanvas = new p5(swordGame, `posenet-mini-game`);
