@@ -74,10 +74,10 @@ let mainGame = function (p) {
     $(`#skip`).hide();
 
     /*
-      When the play button gets pressed, the audio starts playing, the button and
-      music player are hidden, the typewriter effects starts in the story div and
-      once the voice starts speaking in the audio, that's when the skip button
-      fades in and the join us button shows up once the audio is over
+      When the play button gets pressed, the audio & video starts playing, the
+      button and music player are hidden, the video starts and once the voice
+      starts speaking in the audio, that's when the skip button fades in and
+      fades out right before the join us button fades in  once the video is over
     */
     $("#playerButton").on(`click`, function (event) {
 
