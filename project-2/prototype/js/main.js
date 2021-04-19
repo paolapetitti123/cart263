@@ -105,9 +105,9 @@ let mainGame = function (p) {
     });
 
     /*
-    Once clicked, the story div and buttons are hidden, and the div the join
-    us button is in gets deleted so it doesn't show up if you click on the skip
-    button instead. Then the game starts.
+    Once clicked, the buttons are hidden, and the div the join us button is in
+    gets deleted so it doesn't show up if you click on the skip button instead.
+    Then the game starts.
     */
     let skipButton = document.getElementById(`skip`);
     skipButton.onclick = function () {
