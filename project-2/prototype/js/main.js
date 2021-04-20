@@ -227,7 +227,7 @@ let dialogActive = false;
 let swordGame = function (p) {
   p.video = undefined;
   let poseNet = undefined;
-  let predictions = [];
+  let pose;
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
@@ -241,13 +241,22 @@ let swordGame = function (p) {
     p.createCanvas(800, 400);
   };
   p.draw = function () {
+    p.backgroundLoad();
+    p.dummyLoad();
     if(dialogActive == true && poseNet == undefined){
-      // p.video.play();
       p.video = p.createCapture(p.VIDEO);
       p.video.hide();
-      poseNet = ml5.poseNet(p.video, p.modelLoaded);
+      poseNet = ml5.poseNet(p.video,{flipHorizontal: true}, p.modelLoaded);
+      poseNet.on(`pose`,p.gotPoses);
+
     }
-    p.backgroundLoad();
+  };
+  p.gotPoses = function (poses) {
+    if(poses.length > 0){
+      pose = poses[0].pose;
+      // console.log(pose);
+    }
+    p.swordSide();
   };
   p.modelLoaded = function () {
     console.log("poseNet is ready!");
@@ -257,6 +266,27 @@ let swordGame = function (p) {
     p.imageMode(p.CORNER);
     p.image(fenceBgImg, 0, 0);
     p.pop();
+  };
+  p.dummyLoad = function() {
+    let dummyHeight = p.height/2 + 8;
+    let dummyWidth = p.width/2;
+    p.push();
+    p.imageMode(p.CENTER);
+    p.image(practiceDummyImg, dummyWidth, dummyHeight);
+    p.pop();
+  };
+  p.swordSide = function() {
+    if(pose){
+      if(pose.leftWrist){
+        p.push();
+        // p.fill(255,0,0);
+        // p.ellipse(pose.leftWrist.x, pose.leftWrist.y, 64);
+        p.imageMode(p.CENTER);
+        p.image(swordImg, pose.leftWrist.x, pose.leftWrist.y);
+        console.log("WEEEEE");
+        p.pop();
+      }
+    }
   };
 };
 
