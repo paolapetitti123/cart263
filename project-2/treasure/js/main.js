@@ -246,13 +246,13 @@ let swordGame = function (p) {
     if(dialogActive == true && poseNet == undefined){
       p.video = p.createCapture(p.VIDEO);
       p.video.hide();
-      poseNet = ml5.poseNet(p.video,{flipHorizontal: true}, p.modelLoaded);
+      poseNet = ml5.poseNet(p.video, p.modelLoaded);
       poseNet.on(`pose`,p.gotPoses);
 
     }
   };
   p.gotPoses = function (poses) {
-    if(poses.length > 0){
+    if(poses.length > 0.8){
       pose = poses[0].pose;
       // console.log(pose);
     }
@@ -282,7 +282,20 @@ let swordGame = function (p) {
         // p.fill(255,0,0);
         // p.ellipse(pose.leftWrist.x, pose.leftWrist.y, 64);
         p.imageMode(p.CENTER);
+        p.translate(p.width,0);
+        p.scale(-1,1);
         p.image(swordImg, pose.leftWrist.x, pose.leftWrist.y);
+        console.log("WEEEEE");
+        p.pop();
+      }
+      else if(pose.rightWrist){
+        p.push();
+        // p.fill(255,0,0);
+        // p.ellipse(pose.leftWrist.x, pose.leftWrist.y, 64);
+        p.imageMode(p.CENTER);
+        p.translate(p.width,0);
+        // p.scale(-1,1);
+        p.image(swordImg, pose.rightWrist.x, pose.rightWrist.y);
         console.log("WEEEEE");
         p.pop();
       }
