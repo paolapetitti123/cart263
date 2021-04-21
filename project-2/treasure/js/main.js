@@ -225,6 +225,15 @@ let keyCanvas = new p5(keyGame, `mini-game-box`);
 
 let dialogActive = false;
 let swordGame = function (p) {
+  /*
+    NOTE: All the code that is commented out was used for training the
+    data set/model for the shapeClassifier, however since I don't need
+    it running every single time the game loads I commented it out so
+    you can see what I did. I could have created an entirely new project
+    to do this and kept the saved data however I was following along the tutorial linked below and didn't skip ahead to see that they created two projects for this oops.
+
+    https://www.youtube.com/watch?v=3MqJzMvHE3E&ab_channel=TheCodingTrain
+  */
   p.video = undefined;
   let poseNet = undefined;
   let pose;
@@ -234,9 +243,10 @@ let swordGame = function (p) {
   let swordImgL = undefined;
   let swordImgR = undefined;
 
+/*
   let circles = [];
   let squares = [];
-  let triangles = [];
+  let triangles = []; */
   let shapeClassifier;
 
 
@@ -245,23 +255,29 @@ let swordGame = function (p) {
     swordImgL = p.loadImage(`assets/images/swordMiniGame/Sword-L.png`);
     swordImgR = p.loadImage(`assets/images/swordMiniGame/Sword-R.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
-
+/*
     for (let i = 0; i < 100; i++){
       let index = p.nf(i+1, 4, 0);
       circles[i] = p.loadImage(`assets/data/circle${index}.png`);
       squares[i] = p.loadImage(`assets/data/square${index}.png`);
       triangles[i] = p.loadImage(`assets/data/triangle${index}.png`);
     }
+    */
   };
   p.setup = function () {
     p.createCanvas(800, 400);
     let options = {
       inputs: [64, 64, 4],
-      task: `imageClassification`,
-      debug: true
+      task: `imageClassification`
     };
     shapeClassifier = ml5.neuralNetwork(options);
-
+    const modelData = {
+      model: `assets/model/model.json`,
+      metadata: `assets/model/model_meta.json`,
+      weights: `assets/model/model.weights.bin`
+    };
+    shapeClassifier.load(modelData, p.modelLoaded);
+/*
     for(let i = 0; i < circles.length; i++){
       shapeClassifier.addData({image: circles[i]},{label: `circle`});
       shapeClassifier.addData({image: squares[i]},{label: `square`});
@@ -269,6 +285,7 @@ let swordGame = function (p) {
     }
     shapeClassifier.normalizeData();
     shapeClassifier.train({epochs: 50},p.finishedTraining);
+    */
   };
   p.draw = function () {
     p.backgroundLoad();
@@ -284,7 +301,6 @@ let swordGame = function (p) {
   p.gotPoses = function (poses) {
     if(poses.length > 0){
       pose = poses[0].pose;
-      // console.log(pose);
     }
     p.swordSide();
   };
@@ -323,10 +339,11 @@ let swordGame = function (p) {
       }
     }
   };
+  /*
   p.finishedTraining = function() {
     console.log(`Training is Finished!!`);
     shapeClassifier.save();
-  };
+  };*/
 };
 
 let swordCanvas = new p5(swordGame, `posenet-mini-game`);
