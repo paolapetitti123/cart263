@@ -231,10 +231,12 @@ let swordGame = function (p) {
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
-  let swordImg = undefined;
+  let swordImgL = undefined;
+  let swordImgR = undefined;
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
-    swordImg = p.loadImage(`assets/images/swordMiniGame/Sword-01.png`);
+    swordImgL = p.loadImage(`assets/images/swordMiniGame/Sword-L.png`);
+    swordImgR = p.loadImage(`assets/images/swordMiniGame/Sword-R.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
   };
   p.setup = function () {
@@ -246,13 +248,13 @@ let swordGame = function (p) {
     if(dialogActive == true && poseNet == undefined){
       p.video = p.createCapture(p.VIDEO);
       p.video.hide();
-      poseNet = ml5.poseNet(p.video, p.modelLoaded);
+      poseNet = ml5.poseNet(p.video,{flipHorizontal:true}, p.modelLoaded);
       poseNet.on(`pose`,p.gotPoses);
 
     }
   };
   p.gotPoses = function (poses) {
-    if(poses.length > 0.8){
+    if(poses.length > 0){
       pose = poses[0].pose;
       // console.log(pose);
     }
@@ -277,26 +279,20 @@ let swordGame = function (p) {
   };
   p.swordSide = function() {
     if(pose){
-      if(pose.leftWrist){
+      p.imageMode(p.CENTER);
+      if(pose.leftWrist.confidence > 0.5){
         p.push();
-        // p.fill(255,0,0);
-        // p.ellipse(pose.leftWrist.x, pose.leftWrist.y, 64);
-        p.imageMode(p.CENTER);
-        p.translate(p.width,0);
-        p.scale(-1,1);
-        p.image(swordImg, pose.leftWrist.x, pose.leftWrist.y);
-        console.log("WEEEEE");
+        // p.translate(-p.width,0);
+        //  p.scale(-1,1);
+        p.image(swordImgL, pose.leftWrist.x, pose.leftWrist.y);
+        console.log("Left");
         p.pop();
       }
-      else if(pose.rightWrist){
+      else if(pose.rightWrist.confidence > 0.5){
         p.push();
-        // p.fill(255,0,0);
-        // p.ellipse(pose.leftWrist.x, pose.leftWrist.y, 64);
-        p.imageMode(p.CENTER);
-        p.translate(p.width,0);
-        // p.scale(-1,1);
-        p.image(swordImg, pose.rightWrist.x, pose.rightWrist.y);
-        console.log("WEEEEE");
+        p.translate(0,0);
+        p.image(swordImgR, pose.rightWrist.x, pose.rightWrist.y);
+        console.log("Right");
         p.pop();
       }
     }
