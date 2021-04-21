@@ -282,8 +282,6 @@ let swordGame = function (p) {
       p.imageMode(p.CENTER);
       if(pose.leftWrist.confidence > 0.5){
         p.push();
-        // p.translate(-p.width,0);
-        //  p.scale(-1,1);
         p.image(swordImgL, pose.leftWrist.x, pose.leftWrist.y);
         console.log("Left");
         p.pop();
