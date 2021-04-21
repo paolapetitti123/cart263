@@ -233,14 +233,42 @@ let swordGame = function (p) {
   let practiceDummyImg = undefined;
   let swordImgL = undefined;
   let swordImgR = undefined;
+
+  let circles = [];
+  let squares = [];
+  let triangles = [];
+  let shapeClassifier;
+
+
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
     swordImgL = p.loadImage(`assets/images/swordMiniGame/Sword-L.png`);
     swordImgR = p.loadImage(`assets/images/swordMiniGame/Sword-R.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
+
+    for (let i = 0; i < 100; i++){
+      let index = p.nf(i+1, 4, 0);
+      circles[i] = p.loadImage(`assets/data/circle${index}.png`);
+      squares[i] = p.loadImage(`assets/data/square${index}.png`);
+      triangles[i] = p.loadImage(`assets/data/triangle${index}.png`);
+    }
   };
   p.setup = function () {
     p.createCanvas(800, 400);
+    let options = {
+      inputs: [64, 64, 4],
+      task: `imageClassification`,
+      debug: true
+    };
+    shapeClassifier = ml5.neuralNetwork(options);
+
+    for(let i = 0; i < circles.length; i++){
+      shapeClassifier.addData({image: circles[i]},{label: `circle`});
+      shapeClassifier.addData({image: squares[i]},{label: `square`});
+      shapeClassifier.addData({image: triangles[i]},{label: `triangle`});
+    }
+    shapeClassifier.normalizeData();
+    shapeClassifier.train({epochs: 50},p.finishedTraining);
   };
   p.draw = function () {
     p.backgroundLoad();
@@ -294,6 +322,10 @@ let swordGame = function (p) {
         p.pop();
       }
     }
+  };
+  p.finishedTraining = function() {
+    console.log(`Training is Finished!!`);
+    shapeClassifier.save();
   };
 };
 
