@@ -290,12 +290,12 @@ let swordGame = function (p) {
   p.draw = function () {
     p.backgroundLoad();
     p.dummyLoad();
+    p.circleLoad();
     if(dialogActive == true && poseNet == undefined){
       p.video = p.createCapture(p.VIDEO);
       p.video.hide();
       poseNet = ml5.poseNet(p.video,{flipHorizontal:true}, p.modelLoaded);
       poseNet.on(`pose`,p.gotPoses);
-
     }
   };
   p.gotPoses = function (poses) {
@@ -317,8 +317,8 @@ let swordGame = function (p) {
     let dummyHeight = p.height/2 + 8;
     let dummyWidth = p.width/2;
     p.push();
-    p.imageMode(p.CENTER);
-    p.image(practiceDummyImg, dummyWidth, dummyHeight);
+      p.imageMode(p.CENTER);
+      p.image(practiceDummyImg, dummyWidth, dummyHeight);
     p.pop();
   };
   p.swordSide = function() {
@@ -338,6 +338,20 @@ let swordGame = function (p) {
         p.pop();
       }
     }
+  };
+  p.circleLoad = function() {
+    // Circle that the user needs to draw
+    let circleHeight = p.height/2 + 25;
+    let circleWidth = p.width/2;
+    p.push();
+      p.strokeWeight(15);
+      p.stroke(255,0,0,85);
+      p.noFill();
+      p.ellipse(circleWidth,circleHeight,95,95);
+    p.pop();
+    // calculate distance between sword and circle
+    // once overlapping, start detecting what shape is drawn
+    // if circle (+90% confidence) -> win mini game 
   };
   /*
   p.finishedTraining = function() {
