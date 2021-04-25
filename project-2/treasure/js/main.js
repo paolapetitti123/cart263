@@ -235,6 +235,7 @@ let swordGame = function (p) {
     https://www.youtube.com/watch?v=3MqJzMvHE3E&ab_channel=TheCodingTrain
   */
   p.video = undefined;
+  let gameCanvas = undefined;
   let poseNet = undefined;
   let pose;
 
@@ -248,7 +249,6 @@ let swordGame = function (p) {
   let squares = [];
   let triangles = []; */
   let shapeClassifier;
-
 
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
@@ -265,7 +265,7 @@ let swordGame = function (p) {
     */
   };
   p.setup = function () {
-    p.createCanvas(800, 400);
+    gameCanvas = p.createCanvas(800, 400);
     let options = {
       inputs: [64, 64, 4],
       task: `imageClassification`
@@ -322,6 +322,9 @@ let swordGame = function (p) {
     p.pop();
   };
   p.swordSide = function() {
+    let circleHeight = p.height/2 + 25;
+    let circleWidth = p.width/2;
+    let circleDiameter = 95;
     if(pose){
       p.imageMode(p.CENTER);
       if(pose.leftWrist.confidence > 0.5){
@@ -329,6 +332,14 @@ let swordGame = function (p) {
         p.image(swordImgL, pose.leftWrist.x, pose.leftWrist.y);
         console.log("Left");
         p.pop();
+        let d = p.dist(circleWidth, circleHeight, pose.leftWrist.x, pose.leftWrist.y);
+        if(d < circleDiameter/2){
+          let input = p.createGraphics(64,64);
+          input.copy(gameCanvas,0,0,400,400, 0,0, 64, 64);
+          p.strokeWeight(8);
+          p.line(pose.leftWrist.x,pose.leftWrist.y,circleWidth,circleHeight);
+          shapeClassifier.classify({image:gameCanvas}, p.gotResults);
+        }
       }
       else if(pose.rightWrist.confidence > 0.5){
         p.push();
@@ -336,23 +347,46 @@ let swordGame = function (p) {
         p.image(swordImgR, pose.rightWrist.x, pose.rightWrist.y);
         console.log("Right");
         p.pop();
+        let d = p.dist(circleWidth, circleHeight, pose.rightWrist.x, pose.rightWrist.y);
+        if(d < circleDiameter/2){
+          let input = p.createGraphics(64,64);
+          input.copy(gameCanvas,0,0,400,400, 0,0, 64, 64);
+          p.strokeWeight(8);
+          p.line(pose.leftWrist.x,pose.leftWrist.y,circleWidth,circleHeight);
+          shapeClassifier.classify({image:gameCanvas}, p.gotResults);
+        }
       }
     }
+  };
+  p.gotResults = function(err,results) {
+    if(err){
+      console.log(err);
+      return;
+    }
+    // console.log(results);
+    let label = results[0].label;
+    let confidence = p.nf(100 * results[0].confidence, 2,0);
+    let shapeResult = `${label}: ${confidence}%`
+    p.textSize(50);
+    p.fill(0);
+    p.text(shapeResult, 100, 100);
   };
   p.circleLoad = function() {
     // Circle that the user needs to draw
     let circleHeight = p.height/2 + 25;
     let circleWidth = p.width/2;
+    let circleDiameter = 95;
     p.push();
       p.strokeWeight(15);
       p.stroke(255,0,0,85);
-      p.noFill();
-      p.ellipse(circleWidth,circleHeight,95,95);
+      p.fill(255,255, 255, 0);
+      p.ellipse(circleWidth,circleHeight,circleDiameter,circleDiameter);
     p.pop();
     // calculate distance between sword and circle
     // once overlapping, start detecting what shape is drawn
-    // if circle (+90% confidence) -> win mini game 
+    // if circle (+90% confidence) -> win mini game
   };
+
   /*
   p.finishedTraining = function() {
     console.log(`Training is Finished!!`);
