@@ -232,7 +232,7 @@ let swordGame = function (p) {
     https://www.youtube.com/watch?v=3MqJzMvHE3E&ab_channel=TheCodingTrain
   */
   p.video = undefined;
-  let canvas;
+  // let p.canvas;
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
@@ -260,17 +260,17 @@ let swordGame = function (p) {
 
   };
   p.setup = function () {
-    canvas = p.createCanvas(800, 400);
+    p.canvas = p.createCanvas(800, 400);
     let options = {
-      task: 'imageClassification',
       inputs: [64, 64, 4],
-      // debug: true
+      task: `imageClassification`,
+      debug: true
     };
     shapeClassifier = ml5.neuralNetwork(options);
     const modelDetails = {
       model: `assets/model/model.json`,
-      metadata: `assets/model/modelmeta.json`,
-      weights: `assets/model/weights.bin`
+      metadata: `assets/model/model_meta.json`,
+      weights: `assets/model/model.weights.bin`
     };
     p.backgroundLoad();
     p.dummyLoad();
@@ -278,7 +278,7 @@ let swordGame = function (p) {
     inputImage = p.createGraphics(64, 64);
     shapeClassifier.load(modelDetails, p.modelLoaded);
 
-
+    //
     // for(let i = 0; i < circles.length; i++){
     //   shapeClassifier.addData({image: circles[i]},{label: `circle`});
     //   shapeClassifier.addData({image: squares[i]},{label: `square`});
@@ -327,7 +327,7 @@ let swordGame = function (p) {
     p.cursor(`assets/images/swordMiniGame/swordCursor.cur`);
   };
   p.classifyImage = function () {
-    inputImage.copy(canvas, 0, 0, 400, 400, 0, 0, 64, 64);
+    inputImage.copy(p.canvas, 0, 0, 400, 400, 0, 0, 64, 64);
   //image(inputImage, 0, 0);
   shapeClassifier.classify(
     {
