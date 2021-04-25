@@ -80,8 +80,7 @@ let mainGame = function (p) {
       fades out right before the join us button fades in  once the video is over
     */
     $("#playerButton").on(`click`, function (event) {
-
-      longJourneyVideo.size(1280/2,720/2);
+      longJourneyVideo.size(1280 / 2, 720 / 2);
 
       if (!audio1.play()) {
         audio1.play();
@@ -95,13 +94,12 @@ let mainGame = function (p) {
       setTimeout(function () {
         $(`#skip`).fadeIn();
       }, 11000);
-      setTimeout(function (){
+      setTimeout(function () {
         $(`#skip`).fadeOut();
-      },96000);
+      }, 96000);
       setTimeout(function () {
         $(`#gameButtonContainer`).fadeIn();
       }, 98000);
-
     });
 
     /*
@@ -133,7 +131,6 @@ let mainGame = function (p) {
       game = new Phaser.Game(config); // starts the game
     };
   };
-
 };
 let mainCanvas = new p5(mainGame);
 
@@ -236,34 +233,25 @@ let swordGame = function (p) {
   */
   p.video = undefined;
   let gameCanvas = undefined;
-  let poseNet = undefined;
-  let pose;
-  let rightWristX;
-  let rightWristY;
-  let pRightWristX;
-  let pRightWristY;
-  let leftWristX;
-  let leftWristY;
-  let pLeftWristX;
-  let pLeftWristY;
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
   let swordImgL = undefined;
   let swordImgR = undefined;
 
-/*
+  /*
   let circles = [];
   let squares = [];
   let triangles = []; */
   let shapeClassifier;
+  let input;
 
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
     swordImgL = p.loadImage(`assets/images/swordMiniGame/Sword-L.png`);
     swordImgR = p.loadImage(`assets/images/swordMiniGame/Sword-R.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
-/*
+    /*
     for (let i = 0; i < 100; i++){
       let index = p.nf(i+1, 4, 0);
       circles[i] = p.loadImage(`assets/data/circle${index}.png`);
@@ -276,16 +264,20 @@ let swordGame = function (p) {
     gameCanvas = p.createCanvas(800, 400);
     let options = {
       inputs: [64, 64, 4],
-      task: `imageClassification`
+      task: `imageClassification`,
     };
     shapeClassifier = ml5.neuralNetwork(options);
     const modelData = {
       model: `assets/model/model.json`,
       metadata: `assets/model/model_meta.json`,
-      weights: `assets/model/model.weights.bin`
+      weights: `assets/model/model.weights.bin`,
     };
+    p.backgroundLoad();
+    p.dummyLoad();
+    p.circleLoad();
+    input = p.createGraphics(64, 64);
     shapeClassifier.load(modelData, p.modelLoaded);
-/*
+    /*
     for(let i = 0; i < circles.length; i++){
       shapeClassifier.addData({image: circles[i]},{label: `circle`});
       shapeClassifier.addData({image: squares[i]},{label: `square`});
@@ -294,111 +286,77 @@ let swordGame = function (p) {
     shapeClassifier.normalizeData();
     shapeClassifier.train({epochs: 50},p.finishedTraining);
     */
+
   };
   p.draw = function () {
-    p.backgroundLoad();
-    p.dummyLoad();
-    p.circleLoad();
-    if(dialogActive == true && poseNet == undefined){
-      p.video = p.createCapture(p.VIDEO);
-      p.video.hide();
-      poseNet = ml5.poseNet(p.video,{flipHorizontal:true}, p.modelLoaded);
-      poseNet.on(`pose`,p.gotPoses);
+    if (dialogActive == true) {
+      p.sword();
     }
   };
-  p.gotPoses = function (poses) {
-    if(poses.length > 0){
-      pose = poses[0].pose;
-    }
-    p.swordSide();
-  };
+
   p.modelLoaded = function () {
-    console.log("poseNet is ready!");
+    console.log("model is ready!");
+    if (dialogActive == true) {
+      console.log("DIALOG OPEN");
+      p.classifyImage();
+    }
   };
-  p.backgroundLoad = function() {
+  p.backgroundLoad = function () {
     p.push();
     p.imageMode(p.CORNER);
     p.image(fenceBgImg, 0, 0);
     p.pop();
   };
-  p.dummyLoad = function() {
-    let dummyHeight = p.height/2 + 8;
-    let dummyWidth = p.width/2;
+  p.dummyLoad = function () {
+    let dummyHeight = p.height / 2 + 8;
+    let dummyWidth = p.width / 2;
     p.push();
-      p.imageMode(p.CENTER);
-      p.image(practiceDummyImg, dummyWidth, dummyHeight);
+    p.imageMode(p.CENTER);
+    p.image(practiceDummyImg, dummyWidth, dummyHeight);
     p.pop();
   };
-  p.swordSide = function() {
-    let circleHeight = p.height/2 + 25;
-    let circleWidth = p.width/2;
+  p.sword = function () {
+    p.cursor(`assets/images/swordMiniGame/swordCursor.cur`);
+    let circleHeight = p.height / 2 + 25;
+    let circleWidth = p.width / 2;
     let circleDiameter = 95;
-
-    if(pose){
-      leftWristX = pose.leftWrist.x;
-      leftWristY = pose.leftWrist.y;
-
-      rightWristX = pose.rightWrist.x;
-      rightWristY = pose.rightWrist.y;
-      p.imageMode(p.CENTER);
-      if(pose.leftWrist.confidence > 0.5){
-        p.push();
-        p.image(swordImgL, leftWristX, leftWristY);
-        console.log("Left");
-        p.pop();
-        let d = p.dist(circleWidth, circleHeight, leftWristX, leftWristY);
-        if(d < circleDiameter/2){
-          let input = p.createGraphics(64,64);
-          input.copy(gameCanvas,0,0,400,400, 0,0, 64, 64);
-          p.strokeWeight(8);
-          p.line(leftWristX,leftWristY,pLeftWristX,pLeftWristY);
-          pLeftWristX = leftWristX;
-          pLeftWristY = leftWristY;
-          shapeClassifier.classify({image:gameCanvas}, p.gotResults);
-        }
-      }
-      else if(pose.rightWrist.confidence > 0.5){
-        p.push();
-        p.translate(0,0);
-        p.image(swordImgR, rightWristX, rightWristY);
-        console.log("Right");
-        p.pop();
-        let d = p.dist(circleWidth, circleHeight, rightWristX, rightWristY);
-        if(d < circleDiameter){
-          let input = p.createGraphics(64,64);
-          input.copy(gameCanvas,0,0,400,400, 0,0, 64, 64);
-          p.strokeWeight(8);
-          p.line(rightWristX,rightWristY,pRightWristX,pRightWristY);
-          shapeClassifier.classify({image:gameCanvas}, p.gotResults);
-          pRightWristX = rightWristX;
-          pRightWristY = rightWristY;
-        }
+    let d = p.dist(circleWidth, circleHeight, p.mouseX, p.mouseY);
+    if (d < circleDiameter / 2) {
+      if (p.mouseIsPressed) {
+        p.strokeWeight(8);
+        p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
       }
     }
   };
-  p.gotResults = function(err,results) {
-    if(err){
+  p.classifyImage = function () {
+    input.copy(gameCanvas, 0, 0, 800, 400, 0, 0, 64, 64);
+    shapeClassifier.classify({ image: input }, p.gotResults);
+  };
+  p.gotResults = function (err, results) {
+    if (err) {
       console.log(err);
       return;
     }
-    // console.log(results);
     let label = results[0].label;
-    let confidence = p.nf(100 * results[0].confidence, 2,0);
+    let confidence = p.nf(100 * results[0].confidence, 2, 0);
     let shapeResult = `${label}: ${confidence}%`;
+    p.push();
     p.textSize(50);
     p.fill(0);
-    p.text(shapeResult, 100, 100);
+    p.text(shapeResult, p.width/2, 200);
+    p.pop();
+    p.classifyImage();
   };
-  p.circleLoad = function() {
+  p.circleLoad = function () {
     // Circle that the user needs to draw
-    let circleHeight = p.height/2 + 25;
-    let circleWidth = p.width/2;
+    let circleHeight = p.height / 2 + 25;
+    let circleWidth = p.width / 2;
     let circleDiameter = 95;
     p.push();
-      p.strokeWeight(15);
-      p.stroke(255,0,0,85);
-      p.fill(255,255, 255, 0);
-      p.ellipse(circleWidth,circleHeight,circleDiameter,circleDiameter);
+    p.strokeWeight(15);
+    p.stroke(255, 0, 0, 85);
+    p.fill(255, 255, 255, 0);
+    p.ellipse(circleWidth, circleHeight, circleDiameter, circleDiameter);
     p.pop();
     // calculate distance between sword and circle
     // once overlapping, start detecting what shape is drawn
