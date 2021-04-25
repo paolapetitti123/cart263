@@ -236,20 +236,16 @@ let swordGame = function (p) {
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
-  let swordImgL = undefined;
-  let swordImgR = undefined;
 
   /*
   let circles = [];
   let squares = [];
   let triangles = []; */
   let shapeClassifier;
-  let input;
+  let inputImage;
 
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
-    swordImgL = p.loadImage(`assets/images/swordMiniGame/Sword-L.png`);
-    swordImgR = p.loadImage(`assets/images/swordMiniGame/Sword-R.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
     /*
     for (let i = 0; i < 100; i++){
@@ -275,7 +271,7 @@ let swordGame = function (p) {
     p.backgroundLoad();
     p.dummyLoad();
     p.circleLoad();
-    input = p.createGraphics(64, 64);
+    inputImage = p.createGraphics(64, 64);
     shapeClassifier.load(modelData, p.modelLoaded);
     /*
     for(let i = 0; i < circles.length; i++){
@@ -291,15 +287,22 @@ let swordGame = function (p) {
   p.draw = function () {
     if (dialogActive == true) {
       p.sword();
+      let circleHeight = p.height / 2 + 25;
+      let circleWidth = p.width / 2;
+      let circleDiameter = 95;
+      let d = p.dist(circleWidth, circleHeight, p.mouseX, p.mouseY);
+      if (d < circleDiameter / 2) {
+        if (p.mouseIsPressed) {
+          p.strokeWeight(8);
+          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+        }
+      }
     }
   };
 
   p.modelLoaded = function () {
     console.log("model is ready!");
-    if (dialogActive == true) {
-      console.log("DIALOG OPEN");
-      p.classifyImage();
-    }
+    p.classifyImage();
   };
   p.backgroundLoad = function () {
     p.push();
@@ -317,35 +320,25 @@ let swordGame = function (p) {
   };
   p.sword = function () {
     p.cursor(`assets/images/swordMiniGame/swordCursor.cur`);
-    let circleHeight = p.height / 2 + 25;
-    let circleWidth = p.width / 2;
-    let circleDiameter = 95;
-    let d = p.dist(circleWidth, circleHeight, p.mouseX, p.mouseY);
-    if (d < circleDiameter / 2) {
-      if (p.mouseIsPressed) {
-        p.strokeWeight(8);
-        p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
-      }
-    }
   };
   p.classifyImage = function () {
-    input.copy(gameCanvas, 0, 0, 800, 400, 0, 0, 64, 64);
-    shapeClassifier.classify({ image: input }, p.gotResults);
+    inputImage.copy(gameCanvas, 0, 0, 800, 400, 0, 0, 64, 64);
+    shapeClassifier.classify({image: inputImage},p.gotResults);
   };
   p.gotResults = function (err, results) {
     if (err) {
       console.log(err);
       return;
     }
-    let label = results[0].label;
-    let confidence = p.nf(100 * results[0].confidence, 2, 0);
-    let shapeResult = `${label}: ${confidence}%`;
-    p.push();
-    p.textSize(50);
-    p.fill(0);
-    p.text(shapeResult, p.width/2, 200);
-    p.pop();
-    p.classifyImage();
+    else if(results){
+      let label = results[0].label;
+      let confidence = p.nf(100 * results[0].confidence, 2, 0);
+      let shapeResult = `${label}: ${confidence}%`;
+      p.textSize(50);
+      p.fill(0);
+      p.text(shapeResult, p.width/2, 200);
+    }
+    // p.classifyImage();
   };
   p.circleLoad = function () {
     // Circle that the user needs to draw
