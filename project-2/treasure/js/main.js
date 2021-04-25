@@ -238,6 +238,14 @@ let swordGame = function (p) {
   let gameCanvas = undefined;
   let poseNet = undefined;
   let pose;
+  let rightWristX;
+  let rightWristY;
+  let pRightWristX;
+  let pRightWristY;
+  let leftWristX;
+  let leftWristY;
+  let pLeftWristX;
+  let pLeftWristY;
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
@@ -325,35 +333,45 @@ let swordGame = function (p) {
     let circleHeight = p.height/2 + 25;
     let circleWidth = p.width/2;
     let circleDiameter = 95;
+
     if(pose){
+      leftWristX = pose.leftWrist.x;
+      leftWristY = pose.leftWrist.y;
+
+      rightWristX = pose.rightWrist.x;
+      rightWristY = pose.rightWrist.y;
       p.imageMode(p.CENTER);
       if(pose.leftWrist.confidence > 0.5){
         p.push();
-        p.image(swordImgL, pose.leftWrist.x, pose.leftWrist.y);
+        p.image(swordImgL, leftWristX, leftWristY);
         console.log("Left");
         p.pop();
-        let d = p.dist(circleWidth, circleHeight, pose.leftWrist.x, pose.leftWrist.y);
+        let d = p.dist(circleWidth, circleHeight, leftWristX, leftWristY);
         if(d < circleDiameter/2){
           let input = p.createGraphics(64,64);
           input.copy(gameCanvas,0,0,400,400, 0,0, 64, 64);
           p.strokeWeight(8);
-          p.line(pose.leftWrist.x,pose.leftWrist.y,circleWidth,circleHeight);
+          p.line(leftWristX,leftWristY,pLeftWristX,pLeftWristY);
+          pLeftWristX = leftWristX;
+          pLeftWristY = leftWristY;
           shapeClassifier.classify({image:gameCanvas}, p.gotResults);
         }
       }
       else if(pose.rightWrist.confidence > 0.5){
         p.push();
         p.translate(0,0);
-        p.image(swordImgR, pose.rightWrist.x, pose.rightWrist.y);
+        p.image(swordImgR, rightWristX, rightWristY);
         console.log("Right");
         p.pop();
-        let d = p.dist(circleWidth, circleHeight, pose.rightWrist.x, pose.rightWrist.y);
-        if(d < circleDiameter/2){
+        let d = p.dist(circleWidth, circleHeight, rightWristX, rightWristY);
+        if(d < circleDiameter){
           let input = p.createGraphics(64,64);
           input.copy(gameCanvas,0,0,400,400, 0,0, 64, 64);
           p.strokeWeight(8);
-          p.line(pose.leftWrist.x,pose.leftWrist.y,circleWidth,circleHeight);
+          p.line(rightWristX,rightWristY,pRightWristX,pRightWristY);
           shapeClassifier.classify({image:gameCanvas}, p.gotResults);
+          pRightWristX = rightWristX;
+          pRightWristY = rightWristY;
         }
       }
     }
@@ -366,7 +384,7 @@ let swordGame = function (p) {
     // console.log(results);
     let label = results[0].label;
     let confidence = p.nf(100 * results[0].confidence, 2,0);
-    let shapeResult = `${label}: ${confidence}%`
+    let shapeResult = `${label}: ${confidence}%`;
     p.textSize(50);
     p.fill(0);
     p.text(shapeResult, 100, 100);
