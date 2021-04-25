@@ -237,7 +237,7 @@ let swordGame = function (p) {
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
 
-  /*
+/*
   let circles = [];
   let squares = [];
   let triangles = []; */
@@ -253,14 +253,15 @@ let swordGame = function (p) {
       circles[i] = p.loadImage(`assets/data/circle${index}.png`);
       squares[i] = p.loadImage(`assets/data/square${index}.png`);
       triangles[i] = p.loadImage(`assets/data/triangle${index}.png`);
-    }
-    */
+    } */
+
   };
   p.setup = function () {
     gameCanvas = p.createCanvas(800, 400);
     let options = {
       inputs: [64, 64, 4],
       task: `imageClassification`,
+      // debug: true,
     };
     shapeClassifier = ml5.neuralNetwork(options);
     const modelData = {
@@ -273,6 +274,7 @@ let swordGame = function (p) {
     p.circleLoad();
     inputImage = p.createGraphics(64, 64);
     shapeClassifier.load(modelData, p.modelLoaded);
+
     /*
     for(let i = 0; i < circles.length; i++){
       shapeClassifier.addData({image: circles[i]},{label: `circle`});
@@ -280,8 +282,8 @@ let swordGame = function (p) {
       shapeClassifier.addData({image: triangles[i]},{label: `triangle`});
     }
     shapeClassifier.normalizeData();
-    shapeClassifier.train({epochs: 50},p.finishedTraining);
-    */
+    shapeClassifier.train({epochs: 50},p.finishedTraining); */
+
 
   };
   p.draw = function () {
@@ -338,7 +340,7 @@ let swordGame = function (p) {
       p.fill(0);
       p.text(shapeResult, p.width/2, 200);
     }
-    // p.classifyImage();
+    p.classifyImage();
   };
   p.circleLoad = function () {
     // Circle that the user needs to draw
@@ -356,7 +358,7 @@ let swordGame = function (p) {
     // if circle (+90% confidence) -> win mini game
   };
 
-  /*
+/*
   p.finishedTraining = function() {
     console.log(`Training is Finished!!`);
     shapeClassifier.save();
