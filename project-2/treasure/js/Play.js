@@ -35,7 +35,8 @@ class Play extends Phaser.Scene {
   createTileMap() {
     let mappy = this.add.tilemap(`map`);
     let boat = mappy.addTilesetImage(`boat-01`, `background`);
-    let chests = mappy.addTilesetImage(`chests (1)`, `chests`);
+    let chests = mappy.addTilesetImage(`Bronze Chest`, `chests`);
+    let bronzeChest = mappy.addTilesetImage(`Bronze Chest`, `bronzeChest`);
     let destructible = mappy.addTilesetImage(
       `Destructible Objects Sprite Sheet`,
       `destructible`
@@ -72,17 +73,9 @@ class Play extends Phaser.Scene {
     let binLayer = mappy.createLayer(`Bin`, [furniture2]).setDepth(-1);
     let flagLayer = mappy.createLayer(`Flag`, [furniture1]).setDepth(-1);
     let chestLayer = mappy.createLayer(`Chest`, [chests]).setDepth(-1);
+    let bronzeChestLayer = mappy.createLayer(`BronzeChest`, [bronzeChest]).setDepth(-1);
 
-    /*
-      Here I am getting the key object since it's different from the regular
-      tiles, I got the gid from the JSON file, then I proceeded to add a foreach
-      loop to enable physics for the object.
-    */
-    // let keyLayer = mappy.createFromObjects(`Key`, { gid: 734, key: `key` });
 
-    // keyLayer.forEach((key, i) => {
-    //   this.physics.world.enable(key);
-    // });
 
     // map collisions with regular tiles
     this.physics.add.collider(
@@ -93,6 +86,7 @@ class Play extends Phaser.Scene {
       this
     );
     this.physics.add.collider(this.avatar, chestLayer);
+    this.physics.add.collider(this.avatar, bronzeChestLayer);
     this.physics.add.collider(
       this.avatar,
       decoLayer,
@@ -115,6 +109,7 @@ class Play extends Phaser.Scene {
 
     // This turns the collisions on for the tile layers
     chestLayer.setCollisionByExclusion(-1, true);
+    bronzeChestLayer.setCollisionByExclusion(-1, true);
     binLayer.setCollisionByExclusion(-1, true);
     decoLayer.setCollisionByExclusion(-1, true);
     tableLayer.setCollisionByExclusion(-1, true);

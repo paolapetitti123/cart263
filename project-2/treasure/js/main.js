@@ -41,6 +41,7 @@ let mainGame = function (p) {
     $(`#intro-dialog`).hide();
     $(`#mini-game-box`).hide();
     $(`#neuralNetwork-mini-game`).hide();
+    $(`#treasureChest-mini-game`).hide();
     // turning autoOpen to false so that the intro modal only opens when the game starts
     $(`#intro-dialog`).dialog({
       autoOpen: false,
@@ -59,6 +60,14 @@ let mainGame = function (p) {
       autoOpen: false,
     });
     $(`#neuralNetwork-mini-game`).dialog({
+      modal: true,
+      height: 500,
+      width: 850,
+      resizable: false,
+      draggable: false,
+      autoOpen: false,
+    });
+    $(`#treasureChest-mini-game`).dialog({
       modal: true,
       height: 500,
       width: 850,

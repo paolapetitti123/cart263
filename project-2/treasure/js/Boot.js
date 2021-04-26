@@ -14,7 +14,8 @@ class Boot extends Phaser.Scene {
     this.load.image(`furniture2`, `assets/images/furniture-24x24-5x4-sheet.png`);
     this.load.image(`furniture3`, `assets/images/shrines-altars-24x24-5x4-sheet.png`);
     this.load.image(`tileSheet`, `assets/images/tilesheet.png`);
-    this.load.image(`chests`, `assets/images/chests (1).png`);
+    this.load.image(`chests`, `assets/images/Bronze Chest.png`);
+    this.load.image(`bronzeChest`, `assets/images/Bronze Chest.png`);
     this.load.image(`destructible`, `assets/images/Destructible Objects Sprite Sheet.png`);
     this.load.image(`barrel`, `assets/images/Barrel.png`);
     this.load.image(`water`, `assets/images/water.png`);
@@ -32,7 +33,7 @@ class Boot extends Phaser.Scene {
       endFrame: 35
     });
 
-    
+
 
 
   }
