@@ -257,9 +257,7 @@ let swordGame = function (p) {
     gameCanvas = p.createCanvas(800, 400);
     p.pixelDensity(1);
     let options = {
-      // inputs: [64,64,4],
       task: `imageClassification`
-      // debug: true
     };
     shapeClassifier = ml5.neuralNetwork(options);
     const modelDetails = {
@@ -279,6 +277,7 @@ let swordGame = function (p) {
     resultsDiv = p.createDiv(`loading model`);
     resultsDiv.style('float','left');
     inputImage = p.createGraphics(64, 64);
+
     // for(let i = 0; i < circles.length; i++){
     //   shapeClassifier.addData({image: circles[i]},{label: `circle`});
     //   shapeClassifier.addData({image: squares[i]},{label: `square`});
@@ -288,16 +287,16 @@ let swordGame = function (p) {
     // shapeClassifier.train({epochs: 50},p.finishedTraining);
   };
   p.draw = function () {
+    let circleHeight = p.height / 2 + 25;
+    let circleWidth = p.width / 2;
+    let circleDiameter = 95;
+    let d = p.dist(circleWidth, circleHeight, p.mouseX, p.mouseY);
     if (dialogActive == true) {
-      let circleHeight = p.height / 2 + 25;
-      let circleWidth = p.width / 2;
-      let circleDiameter = 95;
-      let d = p.dist(circleWidth, circleHeight, p.mouseX, p.mouseY);
       if (d < circleDiameter / 2 && p.mouseIsPressed) {
         p.strokeWeight(8);
+        p.fill(255,0,0);
         p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
       }
-
     }
   };
 
@@ -325,6 +324,7 @@ let swordGame = function (p) {
     p.cursor(`assets/images/swordMiniGame/swordCursor.cur`);
   };
   p.classifyImage = function () {
+
     inputImage.copy(gameCanvas, 0, 0, 800, 400, 0, 0, 64, 64);
     shapeClassifier.classify(
       {
@@ -335,19 +335,16 @@ let swordGame = function (p) {
   };
   // calculate distance between sword and circle
   // once overlapping, start detecting what shape is drawn
-  // if circle (+90% confidence) -> win mini game
+  // if circle (+70% confidence) -> win mini game
   p.gotResults = function (err, results) {
     if (err) {
       console.log(err);
       return;
     }
-    // console.log(results);
       let label = results[0].label;
       let confidence = p.nf(100 * results[0].confidence, 2, 0);
       resultsDiv.html(`${label}: ${confidence}%`);
       p.classifyImage();
-
-
   };
   p.circleLoad = function () {
     // Circle that the user needs to draw
