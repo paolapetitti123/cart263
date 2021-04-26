@@ -78,11 +78,11 @@ class Play extends Phaser.Scene {
       tiles, I got the gid from the JSON file, then I proceeded to add a foreach
       loop to enable physics for the object.
     */
-    let keyLayer = mappy.createFromObjects(`Key`, { gid: 734, key: `key` });
+    // let keyLayer = mappy.createFromObjects(`Key`, { gid: 734, key: `key` });
 
-    keyLayer.forEach((key, i) => {
-      this.physics.world.enable(key);
-    });
+    // keyLayer.forEach((key, i) => {
+    //   this.physics.world.enable(key);
+    // });
 
     // map collisions with regular tiles
     this.physics.add.collider(
@@ -105,13 +105,13 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, barrelLayer);
     this.physics.add.collider(this.avatar, borderLayer);
     // Map collision with object
-    this.physics.add.collider(
-      this.avatar,
-      keyLayer,
-      this.collectKey,
-      null,
-      this
-    );
+    // this.physics.add.collider(
+    //   this.avatar,
+    //   keyLayer,
+    //   this.collectKey,
+    //   null,
+    //   this
+    // );
 
     // This turns the collisions on for the tile layers
     chestLayer.setCollisionByExclusion(-1, true);
@@ -123,24 +123,24 @@ class Play extends Phaser.Scene {
     borderLayer.setCollisionByExclusion(-1, true);
   }
 
-  collectKey(avatar, key) {
-    // this is to keep track of whether or not the player collected a key
-
-    // Once you hit the key, the key is destroyed & the keyScore gets added 1
-    key.destroy(key.x, key.y);
-    keyScore++;
-    console.log(`Keys: ${keyScore}`);
-  }
+  // collectKey(avatar, key) {
+  //   // this is to keep track of whether or not the player collected a key
+  //
+  //   // Once you hit the key, the key is destroyed & the keyScore gets added 1
+  //   key.destroy(key.x, key.y);
+  //   keyScore++;
+  //   console.log(`Keys: ${keyScore}`);
+  // }
 
   openMiniGame(avatar, binLayer) {
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
-
+    keyGameDialogActive = true;
   }
 
   openPoseMiniGame(avatar, decoLayer) {
-    $(`#posenet-mini-game`).dialog(`open`);
-    dialogActive = true;
-    
+    $(`#neuralNetwork-mini-game`).dialog(`open`);
+    swordDialogActive = true;
+
 
   }
 

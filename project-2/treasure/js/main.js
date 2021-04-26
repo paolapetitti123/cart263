@@ -3,17 +3,16 @@
 Pirate Game (Project 2)
 Paola Petitti
 
-This is the link to the typewriter library I found:
-https://github.com/mrvautin/typewrite
-
 Link to the audio for the intro:
 https://www.youtube.com/watch?v=eXubmzAgA10&ab_channel=KQENTERTAINMENT
 
+In order for me to get the mini games working inside modal/dialog boxes, I had
+to use several instance canvases all parented to their own div (except the main
+game canvas) so that they will only be seen when those dialog boxes are triggered
+to open.
+
 
 todo:
-- Add canvas to decoLayer box
-    - The game will have the user  follow along the circle/X
-      to 'cut' open the dummy and you'll get a key from that.
 - be able to interact with the treasure chests
   -> no key: pop up saying you need a key (either text, alert or modal)
   -> with key: get a modal box with a mini game (maybe a handpose game)
@@ -41,7 +40,7 @@ let mainGame = function (p) {
     $(`#introVideo`).hide();
     $(`#intro-dialog`).hide();
     $(`#mini-game-box`).hide();
-    $(`#posenet-mini-game`).hide();
+    $(`#neuralNetwork-mini-game`).hide();
     // turning autoOpen to false so that the intro modal only opens when the game starts
     $(`#intro-dialog`).dialog({
       autoOpen: false,
@@ -59,7 +58,7 @@ let mainGame = function (p) {
       draggable: false,
       autoOpen: false,
     });
-    $(`#posenet-mini-game`).dialog({
+    $(`#neuralNetwork-mini-game`).dialog({
       modal: true,
       height: 500,
       width: 850,
@@ -132,6 +131,7 @@ let mainGame = function (p) {
 };
 let mainCanvas = new p5(mainGame);
 
+let keyGameDialogActive = false;
 let keyGame = function (p) {
   const NUM_PIRATE_ITEMS_IMG = 9;
   const NUM_PIRATE_ITEMS = 72;
@@ -174,18 +174,21 @@ let keyGame = function (p) {
   };
   p.draw = function () {
     // creating the background image
-    p.push();
-    p.imageMode(p.CORNER);
-    p.image(binImg, 0, 0);
-    p.pop();
+    if(keyGameDialogActive == true){
+      p.push();
+      p.imageMode(p.CORNER);
+      p.image(binImg, 0, 0);
+      p.pop();
 
-    // getting the items & key to appear
-    for (let i = 0; i < pirateItems.length; i++) {
-      pirateItems[i].update();
+      // getting the items & key to appear
+      for (let i = 0; i < pirateItems.length; i++) {
+        pirateItems[i].update();
+      }
+      if (key.active) {
+        key.update();
+      }
     }
-    if (key.active) {
-      key.update();
-    }
+
   };
 
   // checking if the mouse clicked on the key
@@ -206,31 +209,19 @@ let keyGame = function (p) {
 let keyCanvas = new p5(keyGame, `mini-game-box`);
 
 /*
-  To get started I'm following along this tutorial to at the very least have
-  PoseNet set up.
-  https://www.youtube.com/watch?v=OIo-DIOkNVg&ab_channel=TheCodingTrain
+  This mini game is relatively simple to play, the user just has to draw a
+  circle that the shapeClassifier will recognize with 85% confidence.
 
-  To Do:
-  - add background and dummy object
-  - get the game to detect which hand is raised (L/R)
-  - display the sword in the right direction depending on the hand raised first
-  - add a circle or X on the target dummy that the player has to trace with the sword
-  - Once that's done, a key is given
+  For the shapeclassifier I followed along this tutorial on how to use
+  ml5js's neuralNetwork:
+  https://www.youtube.com/watch?v=3MqJzMvHE3E&ab_channel=TheCodingTrain
 */
 let inputImage;
-let dialogActive = false;
+let swordDialogActive = false;
 let swordGame = function (p) {
-  /*
-    NOTE: All the code that is commented out was used for training the
-    data set/model for the shapeClassifier, however since I don't need
-    it running every single time the game loads I commented it out so
-    you can see what I did. I could have created an entirely new project
-    to do this and kept the saved data however I was following along the tutorial linked below and didn't skip ahead to see that they created two projects for this oops.
-
-    https://www.youtube.com/watch?v=3MqJzMvHE3E&ab_channel=TheCodingTrain
-  */
-  p.video = undefined;
+  p.keyImage = undefined;
   let gameCanvas;
+  let win = false;
 
   let fenceBgImg = undefined;
   let practiceDummyImg = undefined;
@@ -242,6 +233,7 @@ let swordGame = function (p) {
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
+    p.keyImage = p.loadImage(`assets/images/minigame/key.png`);
   };
   p.setup = function () {
     gameCanvas = p.createCanvas(800, 400);
@@ -257,29 +249,32 @@ let swordGame = function (p) {
     };
     shapeClassifier.load(modelDetails, p.modelLoaded);
     p.backgroundLoad();
+    p.hintShow();
     p.sword();
 
     clearButton = p.createButton(`Try Again`);
     clearButton.mousePressed(function () {
       p.backgroundLoad();
+      p.hintShow();
       p.sword();
     });
     clearButton.style("float", "right");
     resultsDiv = p.createDiv(`loading model`);
     resultsDiv.style("float", "left");
     inputImage = p.createGraphics(64, 64);
-
   };
   p.draw = function () {
     let circleHeight = p.height / 2 + 25;
     let circleWidth = p.width / 2;
     let circleDiameter = 95;
     let d = p.dist(circleWidth, circleHeight, p.mouseX, p.mouseY);
-    if (dialogActive == true) {
-      if (d < circleDiameter / 2 && p.mouseIsPressed) {
-        p.strokeWeight(8);
-        p.stroke(0,255,0);
+    if (swordDialogActive == true) {
+      if (d < circleDiameter / 1.5 && p.mouseIsPressed && win == false) {
+        p.strokeWeight(18);
+        p.stroke(0);
         p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+        inputImage.background(255);
+        inputImage.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
       }
     }
   };
@@ -304,11 +299,22 @@ let swordGame = function (p) {
     p.image(practiceDummyImg, dummyWidth, dummyHeight);
     p.pop();
   };
+  p.hintShow = function () {
+    p.push();
+    let hint = `Hint: try getting to 85%`;
+    p.fill(50);
+    p.noStroke();
+    p.textSize(15);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.text(hint, 90, 390);
+    p.pop();
+  };
   p.sword = function () {
     p.cursor(`assets/images/swordMiniGame/swordCursor.cur`);
   };
   p.classifyImage = function () {
     inputImage.copy(gameCanvas, 0, 0, 800, 400, 0, 0, 64, 64);
+
     shapeClassifier.classify(
       {
         image: inputImage,
@@ -316,9 +322,6 @@ let swordGame = function (p) {
       p.gotResults
     );
   };
-  // calculate distance between sword and circle
-  // once overlapping, start detecting what shape is drawn
-  // if circle (+70% confidence) -> win mini game
   p.gotResults = function (err, results) {
     if (err) {
       console.log(err);
@@ -326,7 +329,20 @@ let swordGame = function (p) {
     }
     let label = results[0].label;
     let confidence = p.nf(100 * results[0].confidence, 2, 0);
-    resultsDiv.html(`${label}: ${confidence}%`);
+    if (win == false) {
+      resultsDiv.html(`Match: ${confidence}%`);
+    } else if (win == true) {
+      resultsDiv.html(`:)`);
+    }
+
+    if (confidence >= 85) {
+      win = true;
+      keyScore++;
+      console.log(`Keys: `+ keyScore);
+      p.backgroundLoad();
+      p.sword();
+      p.keyFound();
+    }
     p.classifyImage();
   };
   p.circleLoad = function () {
@@ -341,6 +357,19 @@ let swordGame = function (p) {
     p.ellipse(circleWidth, circleHeight, circleDiameter, circleDiameter);
     p.pop();
   };
+  p.keyFound = function () {
+    p.push();
+    let message = "You Found The Key!";
+    p.fill(0);
+    p.noStroke();
+    p.textSize(25);
+    p.textStyle(p.BOLD);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.imageMode(p.CENTER);
+    p.image(p.keyImage, p.width / 2, p.height / 2 - 100);
+    p.text(message, p.width / 2, p.height / 2);
+    clearButton.hide();
+    p.pop();
+  };
 };
-
-let swordCanvas = new p5(swordGame, `posenet-mini-game`);
+let swordCanvas = new p5(swordGame, `neuralNetwork-mini-game`);
