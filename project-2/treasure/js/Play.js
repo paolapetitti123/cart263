@@ -86,7 +86,7 @@ class Play extends Phaser.Scene {
       this
     );
     this.physics.add.collider(this.avatar, chestLayer);
-    this.physics.add.collider(this.avatar, bronzeChestLayer);
+    this.physics.add.collider(this.avatar, bronzeChestLayer, this.openAnnyangMiniGame,null,this);
     this.physics.add.collider(
       this.avatar,
       decoLayer,
@@ -135,7 +135,16 @@ class Play extends Phaser.Scene {
   openPoseMiniGame(avatar, decoLayer) {
     $(`#neuralNetwork-mini-game`).dialog(`open`);
     swordDialogActive = true;
+  }
 
+  openAnnyangMiniGame(avatar, bronzeChestLayer){
+    if(keyScore > 0){
+      $(`#treasureChest-mini-game`).dialog(`open`);
+      treasureDialogActive = true;
+    }
+    else {
+      $(`#need-keys-dialog`).dialog(`open`);
+    }
 
   }
 

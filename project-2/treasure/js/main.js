@@ -17,7 +17,7 @@ todo:
   -> no key: pop up saying you need a key (either text, alert or modal)
   -> with key: get a modal box with a mini game (maybe a handpose game)
 **************************************************/
-let config = {
+let phaserConfig = {
   type: Phaser.AUTO,
   width: 1280,
   height: 720,
@@ -42,7 +42,16 @@ let mainGame = function (p) {
     $(`#mini-game-box`).hide();
     $(`#neuralNetwork-mini-game`).hide();
     $(`#treasureChest-mini-game`).hide();
+    $(`#need-keys-dialog`).hide();
     // turning autoOpen to false so that the intro modal only opens when the game starts
+    $(`#need-keys-dialog`).dialog({
+      autoOpen: false,
+      buttons: {
+        "ON IT!": function () {
+          $(this).dialog(`close`);
+        },
+      },
+    });
     $(`#intro-dialog`).dialog({
       autoOpen: false,
       buttons: {
@@ -120,7 +129,7 @@ let mainGame = function (p) {
       $(`#story`).hide();
       $(`#gameButtonContainer`).remove();
       $(`#skip`).hide();
-      game = new Phaser.Game(config); // starts the game
+      game = new Phaser.Game(phaserConfig); // starts the game
     };
     /*
       Very similar to the comment above however the gameButtonContainer isn't
@@ -134,7 +143,7 @@ let mainGame = function (p) {
       $(`#story`).hide();
       $(`#gameButtonContainer`).hide();
       $(`#skip`).hide();
-      game = new Phaser.Game(config); // starts the game
+      game = new Phaser.Game(phaserConfig); // starts the game
     };
   };
 };
@@ -183,7 +192,7 @@ let keyGame = function (p) {
   };
   p.draw = function () {
     // creating the background image
-    if(keyGameDialogActive == true){
+    if (keyGameDialogActive == true) {
       p.push();
       p.imageMode(p.CORNER);
       p.image(binImg, 0, 0);
@@ -197,7 +206,6 @@ let keyGame = function (p) {
         key.update();
       }
     }
-
   };
 
   // checking if the mouse clicked on the key
@@ -347,7 +355,7 @@ let swordGame = function (p) {
     if (confidence >= 85) {
       win = true;
       keyScore++;
-      console.log(`Keys: `+ keyScore);
+      console.log(`Keys: ` + keyScore);
       p.backgroundLoad();
       p.sword();
       p.keyFound();
@@ -382,3 +390,184 @@ let swordGame = function (p) {
   };
 };
 let swordCanvas = new p5(swordGame, `neuralNetwork-mini-game`);
+
+let treasureDialogActive = false;
+
+let treasureChestGame = function (p) {
+  const pirateWords = [
+    "ahoy",
+    "arr",
+    "avast",
+    "aye",
+    "becalmed",
+    "belay",
+    "bilged on her anchor",
+    "blimey",
+    "blow the man down",
+    "boom about",
+    "bring a spring upon her cable",
+    "bucko",
+    "careen",
+    "chase",
+    "code of conduct",
+    "come about",
+    "crack jenny's tea cup",
+    "crimp",
+    "dance the hempen jig",
+    "davy Jones' locker",
+    "dead men tell no tales",
+    "deadlights",
+    "fire in the hole",
+    "furl",
+    "give no quarter",
+    "handsomely",
+    "haul wind",
+    "heave down",
+    "heave",
+    "ho",
+    "interloper",
+    "jack ketch",
+    "knave",
+    "lad",
+    "lass",
+    "letter of marque",
+    "list",
+    "long clothes",
+    "lookout",
+    "marooned",
+    "matey",
+    "me",
+    "no prey, no pay",
+    "overhaul",
+    "parley",
+    "piracy",
+    "pirate",
+    "quarter",
+    "rapscallion",
+    "reef sails",
+    "run a shot across the bow",
+    "sail ho",
+    "scupper that",
+    "sea legs",
+    "shiver me timbers",
+    "show a leg",
+    "sink me",
+    "smartly",
+    "strumpet",
+    "swashbuckler",
+    "take a caulk",
+    "to go on account",
+    "warp",
+    "weigh anchor",
+    "wench",
+    "ye",
+  ];
+  let currentWord = ``;
+  let currentAnswer = ``;
+
+  let backgroundImg;
+  let points = 0;
+  let timer = 30;
+
+  let gameState = `start`;
+  let instructions = `Ye 'ave 30 seconds t' say as many words correctly
+  as they appear on the chest!
+  Press Enter t' start!`;
+  let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
+                        try gettin' 15 words in next time.
+                        Press Enter t' try again`;
+  p.preload = function () {
+    backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
+  };
+  p.setup = function () {
+    p.createCanvas(800, 400);
+    if (annyang) {
+      let commands = {
+        "*pirate": p.guessWord,
+      };
+      annyang.addCommands(commands);
+      annyang.start();
+
+      p.textSize(32);
+      p.textStyle(p.BOLD);
+      p.textAlign(p.CENTER, p.CENTER);
+    }
+  };
+  p.draw = function () {
+    if (treasureDialogActive == true) {
+      p.background(backgroundImg);
+      if (gameState === `start`) {
+        p.startScreen();
+      } else if (gameState === `game`) {
+        p.gameScreen();
+      } else if (gameState === `restart`) {
+        p.restartScreen();
+      } else if (gameState === `end`) {
+        p.endScreen();
+      }
+    }
+  };
+  p.guessWord = function (pirate) {
+    // do something
+    currentAnswer = pirate.toLowerCase();
+  };
+  p.gameTimer = function () {
+    p.textAlign(p.CENTER);
+    p.textSize(15);
+    p.text(timer, 50, 50);
+    if (p.frameCount % 60 == 0 && timer > 0) {
+      timer--;
+    }
+    if (timer == 0) {
+      if (points >= 15) {
+        gameState = `end`;
+      } else {
+        gameState = `restart`;
+      }
+    }
+  };
+  p.startScreen = function () {
+    p.push();
+    p.fill(0);
+    p.textAlign(p.CENTER);
+    p.textSize(25);
+    p.text(instructions, p.width / 2, p.height / 2);
+    p.pop();
+  };
+  p.gameScreen = function () {
+    p.gameTimer();
+    console.log(currentWord);
+    if (currentAnswer == currentWord) {
+      // do something
+      p.fill(0, 255, 0, 50);
+      points++;
+      p.newPirateWord();
+      p.responsiveVoice.speak(`Ye got it!`);
+    } else {
+      p.fill(255, 0, 0, 50);
+    }
+    p.text(currentWord, p.width / 2, p.height / 2);
+  };
+  p.restartScreen = function () {
+    p.fill(0);
+    p.text(restartMessage, p.width / 2, p.height / 2);
+  };
+  p.newPirateWord = function () {
+    currentWord = p.random(pirateWords);
+  };
+  p.keyPressed = function () {
+    // if(treasureDialogActive == true){
+      if (gameState == `start` && p.keyCode === p.ENTER) {
+        gameState = `game`;
+        p.newPirateWord();
+      } else if (gameState === `restart` && p.keyCode === p.ENTER) {
+        gameState = `game`;
+        timer = 30;
+        points = 0;
+        p.newPirateWord();
+      }
+    // }
+  };
+};
+
+let treasureCanvas = new p5(treasureChestGame, `treasureChest-mini-game`);

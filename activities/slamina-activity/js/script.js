@@ -181,7 +181,7 @@ function draw() {
 
 function mousePressed(){
   currentAnimal = random(animals);
-
+console.log(currentAnimal);
   let reverseAnimal = reverseString(currentAnimal);
 
   responsiveVoice.speak(reverseAnimal);
