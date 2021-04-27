@@ -474,8 +474,8 @@ let treasureChestGame = function (p) {
   as they appear on the chest!
   Press Enter t' start!`;
   let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
-                        try gettin' 15 words in next time.
-                        Press Enter t' try again`;
+  try gettin' 15 words in next time.
+  Press Enter t' try again`;
   p.preload = function () {
     backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
   };
@@ -531,6 +531,7 @@ let treasureChestGame = function (p) {
     p.fill(0);
     p.textAlign(p.CENTER);
     p.textSize(25);
+    p.textStyle(p.BOLD);
     p.text(instructions, p.width / 2, p.height / 2);
     p.pop();
   };
@@ -539,28 +540,36 @@ let treasureChestGame = function (p) {
     console.log(currentWord);
     if (currentAnswer == currentWord) {
       // do something
-      p.fill(0, 255, 0, 50);
+      p.fill(0, 255, 0);
       points++;
       p.newPirateWord();
       p.responsiveVoice.speak(`Ye got it!`);
     } else {
-      p.fill(255, 0, 0, 50);
+      p.fill(0);
     }
+    p.textAlign(p.CENTER);
+    p.textSize(25);
+    p.textStyle(p.BOLD);
     p.text(currentWord, p.width / 2, p.height / 2);
   };
   p.restartScreen = function () {
+    p.push();
     p.fill(0);
+    p.textAlign(p.CENTER);
+    p.textSize(25);
+    p.textStyle(p.BOLD);
     p.text(restartMessage, p.width / 2, p.height / 2);
+    p.pop();
   };
   p.newPirateWord = function () {
     currentWord = p.random(pirateWords);
   };
   p.keyPressed = function () {
     // if(treasureDialogActive == true){
-      if (gameState == `start` && p.keyCode === p.ENTER) {
+      if (gameState == `start` && p.keyCode === 32) {
         gameState = `game`;
         p.newPirateWord();
-      } else if (gameState === `restart` && p.keyCode === p.ENTER) {
+      } else if (gameState === `restart` && p.keyCode === 32) {
         gameState = `game`;
         timer = 30;
         points = 0;
