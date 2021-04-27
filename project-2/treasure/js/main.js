@@ -28,6 +28,10 @@ let phaserConfig = {
 };
 let keyScore = 0; // Going to be used for all the mini games on the ship
 let chestOpen = 0;
+let winMessage1 = `Now find that other key 'n go get that other loot
+chest o'er thar open`;
+let winMessage2 = `Now go 'n get the other loot chest o'er thar open`;
+let finalWinMessage = `That's all the loot, let's get out o' here!`;
 
 let mainGame = function (p) {
   let audio1 = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
@@ -44,6 +48,9 @@ let mainGame = function (p) {
     $(`#neuralNetwork-mini-game`).hide();
     $(`#treasureChest-mini-game`).hide();
     $(`#treasureDrag-mini-game`).hide();
+    $(`#poemContainer`).hide();
+    $(`#keyPicture`).hide();
+    $(`#keySlot`).hide();
     $(`#need-keys-dialog`).hide();
     // turning autoOpen to false so that the intro modal only opens when the game starts
     $(`#need-keys-dialog`).dialog({
@@ -409,6 +416,10 @@ let treasureDialogActive = false;
 let annyangChestOpen = false;
 
 let treasureChestGame = function (p) {
+  let winMessage1 = `Now find that other key 'n go get that other loot
+  chest o'er thar open`;
+  let winMessage2 = `Now go 'n get the other loot chest o'er thar open`;
+  let finalWinMessage = `That's all the loot, let's get out o' here!`;
   const pirateWords = [
     "ahoy",
     "arg",
@@ -486,10 +497,7 @@ let treasureChestGame = function (p) {
   let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
   try gettin' 5 words in next time.
   Press Space t' try again`;
-  let winMessage1 = `Now find that other key 'n go get that other loot
-  chest o'er thar open`;
-  let winMessage2 = `Now go 'n get the other loot chest o'er thar open`;
-  let finalWinMessage = `That's all the loot, let's get out o' here!`;
+
   p.preload = function () {
     backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
   };
@@ -634,19 +642,163 @@ let treasureCanvas = new p5(treasureChestGame, `treasureChest-mini-game`);
 let dragDialogActive = false;
 let dragChestOpen = false;
 
-let dragTresureGame = function(p) {
+let dragTresureGame = function (p) {
+  let winMessage1 = `Now find that other key 'n go get that other loot
+  chest o'er thar open`;
+  let winMessage2 = `Now go 'n get the other loot chest o'er thar open`;
+  let finalWinMessage = `That's all the loot, let's get out o' here!`;
   let backgroundImg;
+  let winSound;
+  let letterCount = 0;
+  let totalLetter = 8;
 
-  p.preload = function() {
-    backgroundImg = p.loadImage(`assets/images/treasureMiniGame/ChestNoTable.png`);
+  p.preload = function () {
+    backgroundImg = p.loadImage(
+      `assets/images/treasureMiniGame/ChestNoTable.png`
+    );
+    winSound = p.loadSound(`assets/sounds/coins-drop-pirate.mp3`);
   };
-  p.setup = function(){
-    p.createCanvas(800,400);
+  p.setup = function () {
+    p.createCanvas(800, 400);
   };
-  p.draw = function(){
-    p.background(backgroundImg);
-    if(dragChestOpen == true){
+  p.draw = function () {
+    if (dragDialogActive == true) {
 
+      p.background(backgroundImg);
+      $(`#poemContainer`).show();
+
+      p.hiddenMessageShow();
+
+      $(`#keySlot`).droppable({
+        drop: function (event, ui) {
+          ui.draggable.remove();
+          $(this).hide();
+          winSound.play();
+          chestOpen++;
+          dragChestOpen = true;
+          console.log(chestOpen);
+          p.gameWin();
+        },
+      });
+    }
+  };
+  p.keyDrag = function () {
+    $(`#keyPicture`).on(`mouseover`, function (event) {
+      $(this).draggable();
+    });
+    responsiveVoice.speak(`Well wha' are ye waitin' for open the chest!`, "Australian Male");
+  };
+  p.hiddenMessageShow = function () {
+    $(`.secret`).one(`mouseover`, function (event) {
+      $(this).addClass(`found`, 500);
+      $(this).draggable({
+        helper: `clone`,
+      });
+    });
+    p.answerBoxShow();
+  };
+  p.answerBoxShow = function () {
+    $(`#answer`).droppable({
+      drop: function (event, ui) {
+        let character = ui.draggable.text();
+        $(this).append(character);
+        // ui.draggable.draggable(`disable`);
+        ui.draggable.removeClass(`found`);
+        letterCount++;
+
+        if ($(this).text() === `treasure` && letterCount == totalLetter) {
+          $(`#poem`).hide();
+          $(this).hide();
+          $(`#keyPicture`).show();
+          $(`#keyPicture`).effect({
+            effect: `shake`,
+            duration: 2000,
+            times: 15,
+            distance: 10,
+            complete: p.keyDrag,
+          });
+          $(`#keySlot`).show();
+        } else if (
+          $(this).text() !== "treasure" &&
+          letterCount == totalLetter
+        ) {
+          $(this).text(``);
+          $(this).effect({
+            effect: `shake`,
+            duration: 2000,
+            times: 15,
+            distance: 10,
+          });
+          responsiveVoice.speak(`Come on even I could tell the answer was treasure, try again`, "Australian Male");
+          letterCount = 0;
+          p.hiddenMessageShowTry2();
+        }
+      },
+    });
+  };
+  p.hiddenMessageShowTry2 = function(){
+    $(`.secret`).one(`mouseover`, function (event) {
+      $(this).addClass(`found`, 500);
+      $(this).draggable({
+        helper: `clone`,
+      });
+    });
+
+    $(`#answer`).droppable({
+      drop: function (event, ui) {
+        let character2 = ui.draggable.text();
+        $(this).append(character2);
+        // ui.draggable.draggable(`disable`);
+        ui.draggable.removeClass(`found`);
+        letterCount++;
+
+        if ($(this).text() === `treasure` && letterCount == totalLetter) {
+          $(`#poem`).hide();
+          $(this).hide();
+          $(`#keyPicture`).show();
+          $(`#keyPicture`).effect({
+            effect: `shake`,
+            duration: 2000,
+            times: 15,
+            distance: 10,
+            complete: p.keyDrag,
+          });
+          $(`#keySlot`).show();
+        }
+      },
+    });
+  };
+  p.gameWin = function(){
+    $(`#poemContainer`).hide();
+    $(`#keySlot`).hide();
+    if (keyScore == 1 && chestOpen == 1) {
+      p.push();
+      p.fill(0);
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
+      p.text(`Now find that other key, 'n go get that other loot
+      chest over thar open`, p.width / 2, p.height / 2);
+      responsiveVoice.speak(winMessage1, "Australian Male");
+      p.pop();
+    } else if (keyScore == 2 && chestOpen == 1) {
+      p.push();
+      p.fill(0);
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
+      p.text(`Now go 'n get the other loot chest over thar open`, p.width / 2, p.height / 2);
+      responsiveVoice.speak(winMessage2, "Australian Male");
+      p.pop();
+    } else if (keyScore == 2 && chestOpen == 2) {
+      p.push();
+      p.fill(0);
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
+      p.text(`That's all the loot, let's get out o' here!`, p.width / 2, p.height / 2);
+      responsiveVoice.speak(finalWinMessage, "Australian Male");
+      p.pop();
     }
   };
 };

@@ -151,7 +151,7 @@ class Play extends Phaser.Scene {
   }
 
   openAnnyangMiniGame(avatar, bronzeChestLayer){
-    if(keyScore > 0){
+    if(keyScore == 2){
       $(`#treasureChest-mini-game`).dialog(`open`);
       treasureDialogActive = true;
       if(annyangChestOpen == false){
@@ -161,7 +161,21 @@ class Play extends Phaser.Scene {
         responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
     }
-    else {
+    else if(keyScore == 1 && dragChestOpen == false){
+      $(`#treasureChest-mini-game`).dialog(`open`);
+      treasureDialogActive = true;
+      if(annyangChestOpen == false){
+        responsiveVoice.speak(`Ye have 30 seconds to say as many words correctly as they appear on the chest!`,"Australian Male");
+      }
+      else if(annyangChestOpen == true){
+        responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
+      }
+    }
+    else if(keyScore == 1 && dragChestOpen == true) {
+      $(`#need-keys-dialog`).dialog(`open`);
+      responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
+    }
+    else if(keyScore == 0){
       $(`#need-keys-dialog`).dialog(`open`);
       responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
     }
@@ -169,17 +183,31 @@ class Play extends Phaser.Scene {
   }
 
   openDragMiniGame(avatar, chestLayer){
-    if(keyScore > 0){
+    if(keyScore == 2){
       $(`#treasureDrag-mini-game`).dialog(`open`);
       dragDialogActive = true;
       if(dragChestOpen == false){
-        // responsiveVoice.speak(`Ye have 30 seconds to say as many words correctly as they appear on the chest!`,"Australian Male");
+        responsiveVoice.speak(`Find the 8 hidden letters, and drag 'em in the box`, "Australian Male");
       }
       else if(dragChestOpen == true){
-        // responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
+        responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
     }
-    else {
+    else if(keyScore == 1 && annyangChestOpen == false){
+      $(`#treasureDrag-mini-game`).dialog(`open`);
+      dragDialogActive = true;
+      if(dragChestOpen == false){
+        responsiveVoice.speak(`Find the 8 hidden letters, and drag 'em in the box`, "Australian Male");
+      }
+      else if(dragChestOpen == true){
+        responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
+      }
+    }
+    else if(keyScore == 1 && annyangChestOpen == true) {
+      $(`#need-keys-dialog`).dialog(`open`);
+      responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
+    }
+    else if(keyScore == 0){
       $(`#need-keys-dialog`).dialog(`open`);
       responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
     }

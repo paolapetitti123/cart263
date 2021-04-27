@@ -118,6 +118,7 @@ div#poemContainer {
 }
 
 #answer {
+  text-shadow: 2px 2px 30px #404040;
   color: black;
   position: absolute;
   width: 15rem;
@@ -132,4 +133,33 @@ div#poemContainer {
 
 .found {
   color: red;
+}
+
+#keyPicture {
+  position: absolute;
+  width: auto;
+  height: auto;
+  float: left;
+  text-align: center;
+  margin-left: 375px;
+  margin-top: 320px;
+}
+
+#keyPicture img{
+  width: 3rem;
+  height: 3rem;
+}
+
+#keySlot {
+  text-shadow: 2px 2px 30px #404040;
+  color: black;
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  border: 1px dashed black;
+  float: left;
+  box-sizing: border-box;
+  text-align: center;
+  margin-left: 365px;
+  margin-top: 220px;
 }
