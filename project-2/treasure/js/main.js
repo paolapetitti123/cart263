@@ -641,11 +641,12 @@ let dragTresureGame = function(p) {
     backgroundImg = p.loadImage(`assets/images/treasureMiniGame/ChestNoTable.png`);
   };
   p.setup = function(){
-
+    p.createCanvas(800,400);
   };
   p.draw = function(){
+    p.background(backgroundImg);
     if(dragChestOpen == true){
-      p.background(backgroundImg);
+
     }
   };
 };
