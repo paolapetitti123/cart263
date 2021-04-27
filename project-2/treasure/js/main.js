@@ -417,7 +417,6 @@ let treasureChestGame = function (p) {
     "dead men tell no tales",
     "deadlights",
     "fire in the hole",
-    "furl",
     "give no quarter",
     "handsomely",
     "heave down",
@@ -487,7 +486,6 @@ let treasureChestGame = function (p) {
       };
       annyang.addCommands(commands);
       annyang.start();
-
     }
   };
   p.draw = function () {
@@ -522,6 +520,7 @@ let treasureChestGame = function (p) {
         chestOpen++;
       } else {
         gameState = `restart`;
+        currentWord = ` `;
       }
     }
   };
@@ -538,7 +537,6 @@ let treasureChestGame = function (p) {
     p.gameTimer();
     console.log(currentWord);
     if (currentAnswer == currentWord) {
-      // do something
       p.textAlign(p.CENTER);
       p.textSize(25);
       p.textStyle(p.BOLD);
@@ -554,6 +552,7 @@ let treasureChestGame = function (p) {
     }
 
     p.text(currentWord, p.width / 2, p.height / 2);
+    p.text(`Words: ${points}`, 700, 50);
   };
   p.restartScreen = function () {
     p.push();
