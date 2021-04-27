@@ -21,6 +21,7 @@ class Play extends Phaser.Scene {
     this.avatar.play(`avatar-idle`);
     this.createTileMap();
     $(`#intro-dialog`).dialog(`open`);
+    responsiveVoice.speak(document.getElementById("intro-dialog").textContent,"Australian Male");
     this.cursors = this.input.keyboard.createCursorKeys();
 
   }
@@ -90,7 +91,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(
       this.avatar,
       decoLayer,
-      this.openPoseMiniGame,
+      this.openNeuralMiniGame,
       null,
       this
     );
@@ -130,11 +131,23 @@ class Play extends Phaser.Scene {
   openMiniGame(avatar, binLayer) {
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
     keyGameDialogActive = true;
+    if(keyFound == false){
+      responsiveVoice.speak(`Thar best be a key somewhere in here`,"Australian Male");
+    }
+    else if(keyFound == true){
+      responsiveVoice.speak(`Stop wastin' time, ye already found the key in here`,"Australian Male");
+    }
   }
 
-  openPoseMiniGame(avatar, decoLayer) {
+  openNeuralMiniGame(avatar, decoLayer) {
     $(`#neuralNetwork-mini-game`).dialog(`open`);
     swordDialogActive = true;
+    if(neuralKeyFound == false){
+      responsiveVoice.speak(`Try cuttin' a whole into the practice dummy, maybe thar's a key inside?`,"Australian Male");
+    }
+    else if(neuralKeyFound == true){
+      responsiveVoice.speak(`Stop wastin' time, ye already found the key in here`,"Australian Male");
+    }
   }
 
   openAnnyangMiniGame(avatar, bronzeChestLayer){
@@ -144,6 +157,7 @@ class Play extends Phaser.Scene {
     }
     else {
       $(`#need-keys-dialog`).dialog(`open`);
+      responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
     }
 
   }

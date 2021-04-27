@@ -151,11 +151,13 @@ let mainGame = function (p) {
 let mainCanvas = new p5(mainGame);
 
 let keyGameDialogActive = false;
+let keyFound = false;
 let keyGame = function (p) {
   const NUM_PIRATE_ITEMS_IMG = 9;
   const NUM_PIRATE_ITEMS = 72;
   let pirateItemsImages = [];
   let pirateItems = [];
+
 
   p.keyImage = undefined;
   let key = undefined;
@@ -218,6 +220,7 @@ let keyGame = function (p) {
 
     if (key.found && key.active) {
       keyScore++;
+      keyFound = true;
       console.log(keyScore);
     }
   };
@@ -236,6 +239,7 @@ let keyCanvas = new p5(keyGame, `mini-game-box`);
 */
 let inputImage;
 let swordDialogActive = false;
+let neuralKeyFound = false;
 let swordGame = function (p) {
   p.keyImage = undefined;
   let gameCanvas;
@@ -356,6 +360,7 @@ let swordGame = function (p) {
     if (confidence >= 85) {
       win = true;
       keyScore++;
+      neuralKeyFound = true;
       console.log(`Keys: ` + keyScore);
       p.backgroundLoad();
       p.sword();
@@ -467,6 +472,7 @@ let treasureChestGame = function (p) {
   let gameState = `start`;
   let instructions = `Ye 'ave 30 seconds t' say as many words correctly
   as they appear on the chest!
+
   Press Space t' start!`;
   let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
   try gettin' 5 words in next time.
