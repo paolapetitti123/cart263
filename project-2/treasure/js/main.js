@@ -507,6 +507,7 @@ let treasureChestGame = function (p) {
   p.guessWord = function (pirate) {
     // do something
     currentAnswer = pirate.toLowerCase();
+    console.log(currentAnswer);
   };
   p.gameTimer = function () {
     p.textAlign(p.CENTER);
