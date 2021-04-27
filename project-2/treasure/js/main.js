@@ -467,15 +467,15 @@ let treasureChestGame = function (p) {
 
   let backgroundImg;
   let points = 0;
-  let timer = 30;
+  let timer = 15;
 
   let gameState = `start`;
-  let instructions = `Ye 'ave 30 seconds t' say as many words correctly
+  let instructions = `Ye 'ave 15 seconds t' say as many words correctly
   as they appear on the chest!
-  Press Enter t' start!`;
+  Press Space t' start!`;
   let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
   try gettin' 15 words in next time.
-  Press Enter t' try again`;
+  Press Space t' try again`;
   p.preload = function () {
     backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
   };
@@ -488,9 +488,6 @@ let treasureChestGame = function (p) {
       annyang.addCommands(commands);
       annyang.start();
 
-      p.textSize(32);
-      p.textStyle(p.BOLD);
-      p.textAlign(p.CENTER, p.CENTER);
     }
   };
   p.draw = function () {
@@ -540,16 +537,20 @@ let treasureChestGame = function (p) {
     console.log(currentWord);
     if (currentAnswer == currentWord) {
       // do something
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
       p.fill(0, 255, 0);
       points++;
       p.newPirateWord();
       p.responsiveVoice.speak(`Ye got it!`);
     } else {
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
       p.fill(0);
     }
-    p.textAlign(p.CENTER);
-    p.textSize(25);
-    p.textStyle(p.BOLD);
+
     p.text(currentWord, p.width / 2, p.height / 2);
   };
   p.restartScreen = function () {
