@@ -43,6 +43,7 @@ let mainGame = function (p) {
     $(`#mini-game-box`).hide();
     $(`#neuralNetwork-mini-game`).hide();
     $(`#treasureChest-mini-game`).hide();
+    $(`#treasureDrag-mini-game`).hide();
     $(`#need-keys-dialog`).hide();
     // turning autoOpen to false so that the intro modal only opens when the game starts
     $(`#need-keys-dialog`).dialog({
@@ -78,6 +79,14 @@ let mainGame = function (p) {
       autoOpen: false,
     });
     $(`#treasureChest-mini-game`).dialog({
+      modal: true,
+      height: 500,
+      width: 850,
+      resizable: false,
+      draggable: false,
+      autoOpen: false,
+    });
+    $(`#treasureDrag-mini-game`).dialog({
       modal: true,
       height: 500,
       width: 850,
@@ -621,3 +630,24 @@ let treasureChestGame = function (p) {
 };
 
 let treasureCanvas = new p5(treasureChestGame, `treasureChest-mini-game`);
+
+let dragDialogActive = false;
+let dragChestOpen = false;
+
+let dragTresureGame = function(p) {
+  let backgroundImg;
+
+  p.preload = function() {
+    backgroundImg = p.loadImage(`assets/images/treasureMiniGame/ChestNoTable.png`);
+  };
+  p.setup = function(){
+
+  };
+  p.draw = function(){
+    if(dragChestOpen == true){
+      p.background(backgroundImg);
+    }
+  };
+};
+
+let dragTreasureCanvas = new p5(dragTresureGame, `treasureDrag-mini-game`);

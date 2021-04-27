@@ -86,7 +86,7 @@ class Play extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.collider(this.avatar, chestLayer);
+    this.physics.add.collider(this.avatar, chestLayer, this.openDragMiniGame, null, this);
     this.physics.add.collider(this.avatar, bronzeChestLayer, this.openAnnyangMiniGame,null,this);
     this.physics.add.collider(
       this.avatar,
@@ -166,6 +166,23 @@ class Play extends Phaser.Scene {
       responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
     }
 
+  }
+
+  openDragMiniGame(avatar, chestLayer){
+    if(keyScore > 0){
+      $(`#treasureDrag-mini-game`).dialog(`open`);
+      dragDialogActive = true;
+      if(dragChestOpen == false){
+        // responsiveVoice.speak(`Ye have 30 seconds to say as many words correctly as they appear on the chest!`,"Australian Male");
+      }
+      else if(dragChestOpen == true){
+        // responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
+      }
+    }
+    else {
+      $(`#need-keys-dialog`).dialog(`open`);
+      responsiveVoice.speak(document.getElementById("need-keys-dialog").textContent,"Australian Male");
+    }
   }
 
 
