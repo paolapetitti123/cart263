@@ -27,6 +27,7 @@ let phaserConfig = {
   scene: [Boot, Play],
 };
 let keyScore = 0; // Going to be used for all the mini games on the ship
+let chestOpen = 0;
 
 let mainGame = function (p) {
   let audio1 = new Audio(`assets/sounds/Intro_Long_Journey.mp3`);
@@ -396,12 +397,11 @@ let treasureDialogActive = false;
 let treasureChestGame = function (p) {
   const pirateWords = [
     "ahoy",
-    "arr",
+    "arg",
     "avast",
     "aye",
     "becalmed",
     "belay",
-    "bilged on her anchor",
     "blimey",
     "blow the man down",
     "boom about",
@@ -411,17 +411,15 @@ let treasureChestGame = function (p) {
     "chase",
     "code of conduct",
     "come about",
-    "crack jenny's tea cup",
     "crimp",
     "dance the hempen jig",
-    "davy Jones' locker",
+    "davy jones locker",
     "dead men tell no tales",
     "deadlights",
     "fire in the hole",
     "furl",
     "give no quarter",
     "handsomely",
-    "haul wind",
     "heave down",
     "heave",
     "ho",
@@ -437,7 +435,7 @@ let treasureChestGame = function (p) {
     "marooned",
     "matey",
     "me",
-    "no prey, no pay",
+    "no prey no pay",
     "overhaul",
     "parley",
     "piracy",
@@ -451,7 +449,6 @@ let treasureChestGame = function (p) {
     "sea legs",
     "shiver me timbers",
     "show a leg",
-    "sink me",
     "smartly",
     "strumpet",
     "swashbuckler",
@@ -459,8 +456,7 @@ let treasureChestGame = function (p) {
     "to go on account",
     "warp",
     "weigh anchor",
-    "wench",
-    "ye",
+    "wench"
   ];
   let currentWord = ``;
   let currentAnswer = ``;
@@ -474,8 +470,12 @@ let treasureChestGame = function (p) {
   as they appear on the chest!
   Press Space t' start!`;
   let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
-  try gettin' 30 words in next time.
+  try gettin' 5 words in next time.
   Press Space t' try again`;
+  let winMessage1 = `Now find that other key 'n go get that other loot
+  chest o'er thar open`;
+  let winMessage2 = `Now go 'n get the other loot chest o'er thar open`;
+  let finalWinMessage = `That's all the loot, let's get out o' here!`;
   p.preload = function () {
     backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
   };
@@ -517,8 +517,9 @@ let treasureChestGame = function (p) {
       timer--;
     }
     if (timer == 0) {
-      if (points >= 15) {
+      if (points >= 5) {
         gameState = `end`;
+        chestOpen++;
       } else {
         gameState = `restart`;
       }
@@ -563,13 +564,44 @@ let treasureChestGame = function (p) {
     p.text(restartMessage, p.width / 2, p.height / 2);
     p.pop();
   };
+  p.endScreen = function() {
+    if(keyScore == 1 && chestOpen == 1){
+      p.push();
+      p.fill(0);
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
+      p.text(winMessage1, p.width / 2, p.height / 2);
+      p.pop();
+    }
+    else if(keyScore == 2 && chestOpen == 1){
+      p.push();
+      p.fill(0);
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
+      p.text(winMessage2, p.width / 2, p.height / 2);
+      p.pop();
+    }
+    else if(keyScore == 2 && chestOpen == 2){
+      p.push();
+      p.fill(0);
+      p.textAlign(p.CENTER);
+      p.textSize(25);
+      p.textStyle(p.BOLD);
+      p.text(finalWinMessage, p.width / 2, p.height / 2);
+      p.pop();
+    }
+
+  };
   p.newPirateWord = function () {
     currentWord = p.random(pirateWords);
   };
   p.keyPressed = function () {
-    // if(treasureDialogActive == true){
+    if(treasureDialogActive == true){
       if (gameState == `start` && p.keyCode === 32) {
         gameState = `game`;
+
         p.newPirateWord();
       } else if (gameState === `restart` && p.keyCode === 32) {
         gameState = `game`;
@@ -577,7 +609,7 @@ let treasureChestGame = function (p) {
         points = 0;
         p.newPirateWord();
       }
-    // }
+    }
   };
 };
 
