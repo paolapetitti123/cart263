@@ -543,7 +543,7 @@ let treasureChestGame = function (p) {
       p.fill(0, 255, 0);
       points++;
       p.newPirateWord();
-      p.responsiveVoice.speak(`Ye got it!`);
+      responsiveVoice.speak(`Ye got it!`);
     } else {
       p.textAlign(p.CENTER);
       p.textSize(25);
