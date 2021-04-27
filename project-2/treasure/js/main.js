@@ -467,14 +467,14 @@ let treasureChestGame = function (p) {
 
   let backgroundImg;
   let points = 0;
-  let timer = 15;
+  let timer = 30;
 
   let gameState = `start`;
-  let instructions = `Ye 'ave 15 seconds t' say as many words correctly
+  let instructions = `Ye 'ave 30 seconds t' say as many words correctly
   as they appear on the chest!
   Press Space t' start!`;
   let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
-  try gettin' 15 words in next time.
+  try gettin' 30 words in next time.
   Press Space t' try again`;
   p.preload = function () {
     backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
@@ -544,7 +544,7 @@ let treasureChestGame = function (p) {
       p.fill(0, 255, 0);
       points++;
       p.newPirateWord();
-      responsiveVoice.speak(`Ye got it!`);
+      // responsiveVoice.speak(`Ye got it!`);
     } else {
       p.textAlign(p.CENTER);
       p.textSize(25);
