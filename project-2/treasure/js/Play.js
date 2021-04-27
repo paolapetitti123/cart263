@@ -154,6 +154,12 @@ class Play extends Phaser.Scene {
     if(keyScore > 0){
       $(`#treasureChest-mini-game`).dialog(`open`);
       treasureDialogActive = true;
+      if(annyangChestOpen == false){
+        responsiveVoice.speak(`Ye have 30 seconds to say as many words correctly as they appear on the chest!`,"Australian Male");
+      }
+      else if(annyangChestOpen == true){
+        responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
+      }
     }
     else {
       $(`#need-keys-dialog`).dialog(`open`);

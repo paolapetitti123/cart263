@@ -398,6 +398,7 @@ let swordGame = function (p) {
 let swordCanvas = new p5(swordGame, `neuralNetwork-mini-game`);
 
 let treasureDialogActive = false;
+let annyangChestOpen = false;
 
 let treasureChestGame = function (p) {
   const pirateWords = [
@@ -524,6 +525,7 @@ let treasureChestGame = function (p) {
       if (points >= 5) {
         gameState = `end`;
         chestOpen++;
+        annyangChestOpen = true;
       } else {
         gameState = `restart`;
         currentWord = ` `;
@@ -567,6 +569,7 @@ let treasureChestGame = function (p) {
     p.textSize(25);
     p.textStyle(p.BOLD);
     p.text(restartMessage, p.width / 2, p.height / 2);
+    responsiveVoice.speak(restartMessage,"Australian Male");
     p.pop();
   };
   p.endScreen = function() {
@@ -577,6 +580,7 @@ let treasureChestGame = function (p) {
       p.textSize(25);
       p.textStyle(p.BOLD);
       p.text(winMessage1, p.width / 2, p.height / 2);
+      responsiveVoice.speak(winMessage1,"Australian Male");
       p.pop();
     }
     else if(keyScore == 2 && chestOpen == 1){
@@ -586,6 +590,7 @@ let treasureChestGame = function (p) {
       p.textSize(25);
       p.textStyle(p.BOLD);
       p.text(winMessage2, p.width / 2, p.height / 2);
+      responsiveVoice.speak(winMessage2,"Australian Male");
       p.pop();
     }
     else if(keyScore == 2 && chestOpen == 2){
@@ -595,6 +600,7 @@ let treasureChestGame = function (p) {
       p.textSize(25);
       p.textStyle(p.BOLD);
       p.text(finalWinMessage, p.width / 2, p.height / 2);
+      responsiveVoice.speak(finalWinMessage,"Australian Male");
       p.pop();
     }
 
