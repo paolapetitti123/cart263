@@ -158,7 +158,6 @@ let keyGame = function (p) {
   let pirateItemsImages = [];
   let pirateItems = [];
 
-
   p.keyImage = undefined;
   let key = undefined;
 
@@ -461,7 +460,7 @@ let treasureChestGame = function (p) {
     "to go on account",
     "warp",
     "weigh anchor",
-    "wench"
+    "wench",
   ];
   let currentWord = ``;
   let currentAnswer = ``;
@@ -569,47 +568,44 @@ let treasureChestGame = function (p) {
     p.textSize(25);
     p.textStyle(p.BOLD);
     p.text(restartMessage, p.width / 2, p.height / 2);
-    responsiveVoice.speak(restartMessage,"Australian Male");
+    responsiveVoice.speak(restartMessage, "Australian Male");
     p.pop();
   };
-  p.endScreen = function() {
-    if(keyScore == 1 && chestOpen == 1){
+  p.endScreen = function () {
+    if (keyScore == 1 && chestOpen == 1) {
       p.push();
       p.fill(0);
       p.textAlign(p.CENTER);
       p.textSize(25);
       p.textStyle(p.BOLD);
       p.text(winMessage1, p.width / 2, p.height / 2);
-      responsiveVoice.speak(winMessage1,"Australian Male");
+      responsiveVoice.speak(winMessage1, "Australian Male");
       p.pop();
-    }
-    else if(keyScore == 2 && chestOpen == 1){
+    } else if (keyScore == 2 && chestOpen == 1) {
       p.push();
       p.fill(0);
       p.textAlign(p.CENTER);
       p.textSize(25);
       p.textStyle(p.BOLD);
       p.text(winMessage2, p.width / 2, p.height / 2);
-      responsiveVoice.speak(winMessage2,"Australian Male");
+      responsiveVoice.speak(winMessage2, "Australian Male");
       p.pop();
-    }
-    else if(keyScore == 2 && chestOpen == 2){
+    } else if (keyScore == 2 && chestOpen == 2) {
       p.push();
       p.fill(0);
       p.textAlign(p.CENTER);
       p.textSize(25);
       p.textStyle(p.BOLD);
       p.text(finalWinMessage, p.width / 2, p.height / 2);
-      responsiveVoice.speak(finalWinMessage,"Australian Male");
+      responsiveVoice.speak(finalWinMessage, "Australian Male");
       p.pop();
     }
-
   };
   p.newPirateWord = function () {
     currentWord = p.random(pirateWords);
   };
   p.keyPressed = function () {
-    if(treasureDialogActive == true){
+    if (treasureDialogActive == true) {
       if (gameState == `start` && p.keyCode === 32) {
         gameState = `game`;
 
