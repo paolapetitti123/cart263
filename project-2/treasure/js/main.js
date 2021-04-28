@@ -16,6 +16,9 @@ to open. In order to win the game you must get all the keys and open all the
 treasure chests. Every chest has it's own mini game as do the items on the ship
 you need to interact with in order to get the keys for the chests.
 
+Note the sound effects I bought from storyblocks and the images/art on the boat
+are all completely free/free to use assets coming from itch.io 
+
 **************************************************/
 let phaserConfig = {
   type: Phaser.AUTO,
