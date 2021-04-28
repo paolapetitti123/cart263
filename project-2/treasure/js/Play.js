@@ -3,6 +3,9 @@ class Play extends Phaser.Scene {
     super({
       key: `play`,
     });
+    this.gameOver = false;
+    this.keyPoints = 0;
+    this.chestPoints = 0;
   }
 
   /*
@@ -20,10 +23,14 @@ class Play extends Phaser.Scene {
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
     this.createTileMap();
+
     $(`#intro-dialog`).dialog(`open`);
     responsiveVoice.speak(document.getElementById("intro-dialog").textContent,"Australian Male");
     this.cursors = this.input.keyboard.createCursorKeys();
-
+    this.gameOverText = this.add.text(300,250, `Thanks For Playing!`, { font: '64px Arial Black', fill: 'black' });
+    this.gameOverText.visible = false;
+    this.keyText = this.add.text(50,50, `Keys: 0`, { font: '32px Arial', fill: 'black' });
+    this.chestText = this.add.text(200,50, `Chests: 0`, { font: '32px Arial', fill: 'black' });
   }
 
   /*
@@ -99,14 +106,7 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.avatar, swordLayer);
     this.physics.add.collider(this.avatar, barrelLayer);
     this.physics.add.collider(this.avatar, borderLayer);
-    // Map collision with object
-    // this.physics.add.collider(
-    //   this.avatar,
-    //   keyLayer,
-    //   this.collectKey,
-    //   null,
-    //   this
-    // );
+
 
     // This turns the collisions on for the tile layers
     chestLayer.setCollisionByExclusion(-1, true);
@@ -119,24 +119,20 @@ class Play extends Phaser.Scene {
     borderLayer.setCollisionByExclusion(-1, true);
   }
 
-  // collectKey(avatar, key) {
-  //   // this is to keep track of whether or not the player collected a key
-  //
-  //   // Once you hit the key, the key is destroyed & the keyScore gets added 1
-  //   key.destroy(key.x, key.y);
-  //   keyScore++;
-  //   console.log(`Keys: ${keyScore}`);
-  // }
+
 
   openMiniGame(avatar, binLayer) {
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
     keyGameDialogActive = true;
+
     if(keyFound == false){
       responsiveVoice.speak(`Thar best be a key somewhere in here`,"Australian Male");
+
     }
     else if(keyFound == true){
       responsiveVoice.speak(`Stop wastin' time, ye already found the key in here`,"Australian Male");
     }
+
   }
 
   openNeuralMiniGame(avatar, decoLayer) {
@@ -144,6 +140,7 @@ class Play extends Phaser.Scene {
     swordDialogActive = true;
     if(neuralKeyFound == false){
       responsiveVoice.speak(`Try cuttin' a whole into the practice dummy, maybe thar's a key inside?`,"Australian Male");
+
     }
     else if(neuralKeyFound == true){
       responsiveVoice.speak(`Stop wastin' time, ye already found the key in here`,"Australian Male");
@@ -160,6 +157,9 @@ class Play extends Phaser.Scene {
       else if(annyangChestOpen == true){
         responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
+      $('#treasureChest-mini-game').on('dialogclose', function(event) {
+        this.gameOver = true;
+      });
     }
     else if(keyScore == 1 && dragChestOpen == false){
       $(`#treasureChest-mini-game`).dialog(`open`);
@@ -170,6 +170,7 @@ class Play extends Phaser.Scene {
       else if(annyangChestOpen == true){
         responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
+
     }
     else if(keyScore == 1 && dragChestOpen == true) {
       $(`#need-keys-dialog`).dialog(`open`);
@@ -192,6 +193,10 @@ class Play extends Phaser.Scene {
       else if(dragChestOpen == true){
         responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
+      $('#treasureDrag-mini-game').on('dialogclose', function(event) {
+        this.gameOver = true;
+      });
+
     }
     else if(keyScore == 1 && annyangChestOpen == false){
       $(`#treasureDrag-mini-game`).dialog(`open`);
@@ -270,6 +275,17 @@ class Play extends Phaser.Scene {
 */
   update() {
     this.handleInput();
+    if(keyFound == true || neuralKeyFound == true){
+      this.keyText.setText(`Keys: ` + keyScore);
+    }
+
+    if(dragChestOpen == true || annyangChestOpen == true){
+      this.chestText.setText(`Chests: ` + chestOpen);
+    }
+
+    if(keyScore == 2 && chestOpen == 2){
+      this.gameOver = true;
+    }
   }
 
   /*
@@ -281,53 +297,61 @@ class Play extends Phaser.Scene {
     - Add an animation for when L/R arrow key is clicked WITH U/D arrow key
 */
   handleInput() {
-    // Left & right arrow keys
-    if (this.cursors.left.isDown) {
-      this.avatar.setVelocityX(-100);
-    } else if (this.cursors.right.isDown) {
-      this.avatar.setVelocityX(100);
-    } else {
+    if(this.gameOver == false){
+      // Left & right arrow keys
+      if (this.cursors.left.isDown) {
+        this.avatar.setVelocityX(-100);
+      } else if (this.cursors.right.isDown) {
+        this.avatar.setVelocityX(100);
+      } else {
+        this.avatar.setVelocityX(0);
+      }
+
+      // Up & Down arrow keys
+      if (this.cursors.up.isDown) {
+        this.avatar.setVelocityY(-100);
+      } else if (this.cursors.down.isDown) {
+        this.avatar.setVelocityY(100);
+      } else {
+        this.avatar.setVelocityY(0);
+      }
+
+      // Changing the animations (L,R,U,D)
+      if (
+        this.avatar.body.velocity.x !== 0 ||
+        this.avatar.body.velocity.y !== 0
+      ) {
+        if (this.avatar.body.velocity.x < 0) {
+          this.avatar.play(`avatar-moving-left`, true);
+        } else if (this.avatar.body.velocity.x > 0) {
+          this.avatar.play(`avatar-moving-right`, true);
+        } else if (
+          this.avatar.body.velocity.x < 0 &&
+          (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)
+        ) {
+          this.avatar.play(`avatar-moving-left`, true);
+        } else if (
+          this.avatar.body.velocity.x > 0 &&
+          (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)
+        ) {
+          this.avatar.play(`avatar-moving-right`, true);
+        }
+        if (this.avatar.body.velocity.y < 0) {
+          this.avatar.play(`avatar-moving-up`, true);
+        } else if (this.avatar.body.velocity.y > 0) {
+          this.avatar.play(`avatar-moving-down`, true);
+        }
+      }
+      // Default animation
+      else {
+        this.avatar.play(`avatar-idle`, true);
+      }
+    }
+    else if(this.gameOver == true){
       this.avatar.setVelocityX(0);
-    }
-
-    // Up & Down arrow keys
-    if (this.cursors.up.isDown) {
-      this.avatar.setVelocityY(-100);
-    } else if (this.cursors.down.isDown) {
-      this.avatar.setVelocityY(100);
-    } else {
       this.avatar.setVelocityY(0);
-    }
-
-    // Changing the animations (L,R,U,D)
-    if (
-      this.avatar.body.velocity.x !== 0 ||
-      this.avatar.body.velocity.y !== 0
-    ) {
-      if (this.avatar.body.velocity.x < 0) {
-        this.avatar.play(`avatar-moving-left`, true);
-      } else if (this.avatar.body.velocity.x > 0) {
-        this.avatar.play(`avatar-moving-right`, true);
-      } else if (
-        this.avatar.body.velocity.x < 0 &&
-        (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)
-      ) {
-        this.avatar.play(`avatar-moving-left`, true);
-      } else if (
-        this.avatar.body.velocity.x > 0 &&
-        (this.avatar.body.velocity.y < 0 || this.avatar.body.velocity.y > 0)
-      ) {
-        this.avatar.play(`avatar-moving-right`, true);
-      }
-      if (this.avatar.body.velocity.y < 0) {
-        this.avatar.play(`avatar-moving-up`, true);
-      } else if (this.avatar.body.velocity.y > 0) {
-        this.avatar.play(`avatar-moving-down`, true);
-      }
-    }
-    // Default animation
-    else {
-      this.avatar.play(`avatar-idle`, true);
+      this.avatar.play(`avatar-idle`,true);
+      this.gameOverText.visible = true;
     }
   }
 }

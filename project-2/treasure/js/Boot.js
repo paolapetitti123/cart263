@@ -33,7 +33,6 @@ class Boot extends Phaser.Scene {
       endFrame: 35
     });
 
-    this.load.audio(`coins`, [`assets/sounds/coins-drop-pirate.mp3`]);
 
 
 

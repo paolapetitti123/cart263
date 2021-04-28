@@ -28,6 +28,7 @@ let phaserConfig = {
 };
 let keyScore = 0; // Going to be used for all the mini games on the ship
 let chestOpen = 0;
+const endScreenText = `Thanks For Playing!`;
 
 
 let mainGame = function (p) {
@@ -424,7 +425,6 @@ let treasureChestGame = function (p) {
     "blow the man down",
     "boom about",
     "bring a spring upon her cable",
-    "bucko",
     "careen",
     "chase",
     "code of conduct",
@@ -437,14 +437,12 @@ let treasureChestGame = function (p) {
     "fire in the hole",
     "give no quarter",
     "handsomely",
-    "heave down",
     "heave",
     "ho",
     "interloper",
     "jack ketch",
     "knave",
     "lad",
-    "lass",
     "letter of marque",
     "list",
     "long clothes",
@@ -584,7 +582,6 @@ let treasureChestGame = function (p) {
     p.textSize(25);
     p.textStyle(p.BOLD);
     p.text(restartMessage, p.width / 2, p.height / 2);
-    responsiveVoice.speak(restartMessage, "Australian Male");
     p.pop();
   };
   p.endScreen = function () {
@@ -773,8 +770,10 @@ let dragTresureGame = function (p) {
       $(`#poem`).text(finalWinMessage);
       responsiveVoice.speak(finalWinMessage, "Australian Male");
       p.pop();
+
     }
   };
+
 };
 
 let dragTreasureCanvas = new p5(dragTresureGame, `treasureDrag-mini-game`);
