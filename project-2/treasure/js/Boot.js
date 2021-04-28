@@ -32,10 +32,6 @@ class Boot extends Phaser.Scene {
       frameHeight: 60,
       endFrame: 35
     });
-
-
-
-
   }
 
 /*
@@ -50,6 +46,7 @@ class Boot extends Phaser.Scene {
     }
     let loadString = `Loading...`;
     this.add.text(640,360,loadString,style);
+
   }
 
 

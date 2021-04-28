@@ -28,7 +28,6 @@ let phaserConfig = {
 };
 let keyScore = 0; // Going to be used for all the mini games on the ship
 let chestOpen = 0;
-const endScreenText = `Thanks For Playing!`;
 
 
 let mainGame = function (p) {
@@ -265,11 +264,20 @@ let swordGame = function (p) {
   let resultsDiv;
   let clearButton;
 
+  /*
+  All the images for this instance canvas are loaded here.
+  */
   p.preload = function () {
     fenceBgImg = p.loadImage(`assets/images/swordMiniGame/background.png`);
     practiceDummyImg = p.loadImage(`assets/images/swordMiniGame/Dummy.png`);
     p.keyImage = p.loadImage(`assets/images/minigame/key.png`);
   };
+  /*
+  The instance canvas gets created here, the pixelDensity gets set to 1
+  that way every computer screen should be able to play the game, then I start
+  the shapeClassifier code that I was following along (as I mentioned earlier).
+  As well as load the background, sword cursor and hint
+  */
   p.setup = function () {
     gameCanvas = p.createCanvas(800, 400);
     p.pixelDensity(1);
@@ -298,6 +306,11 @@ let swordGame = function (p) {
     resultsDiv.style("float", "left");
     inputImage = p.createGraphics(64, 64);
   };
+  /*
+    Here I essentially create a section on the canvas were the user can actively
+    draw in as oposed to getting the entire canvas and so long as you haven't won
+    the mini game yet, you can draw in that section.
+  */
   p.draw = function () {
     let circleHeight = p.height / 2 + 25;
     let circleWidth = p.width / 2;
@@ -314,10 +327,16 @@ let swordGame = function (p) {
     }
   };
 
+/*
+Checks if the model for shapeClassifier is ready
+*/
   p.modelLoaded = function () {
     console.log("model is ready!");
     p.classifyImage();
   };
+  /*
+  Loads the background
+  */
   p.backgroundLoad = function () {
     p.push();
     p.imageMode(p.CORNER);
@@ -326,6 +345,9 @@ let swordGame = function (p) {
     p.dummyLoad();
     p.circleLoad();
   };
+  /*
+  Loads the dummy image
+  */
   p.dummyLoad = function () {
     let dummyHeight = p.height / 2 + 8;
     let dummyWidth = p.width / 2;
@@ -334,6 +356,9 @@ let swordGame = function (p) {
     p.image(practiceDummyImg, dummyWidth, dummyHeight);
     p.pop();
   };
+  /*
+  Loads the hint at the bottom left
+  */
   p.hintShow = function () {
     p.push();
     let hint = `Hint: try getting to 85%`;
@@ -344,9 +369,18 @@ let swordGame = function (p) {
     p.text(hint, 90, 390);
     p.pop();
   };
+  /*
+    Changes the cursor to a sword for this minigame
+  */
   p.sword = function () {
     p.cursor(`assets/images/swordMiniGame/swordCursor.cur`);
   };
+
+  /*
+    And here is where all the shape classifying magic happens, i essentially make
+    a copy of the canvas using createGraphics as you saw eariler but I shrink it to
+    a 64x64 image and I send that over to the shapeClassifier
+  */
   p.classifyImage = function () {
     inputImage.copy(gameCanvas, 0, 0, 800, 400, 0, 0, 64, 64);
 
@@ -357,6 +391,10 @@ let swordGame = function (p) {
       p.gotResults
     );
   };
+  /*
+  The confidence of the drawing is constantly being updated in the bottom left corner
+  of the canvas and Igf the confidence of the drawing = 85, then you win the game
+  */
   p.gotResults = function (err, results) {
     if (err) {
       console.log(err);
@@ -393,6 +431,10 @@ let swordGame = function (p) {
     p.ellipse(circleWidth, circleHeight, circleDiameter, circleDiameter);
     p.pop();
   };
+  /*
+    If you win then you get a message that pops up and you can continue on
+    with the game.
+  */
   p.keyFound = function () {
     p.push();
     let message = "You Found The Key!";
@@ -408,11 +450,28 @@ let swordGame = function (p) {
     p.pop();
   };
 };
+
+/*
+  Attaching the sword game canvas I just made onto the dialog
+*/
 let swordCanvas = new p5(swordGame, `neuralNetwork-mini-game`);
 
 let treasureDialogActive = false;
 let annyangChestOpen = false;
 
+/*
+  The functionality of this minigame is similar to the slamina excerise we had
+  to do except that I do not reverse the words and you do not get to hear them
+  with the responsiveVoice, instead you have to say as many words as quickly as
+  possible to at least get 5 words in.
+
+  I would have loved to add the responsivevoice to this minigame but I kept getting
+  very bizzare glitches where the responsivevoice only started playing if I opened
+  a new tab.
+
+  Also the array of pirateWords I created myself as i couldn't find one so I just
+  googled pirate words and made one with what I could find.
+*/
 let treasureChestGame = function (p) {
   const pirateWords = [
     "ahoy",
@@ -499,6 +558,9 @@ let treasureChestGame = function (p) {
     backgroundImg = p.loadImage(`assets/images/annyangMiniGame/ChestTable.png`);
     winSound = p.loadSound(`assets/sounds/coins-drop-pirate.mp3`);
   };
+  /*
+  Setting up annyang for the game
+  */
   p.setup = function () {
     p.createCanvas(800, 400);
     if (annyang) {
@@ -509,6 +571,9 @@ let treasureChestGame = function (p) {
       annyang.start();
     }
   };
+  /*
+  The different states setup
+  */
   p.draw = function () {
     if (treasureDialogActive == true) {
       p.background(backgroundImg);
@@ -523,10 +588,16 @@ let treasureChestGame = function (p) {
       }
     }
   };
+  /*
+    changing the answers all to lower case
+  */
   p.guessWord = function (pirate) {
     currentAnswer = pirate.toLowerCase();
     console.log(currentAnswer);
   };
+  /*
+  Added timer for the game with the ability to restart the game if needed
+  */
   p.gameTimer = function () {
     p.textAlign(p.CENTER);
     p.textSize(15);
@@ -556,6 +627,10 @@ let treasureChestGame = function (p) {
     p.text(instructions, p.width / 2, p.height / 2);
     p.pop();
   };
+  /*
+  Keeps track of the points as you get words right and puts up a new word when
+  you do get one right.
+  */
   p.gameScreen = function () {
     p.gameTimer();
     console.log(currentWord);
@@ -575,6 +650,9 @@ let treasureChestGame = function (p) {
     p.text(currentWord, p.width / 2, p.height / 2);
     p.text(`Words: ${points}`, 700, 50);
   };
+  /*
+  If you happen to not get 5 words right, then you see the restart screen
+  */
   p.restartScreen = function () {
     p.push();
     p.fill(0);
@@ -584,6 +662,10 @@ let treasureChestGame = function (p) {
     p.text(restartMessage, p.width / 2, p.height / 2);
     p.pop();
   };
+  /*
+  If you get 5 words right, then you see the end screen and depending on how many
+  keys and chests you've opened the message differs.
+  */
   p.endScreen = function () {
     p.fill(0);
     p.textAlign(p.CENTER);
@@ -606,6 +688,9 @@ let treasureChestGame = function (p) {
   p.newPirateWord = function () {
     currentWord = p.random(pirateWords);
   };
+  /*
+    Checking which keys are pressed during which states.
+  */
   p.keyPressed = function () {
     if (treasureDialogActive == true) {
       if (gameState == `start` && p.keyCode === 32) {
@@ -627,6 +712,16 @@ let treasureCanvas = new p5(treasureChestGame, `treasureChest-mini-game`);
 let dragDialogActive = false;
 let dragChestOpen = false;
 
+/*
+  Similar to the secret code exercise we did, this one has a verse from the group
+  ATEEZ's song Pirate King and you have to find the secret letters, and drop them into
+  the answer box. The secret word has to be treasure other wise you restart and get a
+  very snarky comment from the responsivevoice. I did some CSS work to make the text
+  appear ontop of the canvas. 
+
+  Following that a key image shows up and you can drag it into the new answer box
+  on the key hole in the image and then you win this mini game.
+*/
 let dragTresureGame = function (p) {
   let winMessage1 = `Now find that other key 'n go get that other loot
   chest over thar open`;
@@ -643,9 +738,19 @@ let dragTresureGame = function (p) {
     );
     winSound = p.loadSound(`assets/sounds/coins-drop-pirate.mp3`);
   };
+  /*
+  I just create the canvas here.
+  */
   p.setup = function () {
     p.createCanvas(800, 400);
   };
+  /*
+    I check if the dialog is opened first, then make the background show up,
+    then the div container the verse is in and I call the hiddenMessageShow
+    function so the secret code stuff can start. Once that's done I add
+    droppable to the keySlot div so the keyImage can be dragged into it when
+    they appear.
+  */
   p.draw = function () {
     if (dragDialogActive == true) {
 
@@ -667,12 +772,20 @@ let dragTresureGame = function (p) {
       });
     }
   };
+  /*
+    Here you get another snarky comment from responsivevoice guy when the key
+    image is done shaking and you can drag the key into the key hole.
+  */
   p.keyDrag = function () {
     $(`#keyPicture`).on(`mouseover`, function (event) {
       $(this).draggable();
     });
     responsiveVoice.speak(`Well wha' are ye waitin' for open the chest!`, "Australian Male");
   };
+  /*
+    Here I essentially do exactly what we do in the secret code exercise, I add
+    the found class, make it droppable and make sure it gets cloned.
+  */
   p.hiddenMessageShow = function () {
     $(`.secret`).one(`mouseover`, function (event) {
       $(this).addClass(`found`, 500);
@@ -682,12 +795,16 @@ let dragTresureGame = function (p) {
     });
     p.answerBoxShow();
   };
+  /*
+    Here I essentially do exactly what we do in the secret code exercise, I add
+    droppable to the answer div except I do not disable draggable as I need it
+    if the user has to restart.
+  */
   p.answerBoxShow = function () {
     $(`#answer`).droppable({
       drop: function (event, ui) {
         let character = ui.draggable.text();
         $(this).append(character);
-        // ui.draggable.draggable(`disable`);
         ui.draggable.removeClass(`found`);
         letterCount++;
 
@@ -721,6 +838,9 @@ let dragTresureGame = function (p) {
       },
     });
   };
+  /*
+    In case the user has to restart it's the code from before all over again.
+  */
   p.hiddenMessageShowTry2 = function(){
     $(`.secret`).one(`mouseover`, function (event) {
       $(this).addClass(`found`, 500);
@@ -752,6 +872,10 @@ let dragTresureGame = function (p) {
       },
     });
   };
+
+  /*
+    If the user wins the game you get one of three messages
+  */
   p.gameWin = function(){
     $(`#keySlot`).hide();
     $(`#poem`).show();

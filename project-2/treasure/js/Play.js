@@ -3,9 +3,9 @@ class Play extends Phaser.Scene {
     super({
       key: `play`,
     });
+
+    // to keep track of the game status.
     this.gameOver = false;
-    this.keyPoints = 0;
-    this.chestPoints = 0;
   }
 
   /*
@@ -23,10 +23,14 @@ class Play extends Phaser.Scene {
     this.createAnimations();
     this.avatar.play(`avatar-idle`);
     this.createTileMap();
+    let music = this.sound.add(`bgMusic`, {volume: 0.2});
+    music.play();
 
     $(`#intro-dialog`).dialog(`open`);
     responsiveVoice.speak(document.getElementById("intro-dialog").textContent,"Australian Male");
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    // all the text that you see on the scene as well as the gameover text.
     this.gameOverText = this.add.text(300,250, `Thanks For Playing!`, { font: '64px Arial Black', fill: 'black' });
     this.gameOverText.visible = false;
     this.keyText = this.add.text(50,50, `Keys: 0`, { font: '32px Arial', fill: 'black' });
@@ -120,7 +124,11 @@ class Play extends Phaser.Scene {
   }
 
 
-
+/*
+  When the dialog is opened you hear the responsiveVoice give you a hint on what
+  to do if you haven't found the key yet, if you have then the voice tells you to
+  get back to searching
+*/
   openMiniGame(avatar, binLayer) {
     $(`#mini-game-box`).dialog(`open`); // just testing to see if I can get the modal to open by hitting the bin
     keyGameDialogActive = true;
@@ -134,7 +142,11 @@ class Play extends Phaser.Scene {
     }
 
   }
-
+  /*
+    When the dialog is opened you hear the responsiveVoice give you a hint on what
+    to do if you haven't found the key yet, if you have then the voice tells you to
+    get back to searching
+  */
   openNeuralMiniGame(avatar, decoLayer) {
     $(`#neuralNetwork-mini-game`).dialog(`open`);
     swordDialogActive = true;
@@ -147,6 +159,17 @@ class Play extends Phaser.Scene {
     }
   }
 
+  /*
+    When the dialog is opened you hear the responsiveVoice tell you what to do
+    if you haven't opened the chest yet, if you have then the voice tells you to
+    get back to work. The reason you see keyScore and chest open variables is so
+    that I could keep track of what has been done so certain events get triggered
+    when they are supposed too. For example if you have no keys on you, a dialog
+    telling you that you need keys pops up, or if you opened one chest with one
+    key, you still need to find the second key to open the next treasure chest.
+
+    Note: this comment applies to openAnnyangMiniGame and openDragMiniGame
+  */
   openAnnyangMiniGame(avatar, bronzeChestLayer){
     if(keyScore == 2){
       $(`#treasureChest-mini-game`).dialog(`open`);
@@ -157,9 +180,6 @@ class Play extends Phaser.Scene {
       else if(annyangChestOpen == true){
         responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
-      $('#treasureChest-mini-game').on('dialogclose', function(event) {
-        this.gameOver = true;
-      });
     }
     else if(keyScore == 1 && dragChestOpen == false){
       $(`#treasureChest-mini-game`).dialog(`open`);
@@ -193,10 +213,6 @@ class Play extends Phaser.Scene {
       else if(dragChestOpen == true){
         responsiveVoice.speak(`That loot chest was already opened, let's get a move on to the next one already!`,"Australian Male");
       }
-      $('#treasureDrag-mini-game').on('dialogclose', function(event) {
-        this.gameOver = true;
-      });
-
     }
     else if(keyScore == 1 && annyangChestOpen == false){
       $(`#treasureDrag-mini-game`).dialog(`open`);
@@ -271,7 +287,9 @@ class Play extends Phaser.Scene {
   }
 
   /*
-  Constantly checking if the arrow keys are being pressed
+  Constantly checking if the arrow keys are being pressed, updating the key values
+  and the chest values, as well as checking if both have reached 2 then the game is
+  over.
 */
   update() {
     this.handleInput();
@@ -293,8 +311,8 @@ class Play extends Phaser.Scene {
   is being pressed. Also changes the animations depending on which key is being
   pressed.
 
-  To Do:
-    - Add an animation for when L/R arrow key is clicked WITH U/D arrow key
+  If the gameOver variable becomes true then the avatar can no longer move and
+  the game over text appears.
 */
   handleInput() {
     if(this.gameOver == false){
