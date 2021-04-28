@@ -487,7 +487,7 @@ let treasureChestGame = function (p) {
   as they appear on the chest!
 
   Press Space t' start!`;
-  let restartMessage = `Damn ye're goin' t' 'ave t' do better than that,
+  let restartMessage = `Damn ye're goin' to have to do better than that,
   try gettin' 5 words in next time.
   Press Space t' try again`;
   let winMessage1 = `Now find that other key 'n go get that other loot
@@ -538,6 +538,7 @@ let treasureChestGame = function (p) {
     }
     if (timer == 0) {
       if (points >= 5) {
+        annyang.pause();
         gameState = `end`;
         chestOpen++;
         annyangChestOpen = true;
@@ -587,32 +588,21 @@ let treasureChestGame = function (p) {
     p.pop();
   };
   p.endScreen = function () {
+    p.fill(0);
+    p.textAlign(p.CENTER);
+    p.textSize(25);
+    p.textStyle(p.BOLD);
     if (keyScore == 1 && chestOpen == 1) {
       p.push();
-      p.fill(0);
-      p.textAlign(p.CENTER);
-      p.textSize(25);
-      p.textStyle(p.BOLD);
       p.text(winMessage1, p.width / 2, p.height / 2);
-      responsiveVoice.speak(winMessage1, "Australian Male");
       p.pop();
     } else if (keyScore == 2 && chestOpen == 1) {
       p.push();
-      p.fill(0);
-      p.textAlign(p.CENTER);
-      p.textSize(25);
-      p.textStyle(p.BOLD);
       p.text(winMessage2, p.width / 2, p.height / 2);
-      responsiveVoice.speak(winMessage2, "Australian Male");
       p.pop();
     } else if (keyScore == 2 && chestOpen == 2) {
       p.push();
-      p.fill(0);
-      p.textAlign(p.CENTER);
-      p.textSize(25);
-      p.textStyle(p.BOLD);
       p.text(finalWinMessage, p.width / 2, p.height / 2);
-      responsiveVoice.speak(finalWinMessage, "Australian Male");
       p.pop();
     }
   };
