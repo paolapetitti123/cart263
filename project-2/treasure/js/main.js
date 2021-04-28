@@ -6,16 +6,16 @@ Paola Petitti
 Link to the audio for the intro:
 https://www.youtube.com/watch?v=eXubmzAgA10&ab_channel=KQENTERTAINMENT
 
+Link to the audio in game:
+https://www.youtube.com/watch?v=g8bLC2ItJ10
+
 In order for me to get the mini games working inside modal/dialog boxes, I had
 to use several instance canvases all parented to their own div (except the main
 game canvas) so that they will only be seen when those dialog boxes are triggered
-to open.
+to open. In order to win the game you must get all the keys and open all the
+treasure chests. Every chest has it's own mini game as do the items on the ship
+you need to interact with in order to get the keys for the chests.
 
-
-todo:
-- be able to interact with the treasure chests
-  -> no key: pop up saying you need a key (either text, alert or modal)
-  -> with key: get a modal box with a mini game (maybe a handpose game)
 **************************************************/
 let phaserConfig = {
   type: Phaser.AUTO,
@@ -717,7 +717,7 @@ let dragChestOpen = false;
   ATEEZ's song Pirate King and you have to find the secret letters, and drop them into
   the answer box. The secret word has to be treasure other wise you restart and get a
   very snarky comment from the responsivevoice. I did some CSS work to make the text
-  appear ontop of the canvas. 
+  appear ontop of the canvas.
 
   Following that a key image shows up and you can drag it into the new answer box
   on the key hole in the image and then you win this mini game.
